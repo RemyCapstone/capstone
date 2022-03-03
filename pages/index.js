@@ -22,7 +22,7 @@ const HomePage = () => {
         desc2="Manhattan, Brooklyn, Queens, and the Bronx!"
         buttonText="Explore Now"
         linkName="/search/purpose=for-sale"
-        imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/broker-hero-ddf3a4.jpg"
+        imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/nyc-apartments-for-3200-lic-6fadb8.jpg"
       />
     </div>
   ) 
