@@ -2,8 +2,7 @@ import Banner from "./components/Banner";
 
 const HomePage = () => {
   return(
-    <div>
-      <h1>Hello World</h1>
+    <Box>
       <Banner 
         purpose="VIEW RENTAL PROPERTIES"
         title1="Browse All Apartments"
@@ -14,6 +13,9 @@ const HomePage = () => {
         linkName="/search/purpose=for-rent"
         imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/broker-hero-ddf3a4.jpg"
       />
+      <Flex flexWrap="wrap">
+        {/* Fetch properties and display*/}
+      </Flex>
       <Banner 
         purpose="VIEW SALE PROPERTIES"
         title1="Find, Buy & Own Condos"
@@ -24,7 +26,10 @@ const HomePage = () => {
         linkName="/search/purpose=for-sale"
         imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/nyc-apartments-for-3200-lic-6fadb8.jpg"
       />
-    </div>
+      <Flex flexWrap="wrap">
+        {/* Fetch properties and display*/}
+      </Flex>
+    </Box>
   ) 
 };
 
