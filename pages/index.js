@@ -1,4 +1,5 @@
 import Banner from "./components/Banner";
+import { Flex, Box, Text, Button } from "@chakra-ui/react";
 
 const HomePage = () => {
   return(
