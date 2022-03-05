@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Menu, MenuButton, MenuList, MenuItem, IconButton, Flex, Box, Spacer } from '@chakra-ui/react';
-import { FcMenu, FcHome, FcAbout, FcManager } from 'react-icons/fc';
+import { Menu, MenuGroup, MenuButton, MenuList, MenuItem, IconButton, Flex, Box, Spacer } from '@chakra-ui/react';
+import { FcMenu, FcHome, FcAbout, FcManager, FcOrganization, FcMoneyTransfer, FcKey } from 'react-icons/fc';
 import { BsSearch } from 'react-icons/bs';
 import { FiKey } from 'react-icons/fi';
 import {GiSeatedMouse} from 'react-icons/gi'
@@ -16,22 +16,34 @@ const NavBar = () =>{
             <Box>
             <Menu>
                 <MenuButton as={IconButton} icon={<FcMenu />} variant='outline' color='red.400' />
-                <MenuList>
-                    <Link href='/' passHref>
-                        <MenuItem icon={<FcHome />}>Home</MenuItem>
-                    </Link>
-                    <Link href='/search' passHref>
-                        <MenuItem icon={<BsSearch />}>Search</MenuItem>
-                    </Link>
-                    <Link href='/search?purpose=for-sale' passHref>
-                        <MenuItem icon={<FcAbout />}>Buy Property</MenuItem>
-                    </Link>
-                    <Link href='/search?purpose=for-rent' passHref>
-                        <MenuItem icon={<FiKey />}>Rent Property</MenuItem>
-                    </Link>
-                    <Link href='/' passHref>
-                        <MenuItem icon={<FcManager />}>Sign Up | Login</MenuItem>
-                    </Link>
+                <MenuList minWidth='240px'>
+                    <MenuGroup title='Pages'>
+                        <Link href='/' passHref>
+                            <MenuItem icon={<FcHome />}>Home</MenuItem>
+                        </Link>
+                        <Link href='/about' passHref>
+                            <MenuItem icon={<FcAbout />}>About</MenuItem>
+                        </Link>
+                    </MenuGroup>
+                    <MenuGroup title='Property Options'>
+                        <Link href='/search' passHref>
+                            <MenuItem icon={<BsSearch />}>Search</MenuItem>
+                        </Link>
+                        <Link href='/search?purpose=for-sale' passHref>
+                            <MenuItem icon={<FcMoneyTransfer />}>Buy Property</MenuItem>
+                        </Link>
+                        <Link href='/search?purpose=for-rent' passHref>
+                            <MenuItem icon={<FcOrganization />}>Rent Property</MenuItem>
+                        </Link>
+                    </MenuGroup>
+                     <MenuGroup title='User Options'>
+                        <Link href='/' passHref>
+                            <MenuItem icon={<FcManager />}>Sign Up | Login</MenuItem>
+                        </Link>
+                        <Link href='/settings' passHref>
+                            <MenuItem icon={<FcKey />}>Settings</MenuItem>
+                        </Link>
+                    </MenuGroup>
                 </MenuList>
             </Menu>
             </Box>
