@@ -1,13 +1,17 @@
 import Banner from "../components/Banner";
 import { Flex, Box, Text, Button } from "@chakra-ui/react";
-import { baseListingURL, defaultSearch, fetchZillowListings } from "../utils/fetchZillowApi";
+import { baseListingURL, baseOptions, defaultSearch, fetchZillowListings } from "../utils/fetchZillowApi";
 import Property from "../components/Property";
 
 const HomePage = ({propertiesForRent, propertiesForSale}) => {
   //console.log(propertiesForRent, propertiesForSale);
   //propertiesForRent.forEach(e => console.log(e.zpid, typeof propertiesForRent[0].zpid))
-  const usablePropertiesForRent = propertiesForRent.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
-  console.log(usablePropertiesForRent)
+  let usablePropertiesForRent = propertiesForRent.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
+  //console.log(usablePropertiesForRent)
+
+  if (usablePropertiesForRent.length > 6) {
+    usablePropertiesForRent = usablePropertiesForRent.slice(0,6);
+  }
 
   //const usablePropertiesForSale = propertiesForSale.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
   //console.log(usablePropertiesForSale)
@@ -53,10 +57,10 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
 export async function getStaticProps(){
 
   //note this is our base URL from fetchZillowApi.js, then we load Brooklyn locations (our default search) and status type such as if its a rental or a for sale apartment
-  const propertyForRent = await fetchZillowListings(`${baseListingURL+defaultSearch}`)
+  const propertyForRent = await fetchZillowListings(baseOptions)
 
   //do this after to avoid extra api calls
-  //const propertyForSale = await fetchZillowListings(`${baseListingURL+defaultSearch}`)
+  //const propertyForSale = await fetchZillowListings(`${baseListingURL}`)
 
   //these are the props that you see passed in the HomePage component
   return {

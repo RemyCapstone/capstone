@@ -4,8 +4,9 @@ import { Box, Flex, Text} from "@chakra-ui/react";
 import { Avatar } from '@chakra-ui/avatar';
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { GoVerified } from 'react-icons/go';
 import millify from 'millify';
+
+import DefaultImage from '../assets/images/home.png';
 
 /**
  * @returns a reusable component that is used to display a specific property listing "card"
@@ -13,13 +14,33 @@ import millify from 'millify';
 const Property = ({property}) => {
     //the specific zillow property gets passed in props so we destructure the individual listing
     //this contains things such as the image, price, id of the apartment (known as zpid or zillow property id)
-    const { zpid, address, imgSrc, bedrooms, bathrooms } = property;
+    const { zpid, address, imgSrc, price, bedrooms, bathrooms, livingArea } = property;
     //console.log(zpid, address, imgSrc)
 
 
     return (
         //after clicking on a property we route to the specific property page
-        <Link href={`/property/${zpid}`} passHref>{address}</Link>
+        <Link href={`/property/${zpid}`} passHref>
+            <Flex flexWrap='wrap' w='420px' p='5' paddingTop='0px' justifyContent='flex-start' cursor='pointer' >
+                <Box>
+                    <Image src={imgSrc ? imgSrc : DefaultImage} alt="home" width={400} height={260}/>
+                </Box>
+                <Box w="full">
+                    <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
+                        <Flex alignItems='center'>
+                            <Text fontWeight='bold' fontSize='lg'>USD {price}/ a month</Text>
+                        </Flex>
+                    </Flex>
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='blue.400'>
+                        {bedrooms}
+                        <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
+                    </Flex>
+                    <Text fontSize='lg'>
+                        {address}
+                    </Text>
+                </Box>
+            </Flex>
+        </Link>
     )
 }
 

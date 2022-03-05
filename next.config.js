@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['wp-tid.zillowstatic.com', 'https://photos.zillowstatic.com']
+    domains: ['wp-tid.zillowstatic.com', 'photos.zillowstatic.com']
   }
 }
 
