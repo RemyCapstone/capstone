@@ -11,7 +11,7 @@ import DefaultImage from '../assets/images/home.png';
 /**
  * @returns a reusable component that is used to display a specific property listing "card"
  */
-const Property = ({property}) => {
+const Property = ({property , isRental}) => {
     //the specific zillow property gets passed in props so we destructure the individual listing
     //this contains things such as the image, price, id of the apartment (known as zpid or zillow property id)
     const { zpid, address, imgSrc, price, bedrooms, bathrooms, livingArea } = property;
@@ -28,10 +28,10 @@ const Property = ({property}) => {
                 <Box w="full">
                     <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
                         <Flex alignItems='center'>
-                            <Text fontWeight='bold' fontSize='lg'>USD {price}/ a month</Text>
+                            <Text fontWeight='bold' fontSize='lg'>USD {price}{isRental ? '/ a month' : ''}</Text>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='blue.400'>
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='red.400'>
                         {bedrooms}
                         <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
                     </Flex>

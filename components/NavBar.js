@@ -9,7 +9,7 @@ const NavBar = () =>{
 
     return (
         <Flex p='2' borderBottom='1px' borderColor='gray.100'>
-            <Box fontSize='3xl' color='blue.400' fontWeight='bold'>
+            <Box fontSize='3xl' color='red.400' fontWeight='bold'>
                 <Link href='/' paddingLeft='2'>REMY ᘛ⁐̤ᕐᐷ</Link>
             </Box>
             <Spacer />
@@ -30,7 +30,7 @@ const NavBar = () =>{
                         <MenuItem icon={<FiKey />}>Rent Property</MenuItem>
                     </Link>
                     <Link href='/' passHref>
-                        <MenuItem icon={<FcManager />}>Profile & Settings</MenuItem>
+                        <MenuItem icon={<FcManager />}>Sign Up | Login</MenuItem>
                     </Link>
                 </MenuList>
             </Menu>

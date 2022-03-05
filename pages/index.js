@@ -31,7 +31,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
       />
       {/* display each property listing on the home page, if you want to change the UI please check the Property component*/}
       <Flex flexWrap="wrap">
-        {usablePropertiesForRent.map((property) => <Property property={property} key={property.zpid}/>)}
+        {usablePropertiesForRent.map((property) => <Property property={property} key={property.zpid} isRental={true}/>)}
       </Flex>
 
 
