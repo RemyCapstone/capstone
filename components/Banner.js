@@ -2,6 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Flex, Box, Text, Button } from "@chakra-ui/react";
 
+/**
+ * @returns a reusable component that is used to show the home page banner
+ */
 const Banner = (props) => {
   const {purpose, imageURL, title1, title2, desc1, desc2, linkName, buttonText} = props;
 
