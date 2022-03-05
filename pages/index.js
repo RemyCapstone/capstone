@@ -18,7 +18,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
   
   return(
     <Box> {/*Box is a div in @chakra-UI */}
-      {/* A component I made that gives a "banner" type look, if you want to change the UI for this please check the Banner component*/}
+      {/* A component that gives a "banner" type look, if you want to change the UI for this please check the Banner component*/}
       <Banner 
         purpose="VIEW RENTAL PROPERTIES"
         title1="Browse All Apartments"
