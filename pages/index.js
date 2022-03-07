@@ -26,7 +26,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
         desc1="Explore available rental units throughout"
         desc2="Manhattan, Brooklyn, Queens, and the Bronx!"
         buttonText="Explore Now"
-        linkName="/search/purpose=for-rent"
+        linkName="/search?purpose=for-rent"
         imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/broker-hero-ddf3a4.jpg"
       />
       {/* display each property listing on the home page, if you want to change the UI please check the Property component*/}
@@ -43,7 +43,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
         desc1="Explore available for sale units throughout"
         desc2="Manhattan, Brooklyn, Queens, and the Bronx!"
         buttonText="Explore Now"
-        linkName="/search/purpose=for-sale"
+        linkName="search?purpose=for-sale"
         imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/nyc-apartments-for-3200-lic-6fadb8.jpg"
       />
       <Flex flexWrap="wrap">
