@@ -115,10 +115,6 @@ export const getFilterValues = (filterValues) => {
       value: purpose,
     },
     {
-      name: 'rentFrequency',
-      value: rentFrequency,
-    },
-    {
       name: 'minPrice',
       value: minPrice,
     },
