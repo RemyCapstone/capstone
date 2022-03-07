@@ -18,6 +18,16 @@ const Property = ({property , isRental}) => {
     //console.log(zpid, address, imgSrc)
 
 
+    let addressSplit = address.split(',');
+    
+    if(addressSplit.length < 4){
+        addressSplit = [''].concat(addressSplit);
+    }
+
+    //console.log(addressSplit)
+
+    const [residentalName, streetName, city, stateAndZip] = addressSplit;
+
     return (
         //after clicking on a property we route to the specific property page
         <Link href={`/property/${zpid}`} passHref>
@@ -36,7 +46,10 @@ const Property = ({property , isRental}) => {
                         <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
                     </Flex>
                     <Text fontSize='lg'>
-                        {address}
+                        {residentalName} {streetName}
+                        <br/>
+                        {city}, {stateAndZip}
+                        
                     </Text>
                 </Box>
             </Flex>

@@ -43,7 +43,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
         desc1="Explore available for sale units throughout"
         desc2="Manhattan, Brooklyn, Queens, and the Bronx!"
         buttonText="Explore Now"
-        linkName="search?purpose=for-sale"
+        linkName="/search?purpose=for-sale"
         imageURL="https://wp-tid.zillowstatic.com/streeteasy/2/nyc-apartments-for-3200-lic-6fadb8.jpg"
       />
       <Flex flexWrap="wrap">
