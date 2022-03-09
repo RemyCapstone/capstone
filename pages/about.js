@@ -28,7 +28,7 @@ const AboutPage = () => {
             </Flex>
             <Grid templateColumns='repeat(3, 1fr)' gap={6}>
                 <GridItem w='100%' h='60' bg='gray.100' borderRadius='10'>
-                    <Box p='3'>
+                    <Box p='3' paddingTop={5}>
                         <Flex justifyContent="center" alignItems="center">
                             <Icon as={FcBarChart} w={50} h={50} />
                         </Flex>
@@ -37,7 +37,7 @@ const AboutPage = () => {
                     </Box>
                 </GridItem>
                 <GridItem w='100%' h='60' bg='gray.100' borderRadius='10'>
-                    <Box p='3'>
+                    <Box p='3' paddingTop={5}>
                         <Flex justifyContent="center" alignItems="center">
                             <Icon as={FcInspection} w={50} h={50} />
                         </Flex>
@@ -46,7 +46,7 @@ const AboutPage = () => {
                     </Box>
                 </GridItem>
                 <GridItem w='100%' h='60' bg='gray.100' borderRadius='10'>
-                    <Box p='3'>
+                    <Box p='3' paddingTop={5}>
                         <Flex justifyContent="center" alignItems="center">
                             <Icon as={FcSearch} w={50} h={50} />
                         </Flex>
