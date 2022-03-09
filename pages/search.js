@@ -15,7 +15,7 @@ const SearchPage = ({properties}) => {
     return (
         <Box>
             <Flex  onClick={() => setSearchFilters(!searchFilters)} cursor='pointer' bg='gray.100' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='black' fontSize='lg' justifyContent='center' alignItems='center'>
-                <Text>Search By Filters</Text>
+                <Text>Filter Searches</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
             {searchFilters && <SearchFilters />}
