@@ -1,20 +1,35 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { useFormik, Form, Field, Formik } from 'formik';
 import * as Yup from 'yup';
 
 import styles from './SignupForm.module.css'
+
 import {
+    Grid,
+    GridItem,
     FormControl,
     FormLabel,
     FormErrorMessage,
     Input,
+    Stack,
+    InputGroup,
+    InputRightElement,
+    IconButton,
     Button,
 } from '@chakra-ui/react'
 
+import InputField from './InputField';
+
+import { ViewIcon, ViewIconOff } from '@chakra-ui/icons'
 /*
 * @returns a form to be used for signing a user up.
 */
 const SignupForm = (props) => {
+    const [show, setShow, confirmShow, setConfirmShow] = useState(false)
+
+    /*  Show/hide Password */
+    const handleShowPassword = () => setShow(!show)
+    const handleShowConfirmPassword = () => setConfirmShow(!confirmShow)
     /* What happens on submit */
     function submitHandler(values) {
         // Prevent page refresh
@@ -74,86 +89,110 @@ const SignupForm = (props) => {
                 firstName: '',
                 lastName: '',
                 email: '',
-                password: ''
+                password: '',
+                confirmPassword: ''
             }}
             validationSchema={(Yup.object({
                 firstName: Yup.string()
                   .required('Required*'),
                 lastName: Yup.string()
                   .required('Required*'),
-                email: Yup.string().email('Invalid email address').required('Required'),
+                email: Yup.string().email('Invalid email address').required('Required*'),
                 password: Yup.string()
-                  .required('Required*')
+                  .required('Required*'),
+                confirmPassword: Yup.string()
+                  .oneOf([Yup.ref('password'), null], 'Passwords must match*')
             }))}
             onSubmit={values => {
                 submitHandler(values);
             }}
         >
-        {( formik, errors, touched ) => (
+        {( formik ) => (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
-            <FormControl isInvalid={false}>
-                <FormLabel htmlFor="firstName">First Name</FormLabel>
-                <Input
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.firstName}
-                    className={styles.input}
-                />
-                {formik.touched.firstName && formik.errors.firstName ? (
-                    <div className={styles.errors}>{formik.errors.firstName}</div>
-                ) : null}
+            
+            <InputField 
+                name='firstName' 
+                formik={formik}
+                type='text' 
+                placeholder='First Name' 
+                label='First Name' 
+                touched={formik.touched.firstName} 
+                errors={formik.errors.firstName} 
+                value={formik.values.firstName} 
+            />
 
-                <FormLabel htmlFor="lastName">Last Name</FormLabel>
-                <Input
-                    id="lastName"
-                    name="lastName"
-                    type="text"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.lastName}
-                />
-                {formik.touched.lastName && formik.errors.lastName ? (
-                    <div className={styles.errors}>{formik.errors.lastName}</div>
-                ) : null}
+            <InputField 
+                name='lastName'
+                formik={formik}
+                type='text'
+                placeholder='Last Name'
+                label='Last Name'
+                touched={formik.touched.lastName} 
+                errors={formik.errors.lastName} 
+                value={formik.values.lastName} 
+            />
 
-                <FormLabel htmlFor="email">Email Address</FormLabel>
-                <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                />
-                {formik.touched.email && formik.errors.email ? (
-                    <div className={styles.errors}>{formik.errors.email}</div>
-                ) : null}
+            <InputField 
+                name='email'
+                formik={formik}
+                type='email'
+                placeholder='Email'
+                label='Email Address'
+                touched={formik.touched.email} 
+                errors={formik.errors.email} 
+                value={formik.values.email} 
+            />
 
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Input
-                    id="password"
-                    name="password"
-                    type="password"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                />
-                {formik.touched.password && formik.errors.password ? (
-                    <div className={styles.errors}>{formik.errors.password}</div>
-                ) : null}
+            <InputField 
+                name='password'
+                formik={formik}
+                type={show ? 'text':'password'}
+                placeholder='Enter password'
+                label='Password'
+                touched={formik.touched.password} 
+                errors={formik.errors.password} 
+                value={formik.values.password} 
+                onClick={handleShowPassword}
+                visible={show}
+            />
 
-                <Button
-                    mt={4}
-                    colorScheme='pink'
-                    type='submit'
-                >
-                    Sign Up
-                </Button>
-            </FormControl>
+            <InputField 
+                name='confirmPassword'
+                formik={formik}
+                type={confirmShow ? 'text':'password'}
+                placeholder='Confirm password'
+                label='Confirm Password'
+                touched={formik.touched.confirmPassword} 
+                errors={formik.errors.confirmPassword} 
+                value={formik.values.confirmPassword} 
+                onClick={handleShowConfirmPassword}
+                visible={confirmShow}
+            />
+                
+            <Button 
+                isFullWidth
+                mt={4}
+                colorScheme='pink'
+                type='submit'
+            >
+                Sign Up
+            </Button>
+
+            <Grid container justifyContent="flex-end">
+                <GridItem>
+                    {/* TODO: Link to Sign In Page */}
+                    <Button variant="ghost">
+                        Already have an account?  Sign In
+                    </Button>
+                </GridItem>
+            </Grid>
+
+                
+                
         </form>
+
+        
+        
         )}
         </Formik>
         </Fragment>
