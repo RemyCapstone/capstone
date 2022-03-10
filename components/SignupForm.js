@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { useFormik, Form, Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import styles from './SignupForm.module.css'
@@ -7,20 +7,11 @@ import styles from './SignupForm.module.css'
 import {
     Grid,
     GridItem,
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    Input,
-    Stack,
-    InputGroup,
-    InputRightElement,
-    IconButton,
     Button,
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
 
-import { ViewIcon, ViewIconOff } from '@chakra-ui/icons'
 /*
 * @returns a form to be used for signing a user up.
 */
@@ -191,7 +182,6 @@ const SignupForm = (props) => {
                 
         </form>
 
-        
         
         )}
         </Formik>
