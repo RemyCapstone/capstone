@@ -41,7 +41,7 @@ const Property = ({property , isRental}) => {
                             <Text fontWeight='bold' fontSize='lg'>USD {price}{isRental ? '/ a month' : ''}</Text>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='red.400'>
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='blue.400'>
                         {bedrooms}
                         <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
                     </Flex>

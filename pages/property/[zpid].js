@@ -42,7 +42,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             <Flex paddingTop='2' alignItems='center'>
               <Text fontWeight='bold' fontSize='3xl'>USD {price}{homeStatus === "FOR_RENT" ? '/ a month' : ''}</Text>
               <Spacer/>
-              <Flex alignItems='center' p='1' justifyContent='space-between' w='330px' color='red.400'>
+              <Flex alignItems='center' p='1' justifyContent='space-between' w='330px' color='blue.400'>
                 <Text fontWeight='bold' fontSize='2xl'>{bedrooms}</Text>
                 <FaBed size={30}/> <Text fontWeight='bold' fontSize='2xl'>| {bathrooms} </Text> <FaBath size={30} /> <Text fontWeight='bold' fontSize='2xl'>| {millify(livingArea)} sqft </Text> <BsGridFill size={30}/>
               </Flex>

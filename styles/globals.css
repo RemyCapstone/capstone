@@ -18,9 +18,9 @@ a {
 ::-webkit-scrollbar {
   height: 15px;
   width: 4px;
-  background: rgb(252, 242, 242);
+  background: rgb(240, 247, 255);
 }
 ::-webkit-scrollbar-thumb:horizontal {
-  background: rgb(255, 117, 117);
+  background: rgb(134, 175, 250);
   border-radius: 10px;
 }

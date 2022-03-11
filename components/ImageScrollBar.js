@@ -47,9 +47,11 @@ const RightArrow = () => {
 
 const ImageScrollbar = ({ data }) => {
     const [image, setImage] = useState(data[0])
+    const [selectedPic, setSelectedPic] = useState(0)
 
-    const clickHandler = (url) => {
+    const clickHandler = (url, index) => {
         setImage(url)
+        setSelectedPic(index)
     } 
 
 
@@ -63,8 +65,8 @@ const ImageScrollbar = ({ data }) => {
       </Box>
     <ScrollMenu>
       {data.map((item, i) => (
-        <Box onClick={() => clickHandler(item)} cursor='pointer' height="143px" width="200px" key={item} id={`pic${i}`} overflow='hidden' p='1'>
-          <Image placeholder="blur" blurDataURL={item} src={item} height={140} width={200}  />
+        <Box onClick={() => clickHandler(item, i)} backgroundColor={i === selectedPic ? "blue.200" : "white"} border='1px' borderColor='gray.200' cursor='pointer' height="143px" width="200px" key={item} overflow='hidden' p='1'>
+          <Image placeholder="blur" blurDataURL={item} src={item} height={140} width={200} />
         </Box>
       ))}
     </ScrollMenu>
