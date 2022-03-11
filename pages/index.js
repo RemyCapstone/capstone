@@ -1,6 +1,6 @@
 import Banner from "../components/Banner";
 import { Flex, Box, Text, Button } from "@chakra-ui/react";
-import { baseListingURL, baseOptions, defaultSearch, fetchZillowListings } from "../utils/fetchZillowApi";
+import { baseListingURL, baseOptions, defaultSearch, fetchZillowApi } from "../utils/fetchZillowApi";
 import Property from "../components/Property";
 
 const HomePage = ({propertiesForRent, propertiesForSale}) => {
@@ -57,7 +57,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
 export async function getStaticProps(){
 
   //note this is our base URL from fetchZillowApi.js, then we load Brooklyn locations (our default search) and status type such as if its a rental or a for sale apartment
-  const propertyForRent = await fetchZillowListings(baseOptions)
+  const propertyForRent = await fetchZillowApi(baseOptions)
 
   //do this after to avoid extra api calls
   //const propertyForSale = await fetchZillowListings(`${baseListingURL}`)

@@ -31,9 +31,35 @@ export const baseOptions = {
 
 
 //get request to each listing using axios
-export const fetchZillowListings = async(options) => {
+export const fetchZillowApi = async(options) => {
     const { data } = await axios.request(options);
     //console.log(data)
     //returns a json object that has an array of all of our property listings after making the get request
     return data;
 }
+
+export const propertyDetailOptions = (zpid) => {
+  return {
+    method: 'GET',
+    url: 'https://zillow-com1.p.rapidapi.com/property',
+    params: {zpid: zpid},
+    headers: {
+      'x-rapidapi-host': 'zillow-com1.p.rapidapi.com',
+      'x-rapidapi-key': '7b95d439b1msh053237cc2d2fd67p1aefc7jsn0779bacb22ad'
+    }
+  }
+};
+
+
+export const propertyImageOptions = (zpid) => {
+  return {
+    method: 'GET',
+    url: 'https://zillow-com1.p.rapidapi.com/images',
+    params: {zpid: zpid},
+    headers: {
+      'x-rapidapi-host': 'zillow-com1.p.rapidapi.com',
+      'x-rapidapi-key': '7b95d439b1msh053237cc2d2fd67p1aefc7jsn0779bacb22ad'
+    }
+  }
+}
+
