@@ -62,7 +62,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <Map location={location}></Map>
                 <WalkScore long={longitude} lat={latitude} address={streetAddress}/>
               </Box>
-              <Box w='50%' paddingLeft={20}>
+              <Box w='50%' paddingLeft={10}>
                 {/* insert price history chart here*/}
                 <PriceHistoryTable data={priceHistory}/>
               </Box>

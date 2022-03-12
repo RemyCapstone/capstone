@@ -14,7 +14,7 @@ const WalkScore = ({long, lat, streetAddress}) => {
     useEffect(() => {
         const walkOptions = options(long,lat,streetAddress);
         fetchWalkApi(walkOptions).then((response) => {
-            console.log(response)
+            //console.log(response)
             const walkScore = response.substring(
                 response.indexOf("<walkscore>") + 11, 
                 response.lastIndexOf("</walkscore>")
