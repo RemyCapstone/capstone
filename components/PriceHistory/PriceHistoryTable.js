@@ -6,7 +6,7 @@ const PriceHistoryTable = ({data}) => {
 
     return(
         <>
-            <Table variant='simple'>
+            <Table variant='simple' colorScheme='facebook'>
                 <TableCaption>Price History</TableCaption>
                 <Thead>
                     <Tr>
@@ -29,11 +29,11 @@ const PriceHistoryTable = ({data}) => {
                     </Tr>
                     <Tr>
                         <Td>2019</Td>
-                        <Td>$56asd756</Td>
+                        <Td>$5622756</Td>
                     </Tr>
                     <Tr>
                         <Td>2018</Td>
-                        <Td>$567s56</Td>
+                        <Td>$3567156</Td>
                     </Tr>
                 </Tbody>
             </Table>

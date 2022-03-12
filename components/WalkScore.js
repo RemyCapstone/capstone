@@ -41,7 +41,7 @@ const WalkScore = ({long, lat, streetAddress}) => {
                 <Link href={scoreData.walkScoreLink} isExternal><Image src={logo} alt="home" width={140} height={20}/></Link>
             </Box>
             <Box paddingLeft={5}>
-                <Text fontWeight='medium' fontSize='lg' color='blue.600'>{scoreData.walkScore}/100</Text>
+                <Link href={scoreData.walkScoreLink} isExternal><Text fontWeight='medium' fontSize='lg' color='blue.600'>{scoreData.walkScore}/100</Text></Link>
             </Box>
             <Box paddingLeft={2}>
                 <Text fontWeight='medium' fontSize='lg' color='blue.600'>{scoreData.description}</Text>
