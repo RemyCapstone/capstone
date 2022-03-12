@@ -1,17 +1,15 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
-import { Avatar } from '@chakra-ui/avatar';
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { GoVerified } from 'react-icons/go';
 import millify from 'millify';
 import { useRouter } from 'next/router';
-
 
 import { fetchZillowApi, propertyDetailOptions, propertyImageOptions} from "../../utils/fetchZillowApi";
 import ImageScrollbar from '../../components/ImageScrollBar';
 
 import Map from '../../components/Map/Map';
 import WalkScore from '../../components/WalkScore';
+import PriceHistoryTable from '../../components/PriceHistory/PriceHistoryTable';
 
 
 
@@ -64,8 +62,9 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <Map location={location}></Map>
                 <WalkScore long={longitude} lat={latitude} address={streetAddress}/>
               </Box>
-              <Box w='50%'>
+              <Box w='50%' paddingLeft={20}>
                 {/* insert price history chart here*/}
+                <PriceHistoryTable data={priceHistory}/>
               </Box>
             </Flex>
             
