@@ -11,6 +11,7 @@ import { fetchZillowApi, propertyDetailOptions, propertyImageOptions} from "../.
 import ImageScrollbar from '../../components/ImageScrollBar';
 
 import Map from '../../components/Map/Map';
+import WalkScore from '../../components/WalkScore';
 
 
 
@@ -58,9 +59,18 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
             <br />
 
-           <Map location={location}></Map>
-
-            <br />
+            <Flex>
+              <Box w='50%'>
+                <Map location={location}></Map>
+                <WalkScore long={longitude} lat={latitude} address={streetAddress}/>
+              </Box>
+              <Box w='50%'>
+                {/* insert price history chart here*/}
+              </Box>
+            </Flex>
+            
+            
+            <br /><br />
 
 
             <Flex flexWrap='wrap' textTransform='uppercase' justifyContent='space-between'>

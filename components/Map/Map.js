@@ -6,7 +6,7 @@ import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 const Map = ({location}) => {
     return (
         <div className="map" style={{ height: '300px', width: '100%' }}>
-            <div className="google-map" style={{ height: '300px', width: '50%' }}>
+            <div className="google-map" style={{ height: '300px', width: '100%' }}>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyBVISwJcY6zXYJLQvRRXG_DMdi1dCQk0fk' }}
                     defaultCenter={location}
