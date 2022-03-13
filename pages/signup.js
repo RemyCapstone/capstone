@@ -1,12 +1,18 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import SignupForm from "../components/SignupForm";
 
 function SignupPage() {
     const [signupError, setSignupError] = useState("");
+    let router = useRouter();
+
+    const redirectOnSuccess = () => {
+        console.log("redirect");
+        router.push('/');
+    }
+
     async function addUserHandler(enteredUserData) {
         console.log(enteredUserData);
-
-        try {
             const response = await fetch('/api/signup', {
                 method: 'POST',
                 body: JSON.stringify(enteredUserData),
@@ -17,15 +23,18 @@ function SignupPage() {
             const data = await response.json();
             if (data.status === 401)
             {
-                // alert(data.message);
                 setSignupError(data.message);
             }
-        }
-        catch
-        {
-            console.log("error")
-            alert("Error with internal API");
-        }
+            if (data.status === 201)
+            {
+                setSignupError("");
+                redirectOnSuccess();
+            }
+        // }
+        // catch
+        // {
+        //     alert("Error with internal API");
+        // }
     }
 
     return <SignupForm onSignup={addUserHandler} signupError={signupError}></SignupForm>

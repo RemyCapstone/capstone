@@ -17,6 +17,7 @@ async function handler(req, res) {
             email: newUserData.email,
             password: passwordHash
         };
+        console.log(submitUserData);
 
         const client = await MongoClient.connect('mongodb+srv://remycapstone:NSpBNwJpvKxRko6T@cluster0.hwcwt.mongodb.net/users?retryWrites=true&w=majority');
         const db = client.db();
