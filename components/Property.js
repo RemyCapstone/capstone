@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Box, Flex, Text} from "@chakra-ui/react";
-import { Avatar } from '@chakra-ui/avatar';
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
 import millify from 'millify';
@@ -30,7 +29,9 @@ const Property = ({property , isRental}) => {
 
     return (
         //after clicking on a property we route to the specific property page
+        //for new tab <a target="_blank" rel="noreferrer"></a>
         <Link href={`/property/${zpid}`} passHref>
+            
             <Flex flexWrap='wrap' w='420px' p='5' paddingTop='0px' justifyContent='flex-start' cursor='pointer' >
                 <Box>
                     <Image src={imgSrc ? imgSrc : DefaultImage} alt="home" width={400} height={260}/>
@@ -41,7 +42,7 @@ const Property = ({property , isRental}) => {
                             <Text fontWeight='bold' fontSize='lg'>USD {price}{isRental ? '/ a month' : ''}</Text>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='red.400'>
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='blue.400'>
                         {bedrooms}
                         <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
                     </Flex>

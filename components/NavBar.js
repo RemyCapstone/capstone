@@ -9,7 +9,7 @@ const NavBar = () =>{
 
     return (
         <Flex p='2' borderBottom='1px' borderColor='gray.100'>
-            <Box fontSize='3xl' color='red.400' fontWeight='bold'>
+            <Box fontSize='3xl' color='blue.400' fontWeight='bold'>
                 <Link href='/' paddingLeft='2'>REMY ᘛ⁐̤ᕐᐷ</Link>
             </Box>
             <Spacer />
@@ -26,14 +26,11 @@ const NavBar = () =>{
                         </Link>
                     </MenuGroup>
                     <MenuGroup title='Property Options'>
-                        <Link href='/search' passHref>
-                            <MenuItem icon={<BsSearch />}>Search</MenuItem>
+                        <Link href='/search?purpose=for-rent' passHref>
+                            <MenuItem icon={<BsSearch />}>Search Rentals</MenuItem>
                         </Link>
                         <Link href='/search?purpose=for-sale' passHref>
                             <MenuItem icon={<FcMoneyTransfer />}>Buy Property</MenuItem>
-                        </Link>
-                        <Link href='/search?purpose=for-rent' passHref>
-                            <MenuItem icon={<FcOrganization />}>Rent Property</MenuItem>
                         </Link>
                     </MenuGroup>
                      <MenuGroup title='User Options'>

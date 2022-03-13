@@ -133,9 +133,6 @@ const SignupForm = (props) => {
                     </Button>
                 </GridItem>
             </Grid>
-
-
-
         </form>
         )}
         </Formik>
