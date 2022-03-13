@@ -25,7 +25,7 @@ const PriceHistoryTable = ({data}) => {
                                 <Tr key={history.time}>
                                     <Td>{history.date}</Td>
                                     <Td>{history.event}</Td>
-                                    <Td>{history.price}</Td>
+                                    <Td>${history.price}</Td>
                                 </Tr>
                             )
                         })

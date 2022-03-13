@@ -17,10 +17,15 @@ a {
 
 ::-webkit-scrollbar {
   height: 15px;
-  width: 4px;
+  width: 7px;
   background: rgb(240, 247, 255);
 }
 ::-webkit-scrollbar-thumb:horizontal {
+  background: rgb(134, 175, 250);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
   background: rgb(134, 175, 250);
   border-radius: 10px;
 }
