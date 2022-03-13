@@ -29,7 +29,9 @@ const Property = ({property , isRental}) => {
 
     return (
         //after clicking on a property we route to the specific property page
+        //for new tab <a target="_blank" rel="noreferrer"></a>
         <Link href={`/property/${zpid}`} passHref>
+            
             <Flex flexWrap='wrap' w='420px' p='5' paddingTop='0px' justifyContent='flex-start' cursor='pointer' >
                 <Box>
                     <Image src={imgSrc ? imgSrc : DefaultImage} alt="home" width={400} height={260}/>
