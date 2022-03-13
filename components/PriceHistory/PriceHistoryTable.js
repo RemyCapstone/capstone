@@ -4,8 +4,7 @@ import millify from 'millify';
 
 
 const PriceHistoryTable = ({data}) => {
-    console.log(data)
-    //data is an array, loop through it
+    //console.log(data)
 
     return(
         <Box overflowY="auto" maxHeight="350px">
