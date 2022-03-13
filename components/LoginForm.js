@@ -25,10 +25,11 @@ const LoginForm = (props) => {
     // prevent page refresh
     event.preventDefault();
 
-    console.log(values)
+    console.log('SUBMITTED: ', values)
+    props.onLogin(values);
     // handle submit here
     // On login, go to previous page
-    router.push('/')
+    // router.push('/')
   }
   const signIn = () => {
     router.push('/signup')
