@@ -1,17 +1,17 @@
 import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption} from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import millify from 'millify';
 
 
 const PriceHistoryTable = ({data}) => {
-
-    console.log('table data')
     console.log(data)
+    //data is an array, loop through it
 
     return(
-        <>
+        <Box overflowY="auto" maxHeight="350px">
             <Table variant='simple' colorScheme='facebook'>
-                <TableCaption>Price History</TableCaption>
-                <Thead>
+                <TableCaption position="sticky" bottom={0} bgColor="white">Price History</TableCaption>
+                <Thead position="sticky" top={0} bgColor="white">
                     <Tr>
                         <Th>Date</Th>
                         <Th>Event</Th>
@@ -19,34 +19,20 @@ const PriceHistoryTable = ({data}) => {
                     </Tr>
                 </Thead>
                 <Tbody>
-                    <Tr>
-                        <Td>2022</Td>
-                        <Td>Rent</Td>
-                        <Td>$123123213</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>2021</Td>
-                        <Td>Rent</Td>
-                        <Td>$34636546</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>2020</Td>
-                        <Td>Rent</Td>
-                        <Td>$56756</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>2019</Td>
-                        <Td>Rent</Td>
-                        <Td>$5622756</Td>
-                    </Tr>
-                    <Tr>
-                        <Td>2018</Td>
-                        <Td>Rent</Td>
-                        <Td>$3567156</Td>
-                    </Tr>
+                    {
+                        data.map(history => {
+                            return (
+                                <Tr key={history.time}>
+                                    <Td>{history.date}</Td>
+                                    <Td>{history.event}</Td>
+                                    <Td>{history.price}</Td>
+                                </Tr>
+                            )
+                        })
+                    }
                 </Tbody>
             </Table>
-        </>
+        </Box>
     )
 }
 
