@@ -16,7 +16,8 @@ import InputField from './InputField';
 * @returns a form to be used for signing a user up.
 */
 const SignupForm = (props) => {
-    const [show, setShow, confirmShow, setConfirmShow] = useState(false)
+    const [show, setShow] = useState(false);
+    const [confirmShow, setConfirmShow] = useState(false)
 
     /*  Show/hide Password */
     const handleShowPassword = () => setShow(!show)
