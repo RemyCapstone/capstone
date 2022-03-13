@@ -22,11 +22,11 @@ const SignupForm = (props) => {
     const handleShowPassword = () => setShow(!show)
     const handleShowConfirmPassword = () => setConfirmShow(!confirmShow)
     /* What happens on submit */
-    function submitHandler(values) {
+    function submitHandler(e) {
         // Prevent page refresh
-        event.preventDefault();
+        e.preventDefault();
 
-        props.onSignup(values);
+        props.onSignup(e);
     }
 
     /* Form management via formik,
