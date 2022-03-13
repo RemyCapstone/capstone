@@ -23,7 +23,7 @@ const SearchFilters = () => {
         })
 
         router.push({ pathname: path, query: query });
-  };
+    };
 
     return(
          <Flex bg='gray.100' p='4' justifyContent='center' flexWrap='wrap'>

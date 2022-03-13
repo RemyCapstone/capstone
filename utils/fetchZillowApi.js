@@ -12,8 +12,6 @@ export const baseOptions = {
     location: 'Brooklyn, New York, NY',
     status_type: 'ForRent',
     home_type: 'Apartments',
-    minPrice: '100',
-    maxPrice: '999999999',
     rentMinPrice: '100',
     rentMaxPrice: '3000',
     bathsMin: '1',

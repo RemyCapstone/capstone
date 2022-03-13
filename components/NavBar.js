@@ -26,14 +26,11 @@ const NavBar = () =>{
                         </Link>
                     </MenuGroup>
                     <MenuGroup title='Property Options'>
-                        <Link href='/search' passHref>
-                            <MenuItem icon={<BsSearch />}>Search</MenuItem>
+                        <Link href='/search?purpose=for-rent' passHref>
+                            <MenuItem icon={<BsSearch />}>Search Rentals</MenuItem>
                         </Link>
                         <Link href='/search?purpose=for-sale' passHref>
                             <MenuItem icon={<FcMoneyTransfer />}>Buy Property</MenuItem>
-                        </Link>
-                        <Link href='/search?purpose=for-rent' passHref>
-                            <MenuItem icon={<FcOrganization />}>Rent Property</MenuItem>
                         </Link>
                     </MenuGroup>
                      <MenuGroup title='User Options'>
