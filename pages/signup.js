@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import SignupForm from "../components/SignupForm";
 
 function SignupPage() {
+    const [signupError, setSignupError] = useState("");
     async function addUserHandler(enteredUserData) {
         console.log(enteredUserData);
 
@@ -13,9 +15,10 @@ function SignupPage() {
                 }
             });
             const data = await response.json();
-            if (data.message === 401)
+            if (data.status === 401)
             {
-                alert("Email already exists.");
+                // alert(data.message);
+                setSignupError(data.message);
             }
         }
         catch
@@ -25,7 +28,7 @@ function SignupPage() {
         }
     }
 
-    return <SignupForm onSignup={addUserHandler}></SignupForm>
+    return <SignupForm onSignup={addUserHandler} signupError={signupError}></SignupForm>
 }
 
 export default SignupPage;

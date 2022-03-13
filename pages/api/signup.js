@@ -5,7 +5,6 @@ import { MongoClient } from 'mongodb';
 async function handler(req, res) {
     if (req.method === 'POST') {
         // contains: firstname, lastname, email, password
-        console.log("I AM HERE");
         const newUserData = req.body;
 
         const bcrypt = require ('bcrypt');
@@ -29,7 +28,10 @@ async function handler(req, res) {
 
         if (emailResult)
         {
-            res.status(401).json({message: 401});
+            res.status(401).json({
+                status: 401,
+                message: "Email already exists."
+            });
             client.close();
             return;
         }
@@ -37,7 +39,10 @@ async function handler(req, res) {
         const result = await usersCollection.insertOne(submitUserData);
         console.log('Result of inserting:', result);
         client.close();
-        res.status(201).json({message: 201});
+        res.status(201).json({
+            status: 201,
+            message:"User inserted!"
+        });
     }
 }
 

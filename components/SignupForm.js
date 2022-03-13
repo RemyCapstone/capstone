@@ -5,9 +5,9 @@ import * as Yup from 'yup';
 import styles from './SignupForm.module.css'
 
 import {
-    Grid,
-    GridItem,
+    Grid,GridItem,
     Button,
+    Heading,Text
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
@@ -57,6 +57,12 @@ const SignupForm = (props) => {
         >
         {( formik ) => (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
+            <Heading>Sign Up</Heading>
+            {props.signupError !== "" &&
+                <Text fontSize='md' color='red'>
+                    {props.signupError}
+                </Text>
+            }
             <InputField
                 name='firstName'
                 formik={formik}
