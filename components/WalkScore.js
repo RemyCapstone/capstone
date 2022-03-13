@@ -16,22 +16,22 @@ const WalkScore = ({long, lat, streetAddress}) => {
         fetchWalkApi(walkOptions).then((response) => {
             //console.log(response)
             const walkScore = response.substring(
-                response.indexOf("<walkscore>") + 11, 
+                response.indexOf("<walkscore>") + 11,
                 response.lastIndexOf("</walkscore>")
             );
             const description = response.substring(
-                response.indexOf("<description>") + 13, 
+                response.indexOf("<description>") + 13,
                 response.lastIndexOf("</description>")
             );
             const walkScoreLink = response.substring(
-                response.indexOf("<ws_link>") + 9, 
+                response.indexOf("<ws_link>") + 9,
                 response.lastIndexOf("</ws_link>")
             );
             setScoreData({walkScore,description, walkScoreLink})
         })
     }, []);
 
-   
+
     //console.log(scoreData)
 
     return (
@@ -50,10 +50,9 @@ const WalkScore = ({long, lat, streetAddress}) => {
                 <Link href={moreInfoLink} isExternal><Image src={moreInfoLogo} alt="home" width={15} height={15}/></Link>
             </Box>
         </Flex>
-        
+
         </>
     )
 }
-
 
 export default WalkScore;

@@ -2,6 +2,8 @@ import SignupForm from "../components/SignupForm";
 
 function SignupPage() {
     async function addUserHandler(enteredUserData) {
+        console.log(enteredUserData);
+
         const response = await fetch('/api/signup', {
             method: 'POST',
             body: JSON.stringify(enteredUserData),

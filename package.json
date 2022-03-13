@@ -9,19 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.7",
     "@chakra-ui/react": "^1.8.6",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "axios": "^0.26.0",
+    "bcrypt": "^5.0.1",
+    "formik": "^2.2.9",
     "framer-motion": "^6.2.8",
     "google-map-react": "^2.1.10",
     "millify": "^4.0.0",
+    "mongodb": "^4.4.1",
     "next": "12.1.0",
     "nprogress": "^0.2.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-horizontal-scrolling-menu": "^2.7.1",
-    "react-icons": "^4.3.1"
+    "react-icons": "^4.3.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "8.10.0",
