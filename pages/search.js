@@ -79,6 +79,7 @@ export async function getServerSideProps({ query }) {
       bathsMax: '10',
       bedsMin: query.roomsMin || '1',
       bedsMax: '10',
+      sort: query.sortBy || '',
       sqftMin: query.areaMin || '1',
       sqftMax: query.areaMax || '10000'
     },
