@@ -26,7 +26,8 @@ const LoginForm = (props) => {
     event.preventDefault();
 
     console.log('SUBMITTED: ', values)
-    props.onLogin(values);
+    const data = props.onLogin(values);
+    console.log('this is what is returned:', data)
     // handle submit here
     // On login, go to previous page
     // router.push('/')

@@ -18,12 +18,13 @@ const loginHandler = async(req, res) => {
       
 
     if(!isPasswordCorrect) 
-      return res.status(400).json({ message: "Invalid credentials." });
-      
-    res.status(200).json({message: "User logged in."})
+      res.status(400).json({ message: "Invalid credentials." });
+    else   
+      res.status(200).json({message: "User logged in."})
   } catch(error) {
     res.status(400).json({message: 'User could not be logged in.'});
   }
+  
   client.close();
 }
 

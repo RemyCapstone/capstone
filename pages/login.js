@@ -3,7 +3,6 @@ import LoginForm from "../components/LoginForm";
 const LoginPage = () => {
   // Handle Login
   const findUserHandler = async(enteredUserData) => {
-    console.log('this is the user data: ',  enteredUserData);
 
     const response = await fetch('/api/login', {
       method: 'POST', 
@@ -13,7 +12,8 @@ const LoginPage = () => {
       }
     });
     const data = await response.json();
-    console.log('data was taken: ', data);
+
+    return data
   }
   
   return <LoginForm onLogin={findUserHandler} />
