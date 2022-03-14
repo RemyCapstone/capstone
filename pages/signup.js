@@ -24,7 +24,7 @@ function SignupPage() {
         {
             setSignupError(data.message);
         }
-        if (data.status === 201)
+        else if (data.status === 201)
         {
             setSignupError("");
             redirectOnSuccess();

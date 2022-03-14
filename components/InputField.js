@@ -33,7 +33,6 @@ const InputField = ({name, formik, type, placeholder, label, touched, errors, va
             id={name}
             name={name}
             type={type}
-            errorBorderColor='red.300'
             placeholder={placeholder}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -49,7 +48,6 @@ const InputField = ({name, formik, type, placeholder, label, touched, errors, va
           </InputRightElement> : null
         }
       </InputGroup>
-
     </FormControl>
   )
 }

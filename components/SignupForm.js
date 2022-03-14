@@ -31,7 +31,6 @@ const SignupForm = (props) => {
         event.preventDefault();
 
         props.onSignup(values);
-        router.push('/')
     }
     const signIn = () => {
         router.push('/login')
@@ -41,8 +40,6 @@ const SignupForm = (props) => {
     * Validation via Yup
     * See here: https://formik.org/docs/tutorial#schema-validation-with-yup
     */
-
-
     return (
         <Fragment>
         <Formik
@@ -70,7 +67,7 @@ const SignupForm = (props) => {
         >
         {( formik ) => (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
-            <Heading>Sign Up</Heading>
+            <Heading className={styles.heading}>Sign Up</Heading>
             {props.signupError !== "" &&
                 <Text fontSize='md' color='red'>
                     {props.signupError}
@@ -140,6 +137,7 @@ const SignupForm = (props) => {
                 mt={4}
                 colorScheme='blue'
                 type='submit'
+                className={styles.actionbutton}
             >
                 Sign Up
             </Button>
@@ -147,15 +145,12 @@ const SignupForm = (props) => {
             <Grid justifyContent="flex-end">
                 <GridItem>
                     {/* TODO: Link to Sign In Page */}
-                    <Button variant="ghost" onClick={signIn}>
+                    <Button variant="ghost" onClick={signIn} className={styles.otherpage}>
                         Already have an account?  Sign In
                     </Button>
                 </GridItem>
             </Grid>
-
         </form>
-
-
         )}
         </Formik>
         </Fragment>

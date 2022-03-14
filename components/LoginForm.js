@@ -52,9 +52,9 @@ const LoginForm = (props) => {
       >
       {( formik ) => (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
-          <Heading>Login</Heading>
+          <Heading className={styles.heading}>Login</Heading>
           <InputField
-            name='email'
+            name='userEmail'
             formik={formik}
             type='email'
             placeholder='Email'
@@ -65,7 +65,7 @@ const LoginForm = (props) => {
           />
 
           <InputField
-            name='password'
+            name='userPassword'
             formik={formik}
             type={show ? 'text':'password'}
             placeholder='Enter password'
@@ -90,7 +90,7 @@ const LoginForm = (props) => {
           <Grid justifyContent="flex-end">
               <GridItem>
                   {/* TODO: Link to Sign In Page */}
-                  <Button variant="ghost" onClick={signIn}>
+                  <Button variant="ghost" className={styles.otherpage} onClick={signIn}>
                       Don't have an account? Sign Up
                   </Button>
               </GridItem>
