@@ -34,8 +34,8 @@ const NavBar = () =>{
                         </Link>
                     </MenuGroup>
                      <MenuGroup title='User Options'>
-                        <Link href='/' passHref>
-                            <MenuItem icon={<FcManager />}>Sign Up | Login</MenuItem>
+                        <Link href='/login' passHref>
+                            <MenuItem icon={<FcManager />}>Login</MenuItem>
                         </Link>
                         <Link href='/settings' passHref>
                             <MenuItem icon={<FcKey />}>Settings</MenuItem>

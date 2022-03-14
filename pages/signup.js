@@ -12,29 +12,23 @@ function SignupPage() {
     }
 
     async function addUserHandler(enteredUserData) {
-        console.log(enteredUserData);
-            const response = await fetch('/api/signup', {
-                method: 'POST',
-                body: JSON.stringify(enteredUserData),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            if (data.status === 401)
-            {
-                setSignupError(data.message);
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            body: JSON.stringify(enteredUserData),
+            headers: {
+                'Content-Type': 'application/json'
             }
-            if (data.status === 201)
-            {
-                setSignupError("");
-                redirectOnSuccess();
-            }
-        // }
-        // catch
-        // {
-        //     alert("Error with internal API");
-        // }
+        });
+        const data = await response.json();
+        if (data.status === 401)
+        {
+            setSignupError(data.message);
+        }
+        if (data.status === 201)
+        {
+            setSignupError("");
+            redirectOnSuccess();
+        }
     }
 
     return <SignupForm onSignup={addUserHandler} signupError={signupError}></SignupForm>

@@ -2,9 +2,21 @@ import '../styles/globals.css'
 import Router from 'next/router';
 import Head from 'next/head';
 import NProgress from 'nprogress';
+
 import { ChakraProvider } from '@chakra-ui/react';
+import { extendTheme } from "@chakra-ui/react";
+import FormLabel from '../styles/FormLabel.ts';
+import Input from '../styles/Input.ts';
+
 import Layout from '../components/Layout';
 
+/* Customized Chakra Styles */
+const theme = extendTheme({
+  components: {
+    FormLabel,
+    Input,
+  },
+});
 
 function MyApp({ Component, pageProps }) {
   NProgress.configure({ showSpinner: false });
@@ -21,9 +33,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        
+
       </Head>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

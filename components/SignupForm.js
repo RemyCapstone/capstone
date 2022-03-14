@@ -2,12 +2,14 @@ import { Fragment, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import styles from './SignupForm.module.css'
+import { useRouter } from 'next/router';
+
+import styles from './Form.module.css'
 
 import {
     Grid,GridItem,
     Button,
-    Heading,Text
+    Heading, Text
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
@@ -16,9 +18,10 @@ import InputField from './InputField';
 * @returns a form to be used for signing a user up.
 */
 const SignupForm = (props) => {
-    const [show, setShow] = useState(false)
-    const [confirmShow, setConfirmShow] = useState(false);
+    const [show, setShow] = useState(false);
+    const [confirmShow, setConfirmShow] = useState(false)
 
+    const router = useRouter();
     /*  Show/hide Password */
     const handleShowPassword = () => setShow(!show)
     const handleShowConfirmPassword = () => setConfirmShow(!confirmShow)
@@ -28,7 +31,17 @@ const SignupForm = (props) => {
         event.preventDefault();
 
         props.onSignup(values);
+        router.push('/')
     }
+    const signIn = () => {
+        router.push('/login')
+    }
+
+    /* Form management via formik,
+    * Validation via Yup
+    * See here: https://formik.org/docs/tutorial#schema-validation-with-yup
+    */
+
 
     return (
         <Fragment>
@@ -49,7 +62,7 @@ const SignupForm = (props) => {
                 password: Yup.string()
                   .required('Required*'),
                 confirmPassword: Yup.string()
-                  .oneOf([Yup.ref('password'), null], 'Passwords must match*')
+                  .oneOf([Yup.ref('password'), null], 'Passwords must match*').required('Required*')
             }))}
             onSubmit={values => {
                 submitHandler(values);
@@ -125,21 +138,24 @@ const SignupForm = (props) => {
             <Button
                 isFullWidth
                 mt={4}
-                colorScheme='pink'
+                colorScheme='blue'
                 type='submit'
             >
                 Sign Up
             </Button>
 
-            <Grid container justifyContent="flex-end">
+            <Grid justifyContent="flex-end">
                 <GridItem>
                     {/* TODO: Link to Sign In Page */}
-                    <Button variant="ghost">
+                    <Button variant="ghost" onClick={signIn}>
                         Already have an account?  Sign In
                     </Button>
                 </GridItem>
             </Grid>
+
         </form>
+
+
         )}
         </Formik>
         </Fragment>
