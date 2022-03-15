@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-
+import jwt from 'jsonwebtoken';
 // api/signup
 // POST api/signup
 
@@ -23,12 +23,15 @@ async function handler(req, res) {
 
         const usersCollection = db.collection('users');
         const result = await usersCollection.insertOne(submitUserData);
+        
+        // create json web token to keep user signed in 
+        const token = jwt.sign({ email: result.email, id: result._id }, 'test', { expiresIn: '1h' })
 
         console.log('Result of inserting:', result);
 
         client.close();
 
-        res.status(201).json({message: "User inserted!"});
+        res.status(201).json({message: "User inserted!", result: result, token});
     }
 }
 
