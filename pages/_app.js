@@ -9,6 +9,7 @@ import FormLabel from '../styles/FormLabel.ts';
 import Input from '../styles/Input.ts';
 
 import Layout from '../components/Layout';
+import { SessionProvider } from 'next-auth/react';
 
 /* Customized Chakra Styles */
 const theme = extendTheme({
@@ -35,11 +36,13 @@ function MyApp({ Component, pageProps }) {
       <Head>
 
       </Head>
-      <ChakraProvider theme={theme}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ChakraProvider>
+      <SessionProvider session={pageProps.session}>
+        <ChakraProvider theme={theme}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ChakraProvider>
+      </SessionProvider>
     </>
   );
 }
