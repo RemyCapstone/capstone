@@ -36,3 +36,6 @@ yarn-error.log*
 
 # personal settings
 .vscode
+
+# environment variables
+.env.local

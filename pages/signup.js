@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-import SignupForm from "../components/SignupForm";
-
-function SignupPage() {
-    async function addUserHandler(enteredUserData) {
-        console.log(enteredUserData);
-
-        const response = await fetch('/api/signup', {
-            method: 'POST',
-            body: JSON.stringify(enteredUserData),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const data = await response.json();
-        console.log(data);
-    }
-
-    return <SignupForm onSignup={addUserHandler}></SignupForm>
-}
-
-=======
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import SignupForm from "../components/SignupForm";
@@ -57,5 +34,4 @@ function SignupPage() {
     return <SignupForm onSignup={addUserHandler} signupError={signupError}></SignupForm>
 }
 
->>>>>>> eva
 export default SignupPage;

@@ -21,11 +21,13 @@ const LoginForm = (props) => {
 
   const handleShowPassword = () => setShow(!show);
 
-  function submitHandler(values) {
+  const submitHandler = (values) => {
+    // console.log('i was submitted :D')
     // prevent page refresh
     event.preventDefault();
 
     const data = props.onLogin(values);
+    console.log(data)
     // handle submit here
     // On login, go to previous page
     // router.push('/')
@@ -33,19 +35,21 @@ const LoginForm = (props) => {
   const signIn = () => {
     router.push('/signup')
   }
+
   return (
     <Fragment>
       <Formik
         initialValues={{
-          email: '',
-          password: '',
+          userEmail: '',
+          userPassword: '',
         }}
         validationSchema={(Yup.object({
-          email: Yup.string().email('Invalid email address').required('Required*'),
-          password: Yup.string().required('Required*')
+          userEmail: Yup.string().email('Invalid email address').required('Required*'),
+          userPassword: Yup.string().required('Required*')
         }))}
         onSubmit={values => {
-          submitHandler(values);
+          const data = props.onLogin(values);
+          // submitHandler(values);
         }}
       >
       {( formik ) => (
