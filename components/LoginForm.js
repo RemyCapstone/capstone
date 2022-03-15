@@ -7,16 +7,16 @@ import { useRouter } from 'next/router';
 import styles from './Form.module.css'
 
 import {
-    Grid,
-    GridItem,
+    Grid,GridItem,
     Button,
+    Text, Heading
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
 
 const LoginForm = (props) => {
   const [show, setShow] = useState(false);
-  
+
   const router = useRouter();
 
   const handleShowPassword = () => setShow(!show);
@@ -50,8 +50,9 @@ const LoginForm = (props) => {
       >
       {( formik ) => (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
-          <InputField 
-            name='email'
+          <Heading className={styles.heading}>Login</Heading>
+          <InputField
+            name='userEmail'
             formik={formik}
             type='email'
             placeholder='Email'
@@ -61,15 +62,15 @@ const LoginForm = (props) => {
             value={formik.values.email}
           />
 
-          <InputField 
-            name='password'
+          <InputField
+            name='userPassword'
             formik={formik}
             type={show ? 'text':'password'}
             placeholder='Enter password'
             label='Password'
-            touched={formik.touched.password} 
-            errors={formik.errors.password} 
-            value={formik.values.password} 
+            touched={formik.touched.password}
+            errors={formik.errors.password}
+            value={formik.values.password}
             onClick={handleShowPassword}
             visible={show}
           />
@@ -77,17 +78,17 @@ const LoginForm = (props) => {
           <Button
             isFullWidth
             mt={4}
-            colorScheme='pink'
+            colorScheme='blue'
             type='submit'
           >
             Login
           </Button>
 
-          
+
           <Grid justifyContent="flex-end">
               <GridItem>
                   {/* TODO: Link to Sign In Page */}
-                  <Button variant="ghost" onClick={signIn}>
+                  <Button variant="ghost" className={styles.otherpage} onClick={signIn}>
                       Don't have an account? Sign Up
                   </Button>
               </GridItem>

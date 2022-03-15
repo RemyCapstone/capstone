@@ -10,4 +10,14 @@
     border-radius: 1rem;
 }
 
+.heading {
+    margin-bottom: 10px;
+}
 
+.otherpage {
+    margin-top: 5px;
+}
+
+.input:not([name="confirmPassword"], [name="userPassword"]){
+    margin-bottom: 1rem;
+}

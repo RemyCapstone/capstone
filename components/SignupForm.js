@@ -7,9 +7,9 @@ import { useRouter } from 'next/router';
 import styles from './Form.module.css'
 
 import {
-    Grid,
-    GridItem,
+    Grid,GridItem,
     Button,
+    Heading, Text
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
@@ -20,7 +20,7 @@ import InputField from './InputField';
 const SignupForm = (props) => {
     const [show, setShow] = useState(false);
     const [confirmShow, setConfirmShow] = useState(false)
-    
+
     const router = useRouter();
     /*  Show/hide Password */
     const handleShowPassword = () => setShow(!show)
@@ -29,9 +29,8 @@ const SignupForm = (props) => {
     function submitHandler(values) {
         // Prevent page refresh
         event.preventDefault();
-        
+
         props.onSignup(values);
-        router.push('/')
     }
     const signIn = () => {
         router.push('/login')
@@ -41,8 +40,6 @@ const SignupForm = (props) => {
     * Validation via Yup
     * See here: https://formik.org/docs/tutorial#schema-validation-with-yup
     */
-
-
     return (
         <Fragment>
         <Formik
@@ -70,71 +67,77 @@ const SignupForm = (props) => {
         >
         {( formik ) => (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
-            
-            <InputField 
-                name='firstName' 
+            <Heading className={styles.heading}>Sign Up</Heading>
+            {props.signupError !== "" &&
+                <Text fontSize='md' color='red'>
+                    {props.signupError}
+                </Text>
+            }
+            <InputField
+                name='firstName'
                 formik={formik}
-                type='text' 
-                placeholder='First Name' 
-                label='First Name' 
-                touched={formik.touched.firstName} 
-                errors={formik.errors.firstName} 
-                value={formik.values.firstName} 
+                type='text'
+                placeholder='First Name'
+                label='First Name'
+                touched={formik.touched.firstName}
+                errors={formik.errors.firstName}
+                value={formik.values.firstName}
             />
 
-            <InputField 
+            <InputField
                 name='lastName'
                 formik={formik}
                 type='text'
                 placeholder='Last Name'
                 label='Last Name'
-                touched={formik.touched.lastName} 
-                errors={formik.errors.lastName} 
-                value={formik.values.lastName} 
+                touched={formik.touched.lastName}
+                errors={formik.errors.lastName}
+                value={formik.values.lastName}
             />
 
-            <InputField 
+            <InputField
                 name='email'
                 formik={formik}
                 type='email'
                 placeholder='Email'
                 label='Email Address'
-                touched={formik.touched.email} 
-                errors={formik.errors.email} 
-                value={formik.values.email} 
+                touched={formik.touched.email}
+                errors={formik.errors.email}
+                value={formik.values.email}
             />
 
-            <InputField 
+            <InputField
                 name='password'
                 formik={formik}
                 type={show ? 'text':'password'}
                 placeholder='Enter password'
                 label='Password'
-                touched={formik.touched.password} 
-                errors={formik.errors.password} 
-                value={formik.values.password} 
+                touched={formik.touched.password}
+                errors={formik.errors.password}
+                value={formik.values.password}
                 onClick={handleShowPassword}
                 visible={show}
             />
 
-            <InputField 
+            <InputField
                 name='confirmPassword'
                 formik={formik}
                 type={confirmShow ? 'text':'password'}
                 placeholder='Confirm password'
                 label='Confirm Password'
-                touched={formik.touched.confirmPassword} 
-                errors={formik.errors.confirmPassword} 
-                value={formik.values.confirmPassword} 
+                touched={formik.touched.confirmPassword}
+                errors={formik.errors.confirmPassword}
+                value={formik.values.confirmPassword}
                 onClick={handleShowConfirmPassword}
                 visible={confirmShow}
             />
-                
-            <Button 
+
+            <Button
                 isFullWidth
                 mt={4}
-                colorScheme='pink'
+                colorScheme='blue'
                 type='submit'
+                className={styles.actionbutton}
             >
                 Sign Up
             </Button>
@@ -142,15 +145,12 @@ const SignupForm = (props) => {
             <Grid justifyContent="flex-end">
                 <GridItem>
                     {/* TODO: Link to Sign In Page */}
-                    <Button variant="ghost" onClick={signIn}>
+                    <Button variant="ghost" onClick={signIn} className={styles.otherpage}>
                         Already have an account?  Sign In
                     </Button>
                 </GridItem>
             </Grid>
-
         </form>
-
-        
         )}
         </Formik>
         </Fragment>
