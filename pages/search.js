@@ -11,29 +11,13 @@ import { fetchZillowApi } from "../utils/fetchZillowApi";
 
 const SearchPage = ({properties}) => {
     const [searchFilters, setSearchFilters] = useState(false);
-    const [currentPage, setCurrentPage] = useState(0);
     const router = useRouter();
 
-    //console.log(properties)
+    console.log(properties)
 
     let usableProperties = properties.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
-    let limit = usableProperties.length <= 12*(currentPage+1) ? usableProperties.length : 12*(currentPage+1);
-    const iterations = Math.ceil(usableProperties.length / 12);
-    const pages = []
 
-    for(let i=1; i<=iterations; i++){
-      pages.push(i)
-    }
-
-    //console.log('amount: ', usableProperties, 'iterations: ', iterations)
-    //console.log(pages)
-    //console.log(usableProperties)
-
-    console.log('starting index: ', 12*currentPage, 'limit:', limit)
-
-    const clickHandler = (page) => {
-      setCurrentPage(page);
-    }
+    console.log(usableProperties)
 
     return (
         <Box>
@@ -46,14 +30,7 @@ const SearchPage = ({properties}) => {
                 Properties {router.query.purpose}
             </Text>
              <Flex flexWrap='wrap'>
-                {/*usableProperties.map((property) => <Property property={property} key={property.zpid} isRental={router.query.purpose === 'for-rent'? true : false}/>)*/}
-                {           
-                  usableProperties.slice(12*currentPage, limit).map((property) => <Property property={property} key={property.zpid} isRental={router.query.purpose === 'for-rent'? true : false}/>)
-                }
-                {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
-                  {pages.map((page, index) => <Text onClick={() => clickHandler(index)} fontSize='2xl' p='4' fontWeight='bold' key={page} color={index === currentPage ? 'blue.700' : 'blue.300'} textAlign='center'>{page}</Text>)}
-                </Flex>}
-                
+                {usableProperties.map((property) => <Property property={property} key={property.zpid} isRental={router.query.purpose === 'for-rent'? true : false}/>)}
             </Flex>
             {usableProperties.length === 0 && (
               <Flex justifyContent='center' alignItems='center' flexDir='column' marginTop='5' marginBottom='5'>
@@ -79,7 +56,6 @@ export async function getServerSideProps({ query }) {
       bathsMax: '10',
       bedsMin: query.roomsMin || '1',
       bedsMax: '10',
-      sort: query.sortBy || '',
       sqftMin: query.areaMin || '1',
       sqftMax: query.areaMax || '10000'
     },
