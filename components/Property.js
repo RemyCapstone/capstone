@@ -23,6 +23,19 @@ const Property = ({property , isRental}) => {
         addressSplit = [''].concat(addressSplit);
     }
 
+    //dealing with plurality depending on # of beds and baths
+    let bedWord = 'Beds';
+
+    if(bedrooms == 1){
+        bedWord = 'Bed';
+    }
+
+    let bathWord = 'Baths';
+
+    if(bathrooms == 1) {
+        bathWord = 'Bath'
+    }
+
     //console.log(addressSplit)
 
     const [residentalName, streetName, city, stateAndZip] = addressSplit;
@@ -39,14 +52,13 @@ const Property = ({property , isRental}) => {
                 <Box w="full">
                     <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
                         <Flex alignItems='center'>
-                            <Text fontWeight='bold' fontSize='lg'>USD {price}{isRental ? '/ a month' : ''}</Text>
+                            <Text fontWeight='bold' fontSize='lg'>${price}{isRental ? '/mo' : ''}</Text>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='blue.400'>
-                        {bedrooms}
-                        <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='260px' color='blue.400'>
+                        <FaBed /> {bedrooms} {bedWord} | <FaBath /> {bathrooms} {bathWord} | <BsGridFill /> {millify(livingArea)} sqft 
                     </Flex>
-                    <Text fontSize='lg'>
+                    <Text fontSize='md' color='gray.700'>
                         {residentalName} {streetName}
                         <br/>
                         {city}, {stateAndZip}
