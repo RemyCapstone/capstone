@@ -1,6 +1,8 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
+import { Button, ButtonGroup, Stack, HStack, VStack } from '@chakra-ui/react'
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
+import { MdFavoriteBorder, MdStarRate, MdLaunch } from 'react-icons/md';
 import millify from 'millify';
 import { useRouter } from 'next/router';
 
@@ -16,8 +18,8 @@ import PriceHistoryTable from '../../components/PriceHistory/PriceHistoryTable';
 const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
     //break down property details fetched data into these parts
-    const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude, 
-        livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools, 
+    const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
+        livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools,
         streetAddress, timeOnZillow, url, yearBuilt, zipcode, homeType} = propertyDetails;
 
 
@@ -26,8 +28,18 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
         lat: latitude,
         lng: longitude,
       } // our location object from earlier
-          
+
     const {images} = propertyImages;
+
+    let bedWord = 'Beds';
+    if(bedrooms == 1){
+        bedWord = 'Bed';
+    }
+
+    let bathWord = 'Baths';
+    if(bathrooms == 1) {
+        bathWord = 'Bath'
+    }
 
     const router = useRouter();
     console.log(propertyDetails)
@@ -37,13 +49,13 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
         <Box maxWidth='1000px' margin='auto' p='4'>
           {/* if the listing has images, we can generate an image scroller*/}
           {images && <ImageScrollbar data={images}/>}
+
           <Box w='full' p='6'>
             <Flex paddingTop='2' alignItems='center'>
-              <Text fontWeight='bold' fontSize='3xl'>USD {price}{homeStatus === "FOR_RENT" ? '/ a month' : ''}</Text>
+              <Text fontWeight='bold' fontSize='3xl'>${price}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
               <Spacer/>
-              <Flex alignItems='center' p='1' justifyContent='space-between' w='330px' color='blue.400'>
-                <Text fontWeight='bold' fontSize='2xl'>{bedrooms}</Text>
-                <FaBed size={30}/> <Text fontWeight='bold' fontSize='2xl'>| {bathrooms} </Text> <FaBath size={30} /> <Text fontWeight='bold' fontSize='2xl'>| {millify(livingArea)} sqft </Text> <BsGridFill size={30}/>
+              <Flex alignItems='center' p='1' justifyContent='space-between' w='400px' color='blue.400'>
+                <FaBed size={30}/> <Text fontWeight='bold' fontSize='2xl'>{bedrooms} {bedWord} |</Text> <FaBath size={30} /> <Text fontWeight='bold' fontSize='2xl'> {bathrooms} {bathWord} </Text> <Text fontWeight='bold' fontSize='2xl'>| </Text><BsGridFill size={30}/> <Text fontWeight='bold' fontSize='2xl'> {millify(livingArea)} sqft </Text>
               </Flex>
             </Flex>
             <Box marginTop='2'>
@@ -52,8 +64,24 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <br/>
                 {address.city}, {address.state} {zipcode}
               </Text>
-            <Text lineHeight='2' color='gray.600'>{description}</Text>
+              {/*These buttons don't do anything atm, will put in functionality later*/}
+              <HStack spacing='24px'>
+                <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline'>
+                  Save
+                </Button>
+
+                <Button leftIcon={<MdStarRate />} colorScheme='blue' size='lg' variant='outline'>
+                  Review
+                </Button>
+
+                <Button leftIcon={<MdLaunch />} colorScheme='blue' size='lg' variant='outline'>
+                  Apply
+                </Button>
+              </HStack>
+              <Text lineHeight='2' color='gray.600'>{description}</Text>
             </Box>
+
+
 
             <br />
 
@@ -67,8 +95,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <PriceHistoryTable data={priceHistory}/>
               </Box>
             </Flex>
-            
-            
+
+
             <br /><br />
 
 
@@ -107,8 +135,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 )}
             </Flex>
 
-        </Box>
-                  
+          </Box>
+
         </Box>
     )
 }
@@ -123,7 +151,7 @@ export async function getServerSideProps({ params: { zpid } }) {
   //prevent throttling errors
   await new Promise(resolve => setTimeout(resolve, 500));
   const images = await fetchZillowApi(myImages);
-  
+
   return {
     props: {
       propertyDetails: data,
