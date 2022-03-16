@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 
 import styles from './Form.module.css'
 
+// import { providers, signIn, getSession, csrfToken } from "next-auth/react";
+
 import {
     Grid,GridItem,
     Button,
@@ -28,7 +30,7 @@ const LoginForm = (props) => {
 
     const data = props.onLogin(values);
     console.log(data.headers)
-    
+
     // if (data.invalid === true) {
     //   console.log('User with this email or password does not exist.');
     // }
@@ -47,6 +49,7 @@ const LoginForm = (props) => {
           userEmail: "",
           userPassword: "",
         }}
+        validateOnChange={false}
         validationSchema={Yup.object({
           userEmail: Yup.string()
             .email("Invalid email address")
@@ -121,3 +124,4 @@ const LoginForm = (props) => {
 };
 
 export default LoginForm;
+

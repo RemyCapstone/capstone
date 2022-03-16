@@ -18,9 +18,22 @@ const Property = ({property , isRental}) => {
 
 
     let addressSplit = address.split(',');
-    
+
     if(addressSplit.length < 4){
         addressSplit = [''].concat(addressSplit);
+    }
+
+    //dealing with plurality depending on # of beds and baths
+    let bedWord = 'Beds';
+
+    if(bedrooms == 1){
+        bedWord = 'Bed';
+    }
+
+    let bathWord = 'Baths';
+
+    if(bathrooms == 1) {
+        bathWord = 'Bath'
     }
 
     //console.log(addressSplit)
@@ -31,7 +44,7 @@ const Property = ({property , isRental}) => {
         //after clicking on a property we route to the specific property page
         //for new tab <a target="_blank" rel="noreferrer"></a>
         <Link href={`/property/${zpid}`} passHref>
-            
+
             <Flex flexWrap='wrap' w='420px' p='5' paddingTop='0px' justifyContent='flex-start' cursor='pointer' >
                 <Box>
                     <Image src={imgSrc ? imgSrc : DefaultImage} alt="home" width={400} height={260}/>
@@ -39,18 +52,17 @@ const Property = ({property , isRental}) => {
                 <Box w="full">
                     <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
                         <Flex alignItems='center'>
-                            <Text fontWeight='bold' fontSize='lg'>USD {price}{isRental ? '/ a month' : ''}</Text>
+                            <Text fontWeight='bold' fontSize='lg'>${price}{isRental ? '/mo' : ''}</Text>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='250px' color='blue.400'>
-                        {bedrooms}
-                        <FaBed /> | {bathrooms} <FaBath /> | {millify(livingArea)} sqft <BsGridFill />
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='260px' color='blue.400'>
+                        <FaBed /> {bedrooms} {bedWord} | <FaBath /> {bathrooms} {bathWord} | <BsGridFill /> {millify(livingArea)} sqft
                     </Flex>
-                    <Text fontSize='lg'>
+                    <Text fontSize='md' color='gray.700'>
                         {residentalName} {streetName}
                         <br/>
                         {city}, {stateAndZip}
-                        
+
                     </Text>
                 </Box>
             </Flex>
