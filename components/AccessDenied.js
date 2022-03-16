@@ -9,7 +9,7 @@ const AccessDenied = () => {
           onClick={
             (e) => {
               e.preventDefault()
-              signIn("google", { callbackUrl: '/'})
+              signIn()
             }
           }>You must be signed in to view this page.</a>
       </p>

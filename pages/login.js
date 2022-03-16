@@ -12,8 +12,8 @@ const LoginPage = () => {
       }
     });
     const data = await response.json();
-
     return data
+
   }
   
   return <LoginForm onLogin={findUserHandler} />

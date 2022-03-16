@@ -13,7 +13,7 @@ import styles from './Form.module.css'
 
 
 const InputField = ({name, formik, type, placeholder, label, touched, errors, value, onClick, visible}) => {
-
+  // console.log('testing)
   return (
     <FormControl isInvalid={touched && errors}>
       <Grid templateColumns='repeat(2, 1fr)' templateRows='1.5rem' gap={4} rowGap={2}>
