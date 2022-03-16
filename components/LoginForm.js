@@ -125,3 +125,10 @@ const LoginForm = (props) => {
 
 export default LoginForm;
 
+export async function getServerSideProps(context) {
+  return {
+    props: {
+      providers: await providers(context),
+    },
+  };
+}

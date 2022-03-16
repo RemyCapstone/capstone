@@ -29,7 +29,6 @@ const SignupForm = (props) => {
     function submitHandler(values) {
         // Prevent page refresh
         event.preventDefault();
-
         props.onSignup(values);
     }
     const signIn = () => {
@@ -138,6 +137,7 @@ const SignupForm = (props) => {
                 mt={4}
                 colorScheme='blue'
                 type='submit'
+                isLoading={props.btnLoading}
                 className={styles.actionbutton}
             >
                 Sign Up
