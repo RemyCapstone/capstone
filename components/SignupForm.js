@@ -50,6 +50,7 @@ const SignupForm = (props) => {
                 password: '',
                 confirmPassword: ''
             }}
+            validateOnChange={false}
             validationSchema={(Yup.object({
                 firstName: Yup.string()
                   .required('Required*'),
