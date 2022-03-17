@@ -1,7 +1,8 @@
 import LoginForm from "../components/LoginForm";
 
+
 const LoginPage = () => {
-  // Handle Login
+  // findUserHandler: call /api/login using entered data and validate
   const findUserHandler = async(enteredUserData) => {
 
     const response = await fetch('/api/login', {
@@ -12,10 +13,10 @@ const LoginPage = () => {
       }
     });
     const data = await response.json();
-    return data
 
+    return data
   }
-  
+
   return <LoginForm onLogin={findUserHandler} />
 }
 

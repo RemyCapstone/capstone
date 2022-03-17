@@ -2,11 +2,12 @@ import { Fragment, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
+import { signOut, signIn, useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
+
 
 import styles from './Form.module.css'
 
-// import { providers, signIn, getSession, csrfToken } from "next-auth/react";
 
 import {
     Grid,GridItem,
@@ -21,23 +22,21 @@ const LoginForm = (props) => {
   const [invalidCreds, setInvalidCreds] = useState(false);
   const [btnLoading, setBtnLoading] = useState(false);
   const router = useRouter();
+  const {data: session, status} = useSession();
 
   const handleShowPassword = () => setShow(!show);
-  const submitHandler = (values) => {
-    console.log('i was submitted :D')
-    // prevent page refresh
-    event.preventDefault();
-
-    const data = props.onLogin(values);
-    console.log(data.headers)
-
-    // if (data.invalid === true) {
-    //   console.log('User with this email or password does not exist.');
-    // }
-    // handle submit here
-    // On login, go to previous page
-    // router.push('/')
+  
+  if (status === "authenticated") {
+    console.log("AUTHENTICATED");
+    console.log(session.user);
+  } else {
+    console.log("NOT AUTHENTICATED");
   }
+
+  const googleAuth = () => {
+    signIn("google", {callbackUrl: '/'});
+  }
+
   const goToSignup = () => {
     router.push("/signup");
   };
@@ -56,21 +55,35 @@ const LoginForm = (props) => {
             .required("Required*"),
           userPassword: Yup.string().required("Required*"),
         })}
-        onSubmit={(values) => {
+        onSubmit = {async (values) => {
           setBtnLoading(true);
-          props.onLogin(values).then((data) => {
-            // console.log('DATA:', data.invalid);
-            if (data.invalid === true) {
-              setInvalidCreds(true);
-              setBtnLoading(false);
-            } else router.push('/');
+
+          const res = await signIn("credentials", {
+            email: values.userEmail,
+            password: values.userPassword,
+            redirect: false,
+            // callbackUrl: "/login",
           });
 
-          // submitHandler(values);
+          if (res.error === "CredentialsSignin") {
+            setInvalidCreds(true);
+          } else {
+            console.log('sign in went thru!')
+          }
+
+          setBtnLoading(false);
+          // if (status === "authenticated") {
+          //   console.log("AUTHENTICATED");
+          //   console.log(session.user.email);
+          // } else {
+          //   console.log("NOT AUTHENTICATED");
+          // }
         }}
       >
         {(formik) => (
           <form className={styles.form} onSubmit={formik.handleSubmit}>
+            <Heading>{session ? session.user.firstName : "not logged in"}</Heading>
+
             <Heading className={styles.heading}>Login</Heading>
             {invalidCreds ? (
               <Text fontSize="md" color="red">
@@ -101,9 +114,20 @@ const LoginForm = (props) => {
               visible={show}
             />
 
-            <Button isLoading={btnLoading} isFullWidth mt={4} colorScheme="blue" type="submit">
+            <Button
+              isLoading={btnLoading}
+              isFullWidth
+              mt={4}
+              colorScheme="blue"
+              type="submit"
+            >
               Login
             </Button>
+
+            <Button isFullWidth mt={4} colorScheme="blue" onClick={googleAuth}>
+              Login with Google
+            </Button>
+            <Button onClick={signOut}>Sign Out</Button>
 
             <Grid justifyContent="flex-end">
               <GridItem>
