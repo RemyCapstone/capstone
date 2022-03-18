@@ -1,13 +1,12 @@
 import axios from "axios";
 
-export const registeredOptions = (streetName, low, high) => {
+export const registeredOptions = (streetName, low) => {
     return {
         method: 'GET',
         url: 'https://data.cityofnewyork.us/resource/tesw-yqqr.json',
         params: {
             streetname: streetName,
-            lowhousenumber: low,
-            highhousenumber: high,
+            lowhousenumber: low
         },
         headers: {
             'X-App-Token': 'Q1h4l4Z2UoKHi4Yvz8NeEw4yL',

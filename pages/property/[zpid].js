@@ -13,9 +13,15 @@ import Map from '../../components/Map/Map';
 import WalkScore from '../../components/WalkScore';
 import PriceHistoryTable from '../../components/PriceHistory/PriceHistoryTable';
 
+import { useEffect, useState } from 'react';
+import {geoOptions, fetchGeoSearch} from '../../utils/geoSearch'
+import { registeredOptions, fetchOpenApi } from "../../utils/hpdViolations";
+import Violations from '../../components/Violations/Violations';
 
 
 const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
+
+    const [isVerified, setVerified] = useState([]);
 
     //break down property details fetched data into these parts
     const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude, 
@@ -45,6 +51,22 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     console.log(propertyDetails)
     //console.log(propertyImages)
 
+    let streetName = streetAddress.includes('#') ? streetAddress.substring(0, streetAddress.indexOf('#')) : streetAddress
+
+    useEffect(() => {
+        const options = geoOptions(streetName);
+        fetchGeoSearch(options).then((response) => {
+            const geoSearchProps = response.features[0].properties
+            return geoSearchProps
+        }).then((geoSearchProps) => {
+            //console.log(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
+            const options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
+            fetchOpenApi(options).then((response) => {
+                setVerified(response)
+            })
+        })
+    }, []);
+
     return (
         <Box maxWidth='1000px' margin='auto' p='4'>
           {/* if the listing has images, we can generate an image scroller*/}
@@ -65,7 +87,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 {address.city}, {address.state} {zipcode}
               </Text>
               {/*These buttons don't do anything atm, will put in functionality later*/}
-              <HStack spacing='24px'>
+              <HStack spacing='24px' paddingBottom='3'> 
                 <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline'>
                   Save
                 </Button>
@@ -80,8 +102,11 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
               </HStack>
               <Text lineHeight='2' color='gray.600'>{description}</Text>
             </Box>
+            
 
             
+            <br/>
+            {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid}} registered='true' /> : <Violations></Violations>}
 
             <br />
 

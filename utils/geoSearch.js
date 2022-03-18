@@ -10,10 +10,6 @@ export const geoOptions = (streetName) => {
     }
 };
 
-const registerOptions = () => {
-    
-}
-
 //get request to each listing using axios
 export const fetchGeoSearch = async(options) => {
     const { data } = await axios.request(options);
