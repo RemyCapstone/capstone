@@ -8,6 +8,8 @@ import Property from '../components/Property';
 import SearchFilters from '../components/SearchFilter';
 import noresult from '../assets/images/noresults.png'
 import { fetchZillowApi } from "../utils/fetchZillowApi";
+import {geoOptions, fetchGeoSearch} from '../utils/geoSearch'
+import { registeredOptions, fetchOpenApi } from "../utils/hpdViolations";
 
 const SearchPage = ({properties}) => {
     const [searchFilters, setSearchFilters] = useState(false);
@@ -17,6 +19,12 @@ const SearchPage = ({properties}) => {
     //console.log(properties)
 
     let usableProperties = properties.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
+    
+    let promiseArray = [];
+    for(const prop of usableProperties){
+      
+    }
+
     let limit = usableProperties.length <= 12*(currentPage+1) ? usableProperties.length : 12*(currentPage+1);
     const iterations = Math.ceil(usableProperties.length / 12);
     const pages = []
@@ -29,7 +37,7 @@ const SearchPage = ({properties}) => {
     //console.log(pages)
     //console.log(usableProperties)
 
-    console.log('starting index: ', 12*currentPage, 'limit:', limit)
+    //console.log('starting index: ', 12*currentPage, 'limit:', limit)
 
     const clickHandler = (page) => {
       setCurrentPage(page);
