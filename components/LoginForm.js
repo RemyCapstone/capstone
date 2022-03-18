@@ -17,6 +17,11 @@ import {
 
 import InputField from './InputField';
 
+const AlreadyLoggedIn = () => {
+  return (
+    <div> </div> 
+  );
+}
 const LoginForm = (props) => {
   const [show, setShow] = useState(false);
   const [invalidCreds, setInvalidCreds] = useState(false);
@@ -24,14 +29,11 @@ const LoginForm = (props) => {
   const router = useRouter();
   const {data: session, status} = useSession();
 
+  if (session) {
+    return <AlreadyLoggedIn />
+  }
   const handleShowPassword = () => setShow(!show);
   
-  if (status === "authenticated") {
-    console.log("AUTHENTICATED");
-    console.log(session);
-  } else {
-    console.log("NOT AUTHENTICATED");
-  }
 
   const googleAuth = () => {
     signIn("google", {callbackUrl: '/'});
@@ -68,22 +70,15 @@ const LoginForm = (props) => {
           if (res.error === "CredentialsSignin") {
             setInvalidCreds(true);
           } else {
-            console.log('sign in went thru!')
+            // What to do when Sign In happens?
           }
 
           setBtnLoading(false);
-          // if (status === "authenticated") {
-          //   console.log("AUTHENTICATED");
-          //   console.log(session.user.email);
-          // } else {
-          //   console.log("NOT AUTHENTICATED");
-          // }
+
         }}
       >
         {(formik) => (
           <form className={styles.form} onSubmit={formik.handleSubmit}>
-            {/* <Heading>{session ? session.user.firstName : "not logged in"}</Heading> */}
-
             <Heading className={styles.heading}>Login</Heading>
             {invalidCreds ? (
               <Text fontSize="md" color="red">

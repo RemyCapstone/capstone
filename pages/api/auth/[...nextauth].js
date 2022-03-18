@@ -18,11 +18,10 @@ const options = {
         password: "",
       },
       async authorize(credentials, req) {
-
         const res = await fetch("http://localhost:3000/api/login", {
-          method: 'POST',
+          method: "POST",
           body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" }
+          headers: { "Content-Type": "application/json" },
         });
         const user = await res.json();
         // console.log('!', user.result)
@@ -35,9 +34,9 @@ const options = {
         console.log(data);
         if (res.status === 200) {
           return data;
-        } 
-        return null
-      }
+        }
+        return null;
+      },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
@@ -53,17 +52,21 @@ const options = {
   },
   // callbacks: async functions that controls what happens after each action
   callbacks: {
-    // async jwt( { token, user }) {
-    //   return token
-    // },
-    // async session({ session, token, user }) {
-    //   // Send properties to the client
-
-    //   session.accessToken = token.accessToken;
-    //   session.user = user;
-    //   console.log(session.user)
-    //   return session;
-    // },
+    async jwt({ token, user }) {
+      if (user) {
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token._id = user._id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Send properties to the client, like an access_token from a provider.
+      session.user.firstName = token.firstName;
+      session.user.lastName = token.lastName;
+      session.user._id = token._id;
+      return session;
+    },
   },
   debug: false,
   // adapter: MongoDBAdapter(clientPromise),
