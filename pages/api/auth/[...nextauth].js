@@ -53,18 +53,17 @@ const options = {
   },
   // callbacks: async functions that controls what happens after each action
   callbacks: {
-    async jwt( { token, user }) {
+    // async jwt( { token, user }) {
+    //   return token
+    // },
+    // async session({ session, token, user }) {
+    //   // Send properties to the client
 
-      console.log('testing', token, user)
-      return token
-    },
-    async session({ session, token, user }) {
-      // Send properties to the client
-      console.log("session: ", session )
-      console.log("user: ", user)
-      session.accessToken = token.accessToken;
-      return session;
-    },
+    //   session.accessToken = token.accessToken;
+    //   session.user = user;
+    //   console.log(session.user)
+    //   return session;
+    // },
   },
   debug: false,
   // adapter: MongoDBAdapter(clientPromise),

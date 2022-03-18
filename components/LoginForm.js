@@ -28,7 +28,7 @@ const LoginForm = (props) => {
   
   if (status === "authenticated") {
     console.log("AUTHENTICATED");
-    console.log(session.user);
+    console.log(session);
   } else {
     console.log("NOT AUTHENTICATED");
   }
@@ -82,7 +82,7 @@ const LoginForm = (props) => {
       >
         {(formik) => (
           <form className={styles.form} onSubmit={formik.handleSubmit}>
-            <Heading>{session ? session.user.firstName : "not logged in"}</Heading>
+            {/* <Heading>{session ? session.user.firstName : "not logged in"}</Heading> */}
 
             <Heading className={styles.heading}>Login</Heading>
             {invalidCreds ? (
