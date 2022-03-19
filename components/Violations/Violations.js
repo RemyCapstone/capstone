@@ -74,10 +74,10 @@ const Violations = ({data, registered}) => {
             <Flex>
                 <MiniTable title='HPD Building ID' color='teal' content={data.buildingid} tooltip='Unique identifier for a building registered with the HPD'/>
                 <MiniTable title='Boro-Block-Lot (BBL)' color='blackAlpha' content={`${data.boro}-${data.block}-${data.lot}`} tooltip='An indentifier used by the Department of Finance Tax Records and Primary Land Use Tax Lot Output'/>
-                <MiniTable title='Total Residential Units' color='twitter' content={`${units.unitstotal} units`} />
+                <MiniTable title='Total Residential Units' color='twitter' content={`${units.unitstotal} units`} tooltip='Used for calculating average amount of violations per unit. Naturally, buildings with more units will have more violations so using the average is a good method.'/>
             </Flex>
             <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
-                <MiniTable title='Total Violations' color='orange' content={`${violationsData.length} total HPD violations in this building`} height='40'/>
+                <MiniTable title='Total Violations' color='orange' content={`${violationsData.length} total HPD violations in this building`} height='40' tooltip='This includes the history of every violation submitted for this building, both closed and open.'/>
                 <MiniTable title='Current Open Violations' color='red' content={`${openViolations.length} HPD violations are open. Average: ${avgVio} violations per unit.`} height='40' tooltip='Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, the citywide average of 0.8 per residential unit.'/>
                 <MiniTable title='Landlord/ Owner' color='purple' content={units.ownername} height='40' tooltip='Most common name associated with the building'/>
             </Flex>
