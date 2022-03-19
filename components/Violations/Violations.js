@@ -88,7 +88,7 @@ const Violations = ({data, registered}) => {
             </Flex>
             {viewViolations && <Flex justifyContent='right'>
                 <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3'>
-                    Show Only Open Violations
+                    Only Show Open Violations
                 </Checkbox>
             </Flex>}
             {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
