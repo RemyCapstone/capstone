@@ -1,19 +1,24 @@
-import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption} from '@chakra-ui/react';
+import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox} from '@chakra-ui/react';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
-import millify from 'millify';
+import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
 import { violationOptions, plutoOptions, fetchOpenApi } from "../../utils/hpdViolations";
 import MiniTable from './MiniTable';
+import ViolationsTable from './ViolationsTable';
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
     const [units, setUnits] = useState(0);
+    const [viewViolations, setViewViolations] = useState(false);
+    const [toggleCheckBox, setCheckBox] = useState(false);
     //console.log(data)
 
    
 
     const openViolations = violationsData.filter(vio => vio.violationstatus === 'Open')
     const avgVio = openViolations.length === 0 ? 0 : Math.round((openViolations.length / units.unitstotal) * 100) / 100
+
+    violationsData.sort((a, b) => (a.inspectiondate < b.inspectiondate) ? 1 : -1)
 
     useEffect(() => {
         if(data){
@@ -35,7 +40,9 @@ const Violations = ({data, registered}) => {
         }
     }, [data]);
 
-    
+      const handleCheck = () => { 
+        setCheckBox(!toggleCheckBox)
+    }; 
 
     //console.log(violationsData)
     //console.log(units)
@@ -56,7 +63,7 @@ const Violations = ({data, registered}) => {
     }
 
     return(
-        <Box overflowY="auto" maxHeight="500px" borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
+        <Box overflowY="auto" borderBottom='1px' borderColor='gray.300'>
             <Table variant='simple' colorScheme='facebook'>
                      <Thead position="sticky" top={0} bgColor="white">
                         <Tr>
@@ -69,11 +76,22 @@ const Violations = ({data, registered}) => {
                 <MiniTable title='Boro-Block-Lot (BBL)' color='blackAlpha' content={`${data.boro}-${data.block}-${data.lot}`} tooltip='An indentifier used by the Department of Finance Tax Records and Primary Land Use Tax Lot Output'/>
                 <MiniTable title='Total Residential Units' color='twitter' content={`${units.unitstotal} units`} />
             </Flex>
-            <Flex >
+            <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
                 <MiniTable title='Total Violations' color='orange' content={`${violationsData.length} total HPD violations in this building`} height='40'/>
                 <MiniTable title='Current Open Violations' color='red' content={`${openViolations.length} HPD violations are open. Average: ${avgVio} violations per unit.`} height='40' tooltip='Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, the citywide average of 0.8 per residential unit.'/>
                 <MiniTable title='Landlord/ Owner' color='purple' content={units.ownername} height='40' tooltip='Most common name associated with the building'/>
             </Flex>
+
+            <Flex onClick={() => setViewViolations(!viewViolations)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
+                <Text>View All Violations</Text>
+                <Icon paddingLeft='2' w='7' as={BsFilter} />
+            </Flex>
+            {viewViolations && <Flex justifyContent='right'>
+                <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3'>
+                    Show Only Open Violations
+                </Checkbox>
+            </Flex>}
+            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
         </Box>
     )
 }
