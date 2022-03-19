@@ -48,7 +48,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     }
 
     const router = useRouter();
-    console.log(propertyDetails)
+    //console.log(propertyDetails)
     //console.log(propertyImages)
 
     let streetName = streetAddress.includes('#') ? streetAddress.substring(0, streetAddress.indexOf('#')) : streetAddress
@@ -62,6 +62,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             //console.log(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
             const options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
             fetchOpenApi(options).then((response) => {
+                //console.log(response)
                 setVerified(response)
             })
         })
@@ -106,7 +107,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
             
             <br/>
-            {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid}} registered='true' /> : <Violations></Violations>}
+            {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 
             <br />
 
