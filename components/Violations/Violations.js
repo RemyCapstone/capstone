@@ -71,7 +71,7 @@ const Violations = ({data, registered}) => {
             </Flex>
             <Flex >
                 <MiniTable title='Total Violations' color='orange' content={`${violationsData.length} total HPD violations in this building`} height='40'/>
-                <MiniTable title='Current Open Violations' color='red' content={`${openViolations.length} HPD violations are open. Average: ${avgVio} violations/ unit`} height='40' tooltip='Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, naturally more units will have more complaints so average is a better number to use.'/>
+                <MiniTable title='Current Open Violations' color='red' content={`${openViolations.length} HPD violations are open. Average: ${avgVio} violations per unit.`} height='40' tooltip='Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, the citywide average of 0.8 per residential unit.'/>
                 <MiniTable title='Landlord/ Owner' color='purple' content={units.ownername} height='40' tooltip='Most common name associated with the building'/>
             </Flex>
         </Box>
