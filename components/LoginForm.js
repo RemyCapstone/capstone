@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
+import { signIn, useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 
 import styles from './Form.module.css'
@@ -9,38 +10,31 @@ import styles from './Form.module.css'
 import { providers, signIn, signOut, getSession, csrfToken, useSession} from "next-auth/react";
 
 import {
-    Grid,GridItem,
-    Button,
-    Text, Heading
+  Grid, GridItem,
+  Button, Checkbox,
+  Heading,
+  useToast,
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
-import { redirect } from 'next/dist/server/api-utils';
+import AlreadyLoggedIn from './AlreadyLoggedIn';
 
-const LoginForm = (props) => {
-  console.log(props.providers)
-  const { data: session, status } = useSession()
-  if (status === "authenticated") {
-    console.log("AUTHENTICATED")
-    console.log(session.user.email)
-  }
-  else {
-    console.log("NOT AUTHENTICATED")
-  }
+const LoginForm = () => {
 
-  const [show, setShow] = useState(false);
-  const [invalidCreds, setInvalidCreds] = useState(false);
-  const [btnLoading, setBtnLoading] = useState(false);
-  const router = useRouter();
+  /* HOOKS */
+  const [show, setShow] = useState(false); // hook for show password state
+  const toast = useToast();                // Chakra UI toast
+  const [btnLoading, setBtnLoading] = useState(false); // hook for button loading state
 
-  const handleShowPassword = () => setShow(!show);
+  const router = useRouter(); // next.js router
 
-  const googleAuth = () => {
-    signIn("google", {callbackUrl: '/'});
-  }
-  const goToSignup = () => {
-    router.push("/signup");
-  };
+  // newAuth: This hook is so that when they log in, they don't immediately see the AlreadyLoggedIn component while they're being redirected.
+  const [newAuth, setNewAuth] = useState(false);
+  const { data: session } = useSession(); // session state
+
+  // Check if a user is already logged in and they did not just logged in. If so, display error.
+  // Does not redirect them because they should not have access to page unless they manually navigate to /login
+  if (session && !newAuth) return <AlreadyLoggedIn />;
 
   return (
     <Fragment>
@@ -58,32 +52,28 @@ const LoginForm = (props) => {
         })}
         onSubmit={async (values) => {
           setBtnLoading(true);
-          // props.onLogin(values).then(async (data) => {
-          //   if (data.invalid === true) {
-          //     setInvalidCreds(true);
-          //     setBtnLoading(false);
-          //   }
-          //   else {
-          //     // router.push('/');
-          //     console.log("VALUES", values);
-          //     const res = await signIn('credentials', {
-          //       redirect: false,
-          //       email: values.userEmail,
-          //       password: values.userPassword,
-          //       // tenantKey: values.tenantKey,
-          //       callbackUrl: `${window.location.origin}`,
-          //     });
-          //     console.log(res);
-          //   }
-          // });
-          const res = await signIn('credentials', {
-            redirect: false,
+
+          const res = await signIn("credentials", {
             email: values.userEmail,
             password: values.userPassword,
-            // tenantKey: values.tenantKey,
-            callbackUrl: `${window.location.origin}`,
+            redirect: false,
           });
-          console.log(res);
+
+          if (res.error === "CredentialsSignin") {
+            // Display error message
+            toast({
+              title: "Invalid credentials",
+              description: "User with this email and/or password does not exist. ",
+              status: "error",
+              isClosable: true,
+              position: "bottom",
+              duration: 3000,
+            });
+            setBtnLoading(false);
+          } else {
+            setNewAuth(true);
+            router.push("/");
+          }
         }}
       >
         {(formik) => (
@@ -91,48 +81,63 @@ const LoginForm = (props) => {
           <form className={styles.form} onSubmit={formik.handleSubmit}>
              <Heading>{session ? (session.user.firstName +  ' ' + session.user.lastName) : 'not logged in'}</Heading>
             <Heading className={styles.heading}>Login</Heading>
-            {invalidCreds ? (
-              <Text fontSize="md" color="red">
-                User with this email and/or password does not exist.
-              </Text>
-            ) : null}
+
+            {/* Input Field for Email */}
             <InputField
               name="userEmail"
               formik={formik}
               type="email"
-              placeholder="Email"
               label="Email Address"
               touched={formik.touched.userEmail}
               errors={formik.errors.userEmail}
               value={formik.values.userEmail}
             />
 
+            {/* Input Field for Password & Checkbox for Show Password */}
             <InputField
+              id="password"
               name="userPassword"
               formik={formik}
               type={show ? "text" : "password"}
-              placeholder="Enter password"
               label="Password"
               touched={formik.touched.userPassword}
               errors={formik.errors.userPassword}
               value={formik.values.userPassword}
-              onClick={handleShowPassword}
-              visible={show}
             />
+            <Checkbox size="md" padding={1} onChange={() => setShow(!show)}>
+              Show Password
+            </Checkbox>
 
-            <Button isLoading={btnLoading} isFullWidth mt={4} colorScheme="blue" type="submit">
+            {/* Button to Login with next-auth Credentials Provider
+              - Initiates formik validation and handleSubmit function
+             */}
+            <Button
+              isLoading={btnLoading}
+              isFullWidth
+              mt={4}
+              colorScheme="blue"
+              type="submit"
+            >
               Login
             </Button>
 
-            <Button isFullWidth mt={4} colorScheme="blue" onClick={googleAuth}>
+            {/* Button to Login with next-auth Google Provider and redirects them to Home */}
+            <Button
+              isFullWidth
+              mt={4}
+              colorScheme="blue"
+              onClick={() => signIn("google", { callbackUrl: "/" })}
+            >
               Login with Google
             </Button>
+
+            {/* Button to change to Signup Form */}
             <Grid justifyContent="flex-end">
               <GridItem>
                 <Button
                   variant="ghost"
                   className={styles.otherpage}
-                  onClick={goToSignup}
+                  onClick={() => router.push("/signup")}
                 >
                   Don't have an account? Sign Up
                 </Button>

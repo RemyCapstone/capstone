@@ -8,10 +8,10 @@ function SignupPage() {
 
     let router = useRouter();
 
-    const redirectOnSuccess = () => {
-        console.log("redirect");
-        router.push('/');
-    }
+    // const redirectOnSuccess = () => {
+    //     console.log("redirect");
+    //     router.push('/');
+    // }
 
     async function addUserHandler(enteredUserData) {
         setBtnLoading(true);
@@ -25,18 +25,25 @@ function SignupPage() {
         const data = await response.json();
         if (data.status === 401)
         {
+<<<<<<< HEAD
             setSignupError(data.message);
             setBtnLoading(false);
+=======
+            return data.message;
+>>>>>>> 6113e170dd05fc4b02d4576e5132137f1acbb68a
         }
         else if (data.status === 201)
         {
-            setSignupError("");
-            redirectOnSuccess();
+            return "";
         }
+<<<<<<< HEAD
         else {
             setSignupError("There was an error signing up.");
             setBtnLoading(false);
         }
+=======
+        
+>>>>>>> 6113e170dd05fc4b02d4576e5132137f1acbb68a
     }
 
     return <SignupForm

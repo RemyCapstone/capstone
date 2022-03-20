@@ -1,90 +1,74 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from "next-auth/providers/credentials";
+import { resolveHref } from "next/dist/shared/lib/router/router";
 
+// import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+// import clientPromise from "./lib/mongodb";
+
+
+const days = 7; //change this value to change how long until an idle session expires
 
 const options = {
   providers: [
+    CredentialsProvider({
+      id: "credentials",
+      name: "credentials",
+      credentials: {
+        email: "",
+        password: "",
+      },
+      async authorize(credentials, req) {
+        const res = await fetch("http://localhost:3000/api/login", {
+          method: "POST",
+          body: JSON.stringify(credentials),
+          headers: { "Content-Type": "application/json" },
+        });
+        const user = await res.json();
+        // console.log('!', user.result)
+        if (res.status === 200) {
+          return {
+            id: user.result._id,
+            email: user.result.email,
+            firstName: user.result.firstName,
+            lastName: user.result.lastName,
+          };
+        }
+        return null;
+      },
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
-    CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
-      id: "credentials",
-      name: 'Credentials',
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
-      // credentials: {
-      //   email,
-      //   password,
-      // },
-      async authorize(credentials, req) {
-        console.log("AUTHORIZE IN CREDS", credentials, "req", req)
-        // You need to provide your own logic here that takes the credentials
-        // submitted and returns either a object representing a user or value
-        // that is false/null if the credentials are invalid.
-        // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-        // You can also use the `req` object to obtain additional parameters
-        // (i.e., the request IP address)
-        const res = await fetch('http://localhost:3000/api/login', {
-          method: 'POST',
-          body: JSON.stringify(credentials),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await res.json();
-        console.log("nextauth ", data);
-        console.log("res.status", res.status);
-        // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user
-        // }
-        // Return null if user data could not be retrieved
-        // return null
-
-        // Add logic here to look up the user from the credentials supplied
-        // const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-
-        if (res.status === 200) {
-          // Any object returned will be saved in `user` property of the JWT
-          return {
-            email: data.result.email,
-            firstName: data.result.firstName,
-            lastName: data.result.lastName
-          }
-        } else {
-          // If you return null or false then the credentials will be rejected
-          return null
-          // You can also Reject this callback with an Error or with a URL:
-          // throw new Error('error message') // Redirect to error page
-          // throw '/path/to/redirect'        // Redirect to a URL
-        }
-      }
-    })
   ],
+  pages: {
+    signIn: "../../login",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: days * 24 * 60 * 60, // n days * 24 hours * 60 minutes * 60 seconds -> n days in seconds
+  },
+  // callbacks: async functions that controls what happens after each action
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user._id;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider.
+      session.user.id = token._id;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      return session
+      return session;
     },
   },
-  pages: {
-    signIn: '../../login'
-  },
-  debug: false
+  debug: false,
+  // adapter: MongoDBAdapter(clientPromise),
 };
 
 export default (req, res) => NextAuth(req, res, options);
