@@ -8,12 +8,12 @@ const MiniTable = ({title, color, content, height, tooltip}) => {
                 <Table variant='striped' colorScheme={color} size="lg" height={height}>
                         <Thead position="sticky" top={0} bgColor="white">
                             <Tr>
-                                <Th>{title}</Th>
+                                <Th>{tooltip ? <Tooltip label={tooltip} placement='right-end' bg='gray.50' color='black'>{title}</Tooltip> : title}</Th>
                             </Tr>
                         </Thead>
                         <Tbody >
                             <Tr>
-                                <Td><Text fontWeight='medium' textAlign='center'>{tooltip ? <Tooltip label={tooltip} placement='right-end' bg='gray.50' color='black'>{content}</Tooltip> : content}</Text></Td>
+                                <Td><Text fontWeight='medium' textAlign='center'>{content}</Text></Td>
                             </Tr>
                         </Tbody>
                 </Table>
