@@ -8,6 +8,8 @@ import Property from '../components/Property';
 import SearchFilters from '../components/SearchFilter';
 import noresult from '../assets/images/noresults.png'
 import { fetchZillowApi } from "../utils/fetchZillowApi";
+import {geoOptions, fetchGeoSearch} from '../utils/geoSearch'
+import { registeredOptions, fetchOpenApi } from "../utils/hpdViolations";
 
 const SearchPage = ({properties}) => {
     const [searchFilters, setSearchFilters] = useState(false);
@@ -17,6 +19,12 @@ const SearchPage = ({properties}) => {
     //console.log(properties)
 
     let usableProperties = properties.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
+
+    let promiseArray = [];
+    for(const prop of usableProperties){
+
+    }
+
     let limit = usableProperties.length <= 12*(currentPage+1) ? usableProperties.length : 12*(currentPage+1);
     const iterations = Math.ceil(usableProperties.length / 12);
     const pages = []
@@ -29,7 +37,7 @@ const SearchPage = ({properties}) => {
     //console.log(pages)
     //console.log(usableProperties)
 
-    console.log('starting index: ', 12*currentPage, 'limit:', limit)
+    //console.log('starting index: ', 12*currentPage, 'limit:', limit)
 
     const clickHandler = (page) => {
       setCurrentPage(page);
@@ -47,13 +55,13 @@ const SearchPage = ({properties}) => {
             </Text>
              <Flex flexWrap='wrap'>
                 {/*usableProperties.map((property) => <Property property={property} key={property.zpid} isRental={router.query.purpose === 'for-rent'? true : false}/>)*/}
-                {           
+                {
                   usableProperties.slice(12*currentPage, limit).map((property) => <Property property={property} key={property.zpid} isRental={router.query.purpose === 'for-rent'? true : false}/>)
                 }
                 {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
                   {pages.map((page, index) => <Text onClick={() => clickHandler(index)} fontSize='2xl' p='4' fontWeight='bold' key={page} color={index === currentPage ? 'blue.700' : 'blue.300'} textAlign='center'>{page}</Text>)}
                 </Flex>}
-                
+
             </Flex>
             {usableProperties.length === 0 && (
               <Flex justifyContent='center' alignItems='center' flexDir='column' marginTop='5' marginBottom='5'>

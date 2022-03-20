@@ -22,24 +22,9 @@ import AlreadyLoggedIn from "./AlreadyLoggedIn";
 const SignupForm = (props) => {
   const { data: session } = useSession(); // session state
 
-<<<<<<< HEAD
-    const router = useRouter();
-    /*  Show/hide Password */
-    const handleShowPassword = () => setShow(!show)
-    const handleShowConfirmPassword = () => setConfirmShow(!confirmShow)
-    /* What happens on submit */
-    function submitHandler(values) {
-        // Prevent page refresh
-        event.preventDefault();
-        props.onSignup(values);
-    }
-    const signIn = () => {
-        router.push('/login')
-    }
-=======
   // Check if a user is already logged in and they did not just logged in. If so, display error.
   // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  
+
 
   /* HOOKS */
   const [show, setShow] = useState(false);                  // hook for showing/hiding password
@@ -47,7 +32,6 @@ const SignupForm = (props) => {
   const [btnLoading, setBtnLoading] = useState(false);      // hook for button loading state
   const toast = useToast();
   const router = useRouter();
->>>>>>> 6113e170dd05fc4b02d4576e5132137f1acbb68a
 
   if (session) return <AlreadyLoggedIn />;
   /* Form management via formik,
@@ -79,7 +63,7 @@ const SignupForm = (props) => {
         onSubmit={async (values) => {
           setBtnLoading(true);
           const res = await props.onSignup(values);
-          if (res !== "") { 
+          if (res !== "") {
             toast({
             title: "A user with this email already exists.",
             status: "error",
@@ -88,7 +72,7 @@ const SignupForm = (props) => {
             duration: 3000,
             });
           } else {
-            // Add line to reset form? 
+            // Add line to reset form?
             toast({
               title: "Account created",
               description: "Your account was successfully created. ",
@@ -169,21 +153,12 @@ const SignupForm = (props) => {
             </Checkbox>
 
             <Button
-<<<<<<< HEAD
-                isFullWidth
-                mt={4}
-                colorScheme='blue'
-                type='submit'
-                isLoading={props.btnLoading}
-                className={styles.actionbutton}
-=======
               isLoading={btnLoading}
               isFullWidth
               mt={4}
               colorScheme="blue"
               type="submit"
               className={styles.actionbutton}
->>>>>>> 6113e170dd05fc4b02d4576e5132137f1acbb68a
             >
               Sign Up
             </Button>

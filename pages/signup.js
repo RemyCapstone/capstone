@@ -4,8 +4,6 @@ import SignupForm from "../components/SignupForm";
 
 function SignupPage() {
     const [signupError, setSignupError] = useState("");
-    const [btnLoading, setBtnLoading] = useState(false);
-
     let router = useRouter();
 
     // const redirectOnSuccess = () => {
@@ -14,7 +12,6 @@ function SignupPage() {
     // }
 
     async function addUserHandler(enteredUserData) {
-        setBtnLoading(true);
         const response = await fetch('/api/signup', {
             method: 'POST',
             body: JSON.stringify(enteredUserData),
@@ -25,32 +22,15 @@ function SignupPage() {
         const data = await response.json();
         if (data.status === 401)
         {
-<<<<<<< HEAD
-            setSignupError(data.message);
-            setBtnLoading(false);
-=======
             return data.message;
->>>>>>> 6113e170dd05fc4b02d4576e5132137f1acbb68a
         }
         else if (data.status === 201)
         {
             return "";
         }
-<<<<<<< HEAD
-        else {
-            setSignupError("There was an error signing up.");
-            setBtnLoading(false);
-        }
-=======
-        
->>>>>>> 6113e170dd05fc4b02d4576e5132137f1acbb68a
     }
 
-    return <SignupForm
-                onSignup={addUserHandler}
-                signupError={signupError}
-                btnLoading={btnLoading}>
-            </SignupForm>
+    return <SignupForm onSignup={addUserHandler} signupError={signupError}></SignupForm>
 }
 
 export default SignupPage;

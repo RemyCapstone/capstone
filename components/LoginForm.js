@@ -7,8 +7,6 @@ import { useRouter } from 'next/router';
 
 import styles from './Form.module.css'
 
-import { providers, signIn, signOut, getSession, csrfToken, useSession} from "next-auth/react";
-
 import {
   Grid, GridItem,
   Button, Checkbox,
@@ -77,9 +75,7 @@ const LoginForm = () => {
         }}
       >
         {(formik) => (
-
           <form className={styles.form} onSubmit={formik.handleSubmit}>
-             <Heading>{session ? (session.user.firstName +  ' ' + session.user.lastName) : 'not logged in'}</Heading>
             <Heading className={styles.heading}>Login</Heading>
 
             {/* Input Field for Email */}
@@ -143,7 +139,6 @@ const LoginForm = () => {
                 </Button>
               </GridItem>
             </Grid>
-            <Button onClick={signOut}>Sign Out</Button>
           </form>
         )}
       </Formik>

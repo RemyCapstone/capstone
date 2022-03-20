@@ -41,15 +41,15 @@ export const filterData = [
   },
   {
     items: [
-      { name: 'Lowest Price', value: 'Price_Low_High' },
-      { name: 'Highest Price', value: 'Price_High_Low' },
-      { name: 'Newest', value: 'date-asc' },
+      { name: 'Lowest Price', value: 'Payment_Low_High' },
+      { name: 'Highest Price', value: 'Payment_High_Low' },
+      { name: 'Newest', value: 'Newest' },
       { name: 'Bedrooms', value: 'Bedrooms' },
       { name: 'Bathrooms', value: 'Bathrooms' },
       { name: 'Square Feet', value: 'Square_Feet' },
     ],
     placeholder: 'Sort',
-    queryName: 'sort',
+    queryName: 'sortBy',
   },
   {
     items: [
@@ -131,7 +131,7 @@ export const getFilterValues = (filterValues) => {
     areaMin,
     roomsMin,
     bathsMin,
-    sort,
+    sortBy,
     locationExternalIDs,
   } = filterValues;
 
@@ -165,17 +165,9 @@ export const getFilterValues = (filterValues) => {
       value: bathsMin,
     },
     {
-      name: 'sort',
-      value: sort,
-    },
-    {
-      name: 'locationExternalIDs',
-      value: locationExternalIDs,
-    },
-    {
-      name: 'categoryExternalID',
-      value: categoryExternalID,
-    },
+      name: 'sortBy',
+      value: sortBy,
+    }
   ];
 
   return values;
