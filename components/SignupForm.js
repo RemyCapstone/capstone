@@ -24,7 +24,7 @@ const SignupForm = (props) => {
 
   // Check if a user is already logged in and they did not just logged in. If so, display error.
   // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  if (session) return <AlreadyLoggedIn />;
+  
 
   /* HOOKS */
   const [show, setShow] = useState(false);                  // hook for showing/hiding password
@@ -33,6 +33,7 @@ const SignupForm = (props) => {
   const toast = useToast();
   const router = useRouter();
 
+  if (session) return <AlreadyLoggedIn />;
   /* Form management via formik,
    * Validation via Yup
    * See here: https://formik.org/docs/tutorial#schema-validation-with-yup
