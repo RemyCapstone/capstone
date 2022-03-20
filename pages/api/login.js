@@ -10,7 +10,8 @@ const loginHandler = async(req, res) => {
   const credentials = req.body;
   // console.log(credentials);
   try {
-    const existingUser = await usersCollection.findOne( {  email: credentials.email } );
+    const existingUser = await usersCollection.findOne( { email: credentials.email } );
+
     if(!existingUser) {
       client.close();
       return res
@@ -31,8 +32,7 @@ const loginHandler = async(req, res) => {
       
     // create json web token to keep user signed in 
     // const token = {};
-
-
+    console.log('existingUser:', existingUser)
     res.status(200).json({message: "User logged in.", result: existingUser})
   } catch(error) {
     res.status(400).json({message: 'User could not be logged in.', error: error});

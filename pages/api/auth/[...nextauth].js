@@ -8,6 +8,7 @@ import { resolveHref } from "next/dist/shared/lib/router/router";
 
 
 const days = 7; //change this value to change how long until an idle session expires
+
 const options = {
   providers: [
     CredentialsProvider({
@@ -25,15 +26,13 @@ const options = {
         });
         const user = await res.json();
         // console.log('!', user.result)
-        const data = {
-          _id: user.result._id,
-          email: user.result.email,
-          firstName: user.result.firstName,
-          lastName: user.result.lastName,
-        };
-        console.log(data);
         if (res.status === 200) {
-          return data;
+          return {
+            id: user.result._id,
+            email: user.result.email,
+            firstName: user.result.firstName,
+            lastName: user.result.lastName,
+          };
         }
         return null;
       },
@@ -54,17 +53,17 @@ const options = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
+        token.id = user._id;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        token._id = user._id;
       }
       return token;
     },
     async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider.
+      session.user.id = token._id;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      session.user._id = token._id;
       return session;
     },
   },

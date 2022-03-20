@@ -6,10 +6,10 @@ function SignupPage() {
     const [signupError, setSignupError] = useState("");
     let router = useRouter();
 
-    const redirectOnSuccess = () => {
-        console.log("redirect");
-        router.push('/');
-    }
+    // const redirectOnSuccess = () => {
+    //     console.log("redirect");
+    //     router.push('/');
+    // }
 
     async function addUserHandler(enteredUserData) {
         const response = await fetch('/api/signup', {
@@ -22,13 +22,13 @@ function SignupPage() {
         const data = await response.json();
         if (data.status === 401)
         {
-            setSignupError(data.message);
+            return data.message;
         }
         else if (data.status === 201)
         {
-            setSignupError("");
-            redirectOnSuccess();
+            return "";
         }
+        
     }
 
     return <SignupForm onSignup={addUserHandler} signupError={signupError}></SignupForm>
