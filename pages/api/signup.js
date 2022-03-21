@@ -38,7 +38,6 @@ async function handler(req, res) {
         }
 
         const result = await usersCollection.insertOne(submitUserData);
-        // console.log('Result of inserting:', result);
         client.close();
         res.status(201).json({
             status: 201,
