@@ -45,7 +45,7 @@ const SearchFilters = () => {
                 Search
             </Button>
          </Flex>
-         
+
         </>
     )
 }

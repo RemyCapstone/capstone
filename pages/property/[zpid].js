@@ -24,8 +24,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     const [isVerified, setVerified] = useState([]);
 
     //break down property details fetched data into these parts
-    const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude, 
-        livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools, 
+    const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
+        livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools,
         streetAddress, timeOnZillow, url, yearBuilt, zipcode, homeType} = propertyDetails;
 
 
@@ -34,7 +34,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
         lat: latitude,
         lng: longitude,
       } // our location object from earlier
-          
+
     const {images} = propertyImages;
 
     let bedWord = 'Beds';
@@ -88,24 +88,24 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 {address.city}, {address.state} {zipcode}
               </Text>
               {/*These buttons don't do anything atm, will put in functionality later*/}
-              <HStack spacing='24px' paddingBottom='3'> 
+              <HStack spacing='24px' paddingBottom='3'>
                 <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline'>
                   Save
                 </Button>
-                
+
                 <Button leftIcon={<MdStarRate />} colorScheme='blue' size='lg' variant='outline'>
                   Review
                 </Button>
-                
+
                 <Button leftIcon={<MdLaunch />} colorScheme='blue' size='lg' variant='outline'>
                   Apply
                 </Button>
               </HStack>
               <Text lineHeight='2' color='gray.600'>{description}</Text>
             </Box>
-            
 
-            
+
+
             <br/>
             {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 
@@ -121,8 +121,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <PriceHistoryTable data={priceHistory}/>
               </Box>
             </Flex>
-            
-            
+
+
             <br /><br />
 
 
@@ -162,7 +162,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             </Flex>
 
           </Box>
-                  
+
         </Box>
     )
 }
@@ -177,7 +177,7 @@ export async function getServerSideProps({ params: { zpid } }) {
   //prevent throttling errors
   await new Promise(resolve => setTimeout(resolve, 500));
   const images = await fetchZillowApi(myImages);
-  
+
   return {
     props: {
       propertyDetails: data,

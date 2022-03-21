@@ -24,7 +24,7 @@ const Property = ({property , isRental,}) => {
 
 
     let addressSplit = address.split(',');
-    
+
     if(addressSplit.length < 4){
         addressSplit = [''].concat(addressSplit);
     }
@@ -70,13 +70,13 @@ const Property = ({property , isRental,}) => {
     }, []);
 
     //console.log(isVerified)
-    
+
 
     return (
         //after clicking on a property we route to the specific property page
         //for new tab <a target="_blank" rel="noreferrer"></a>
         <Link href={`/property/${zpid}/`} passHref>
-            
+
             <Flex flexWrap='wrap' w='420px' p='5' paddingTop='0px' justifyContent='flex-start' cursor='pointer' >
                 <Box>
                     <Image src={imgSrc ? imgSrc : DefaultImage} alt="home" width={400} height={260}/>
@@ -85,21 +85,21 @@ const Property = ({property , isRental,}) => {
                     <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
                         <Flex alignItems='center'>
                             <Text fontWeight='bold' fontSize='lg'>${price}{isRental ? '/mo' : ''}</Text>
-                            
+
                         </Flex>
                         <Flex>
                             <Text fontWeight='bold' fontSize='lg' color={isVerified.length > 0 ? 'teal.400' : 'red.400'}>{isVerified.length > 0 ? 'HPD Verified' : 'Not Verified'}</Text>
                             <Box paddingLeft='2' paddingTop='0' _hover={{ color: "teal.600"}} color= {isVerified.length >0 ? 'green.500' : 'gray.500'}>{isVerified.length >0 ? <GoVerified /> : <Link href='/notregistered' passHref><Text fontSize='xs'>Learn More</Text></Link> }</Box>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='260px' color='blue.400'> 
-                        <FaBed /> {bedrooms} {bedWord} | <FaBath /> {bathrooms} {bathWord} | <BsGridFill /> {millify(livingArea)} sqft 
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='260px' color='blue.400'>
+                        <FaBed /> {bedrooms} {bedWord} | <FaBath /> {bathrooms} {bathWord} | <BsGridFill /> {millify(livingArea)} sqft
                     </Flex>
                     <Text fontSize='md' color='gray.700'>
-                        {residentalName} {streetName} 
+                        {residentalName} {streetName}
                         <br/>
                         {city}, {stateAndZip}
-                        
+
                     </Text>
                 </Box>
             </Flex>

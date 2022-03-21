@@ -33,3 +33,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# personal settings
+.vscode
+
+# environment variables
+.env.local
