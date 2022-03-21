@@ -23,18 +23,19 @@ import { signOut } from 'next-auth/react';
 const NavBar = () =>{
     /* Media query for screen responsiveness
     *
-    * Less than 700px: treat as mobile
-    * Greater than 700px: expand navbar and treat as desktop
+    * Less than 1020px: treat as mobile
+    * Greater than 1020px: expand navbar and treat as desktop
     */
     const [isDesktopWidth] = useMediaQuery('(min-width: 1020px)');
 
     // User session
     const { data : session} = useSession();
+    console.log("This is my session from Navbar:", session);
 
     return (
         <Flex p="2" borderBottom="1px" borderColor="gray.100">
           { isDesktopWidth ?
-          // Mobile styles
+          // Desktop styles
           <>
           <Box fontSize="3xl" color="blue.400" fontWeight="bold">
           <Link href="/" paddingLeft="2">
@@ -64,6 +65,7 @@ const NavBar = () =>{
                     fontWeight="bold"
                     size="sm"
                     name={`${session.user.firstName + " " + session.user.lastName}`}
+                    src={session.user.imageUrl ? session.user.imageUrl : null}
                   />
                 </Box>
                 <Menu>
@@ -111,6 +113,7 @@ const NavBar = () =>{
                   fontWeight="bold"
                   size="sm"
                   name={`${session.user.firstName + " " + session.user.lastName}`}
+                  src={session.user.imageUrl ? session.user.imageUrl : null}
                 />
               </Box>
               <Box>

@@ -25,7 +25,6 @@ const options = {
           headers: { "Content-Type": "application/json" },
         });
         const user = await res.json();
-        // console.log('!', user.result)
         if (res.status === 200) {
           return {
             id: user.result._id,
@@ -40,6 +39,16 @@ const options = {
     GoogleProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
+      profile(profile) { // Override default Google profile options
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          lastName: profile.family_name,
+          firstName: profile.given_name,
+          image: profile.picture,
+        }
+      },
     }),
   ],
   pages: {
@@ -49,21 +58,32 @@ const options = {
     strategy: "jwt",
     maxAge: days * 24 * 60 * 60, // n days * 24 hours * 60 minutes * 60 seconds -> n days in seconds
   },
-  // callbacks: async functions that controls what happens after each action
+  // Callbacks: async functions that controls what happens after each action
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user._id;
+        token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+
+        if (user.image) {
+          token.imageUrl = user.image;
+        }
       }
       return token;
     },
     async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider.
       session.user.id = token._id;
+      session.user.email = token.email;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
+
+      if (token.imageUrl)
+      {
+        session.user.imageUrl = token.imageUrl;
+      }
       return session;
     },
   },
