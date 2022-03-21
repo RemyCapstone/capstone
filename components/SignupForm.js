@@ -20,19 +20,18 @@ import AlreadyLoggedIn from "./AlreadyLoggedIn";
 * @returns a form to be used for signing a user up.
 */
 const SignupForm = (props) => {
+  
+  /* HOOKS */
   const { data: session } = useSession(); // session state
+  const [show, setShow] = useState(false); // hook for showing/hiding password
+  const [confirmShow, setConfirmShow] = useState(false); // hook for showing/hiding confirm password
+  const [btnLoading, setBtnLoading] = useState(false); // hook for button loading state
+  const toast = useToast(); // Chakra UI Toast
+  const router = useRouter(); // next.js router
+
 
   // Check if a user is already logged in and they did not just logged in. If so, display error.
   // Does not redirect them because they should not have access to page unless they manually navigate to /login
-
-
-  /* HOOKS */
-  const [show, setShow] = useState(false);                  // hook for showing/hiding password
-  const [confirmShow, setConfirmShow] = useState(false);    // hook for showing/hiding confirm password
-  const [btnLoading, setBtnLoading] = useState(false);      // hook for button loading state
-  const toast = useToast();
-  const router = useRouter();
-
   if (session) return <AlreadyLoggedIn />;
   /* Form management via formik,
    * Validation via Yup
@@ -62,27 +61,27 @@ const SignupForm = (props) => {
         })}
         onSubmit={async (values) => {
           setBtnLoading(true);
-          const res = await props.onSignup(values);
+
+          const res = await props.onSignup(values); // call api and wait for response
+
           if (res !== "") {
             toast({
-            title: "A user with this email already exists.",
-            status: "error",
-            isClosable: true,
-            position: "bottom",
-            duration: 3000,
+              title: "A user with this email already exists.",
+              status: "error",
+              isClosable: true,
+              position: "bottom",
+              duration: 3000,
             });
           } else {
-            // Add line to reset form?
+            // Else, account creation was a success. Redirect to login and initiate next-auth signin. Use Chakra UI toast to show success message.
+            router.push('/login')
             toast({
-              title: "Account created",
-              description: "Your account was successfully created. ",
+              title: "Account Creation Success",
+              description: "Please login using your new credentials.",
               status: "success",
               isClosable: true,
             });
-            // router.push({
-            //   pathname: '/login',
-            //   query: { newUser: true }
-            // })
+
           }
           setBtnLoading(false);
         }}
@@ -90,11 +89,6 @@ const SignupForm = (props) => {
         {(formik) => (
           <form className={styles.form} onSubmit={formik.handleSubmit}>
             <Heading className={styles.heading}>Sign Up</Heading>
-            {/* {props.signupError !== "" && (
-              <Text paddingBottom="1.5rem" fontSize="md" color="red">
-                {props.signupError}
-              </Text>
-            )} */}
             <InputField
               name="firstName"
               formik={formik}
@@ -135,7 +129,12 @@ const SignupForm = (props) => {
               value={formik.values.password}
             />
 
-            <Checkbox size="md" padding={1} paddingBottom="0.65rem" onChange={() => setShow(!show)}>
+            <Checkbox
+              size="md"
+              padding={1}
+              paddingBottom="0.65rem"
+              onChange={() => setShow(!show)}
+            >
               Show Password
             </Checkbox>
 
@@ -148,7 +147,11 @@ const SignupForm = (props) => {
               errors={formik.errors.confirmPassword}
               value={formik.values.confirmPassword}
             />
-            <Checkbox size="md" padding={1} onChange={() => setConfirmShow(!confirmShow)}>
+            <Checkbox
+              size="md"
+              padding={1}
+              onChange={() => setConfirmShow(!confirmShow)}
+            >
               Show Password
             </Checkbox>
 
