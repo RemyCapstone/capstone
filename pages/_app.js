@@ -5,8 +5,8 @@ import NProgress from 'nprogress';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { extendTheme } from "@chakra-ui/react";
-// import FormLabel from '../styles/FormLabel.ts';
-// import Input from '../styles/Input.ts';
+import FormLabel from '../styles/FormLabel.ts';
+import Input from '../styles/Input.ts';
 
 import Layout from '../components/Layout';
 import { SessionProvider } from 'next-auth/react';
@@ -47,8 +47,8 @@ const theme = extendTheme({
         },
       },
     },
-    // FormLabel,
-    // Input
+    FormLabel,
+    Input
   },
 });
 

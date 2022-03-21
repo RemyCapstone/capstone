@@ -30,7 +30,7 @@ const NavBar = () =>{
 
     // User session
     const { data : session} = useSession();
-    console.log("This is my session from Navbar:", session);
+    // console.log("This is my session from Navbar:", session);
 
     return (
         <Flex p="2" borderBottom="1px" borderColor="gray.100">
