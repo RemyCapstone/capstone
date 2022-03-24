@@ -78,7 +78,7 @@ export async function getServerSideProps({ query }) {
     method: 'GET',
     url: 'https://zillow-com1.p.rapidapi.com/propertyExtendedSearch',
     params: {
-      location: query.location || 'Flatiron, New York',
+      location: query.location || 'Upper East Side, New York',
       status_type: query.purpose === 'for-rent' ? 'ForRent' : 'ForSale',
       home_type: 'Apartments',
       rentMinPrice: query.minPrice || '100',
@@ -101,7 +101,7 @@ export async function getServerSideProps({ query }) {
 
   return {
     props: {
-      properties: fetchedProperties?.props,
+      properties: fetchedProperties?.props || [],
     },
   };
 }

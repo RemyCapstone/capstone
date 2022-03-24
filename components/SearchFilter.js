@@ -9,6 +9,7 @@ import { locations } from '../utils/locationData';
 const SearchFilters = () => {
     const [filters, setFilters] = useState(filterData);
     const router = useRouter();
+    const [placeholder, setplaceholder] = useState('Choose Location');
     let path = router.pathname;
     let { query } = router;
     const searchInput = useRef();
@@ -50,6 +51,7 @@ const SearchFilters = () => {
         // searchInput.current.querySelector("input").value = "";
         //console.log("ARGS:", args[0]);
         //console.log('change to brooklyn, ny')
+        setplaceholder(args[0].split(',')[0])
         searchProperties({ ['location']: args[0] }, args[0])
         //console.log(query)
         
@@ -80,7 +82,7 @@ const SearchFilters = () => {
                 filterOptions={handleFilter}
                 value=""
                 name="Location"
-                placeholder="Choose Location"
+                placeholder={query.location?.split(',')[0] || placeholder}
                 search
                 onChange={handleChange}
             />

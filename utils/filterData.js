@@ -25,7 +25,6 @@ export const filterData = [
   },
   {
     items: [
-      { name: '0', value: '0' },
       { name: '1,000', value: '1000' },
       { name: '1,500', value: '1500' },
       { name: '2,000', value: '2000' },
@@ -35,6 +34,11 @@ export const filterData = [
       { name: '4,000', value: '4000' },
       { name: '4,500', value: '4500' },
       { name: '5,000', value: '5000' },
+      { name: '6,000', value: '6000' },
+      { name: '7,000', value: '7000' },
+      { name: '8,000', value: '8000' },
+      { name: '9,000', value: '9000' },
+      { name: '10,000', value: '10000' },
     ],
     placeholder: 'Max Price(USD)',
     queryName: 'maxPrice',
