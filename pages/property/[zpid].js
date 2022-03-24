@@ -56,15 +56,17 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     useEffect(() => {
         const options = geoOptions(streetName);
         fetchGeoSearch(options).then((response) => {
-            const geoSearchProps = response.features[0].properties
+            const geoSearchProps = response.features[0]?.properties
             return geoSearchProps
         }).then((geoSearchProps) => {
             //console.log(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
-            const options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
-            fetchOpenApi(options).then((response) => {
-                //console.log(response)
-                setVerified(response)
-            })
+            if(geoSearchProps){
+              const options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
+              fetchOpenApi(options).then((response) => {
+                  //console.log(response)
+                  setVerified(response)
+              })
+            }
         })
     }, []);
 

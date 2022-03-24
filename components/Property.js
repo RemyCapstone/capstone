@@ -53,7 +53,9 @@ const Property = ({property , isRental,}) => {
     useEffect(() => {
         const options = geoOptions(streetName);
         fetchGeoSearch(options).then((response) => {
-            const geoSearchProps = response.features[0].properties
+            const geoSearchProps = response.features[0]?.properties
+            console.log(streetName)
+            console.log(geoSearchProps)
             return geoSearchProps
         }).then((geoSearchProps) => {
             //console.log(geoSearchProps)
