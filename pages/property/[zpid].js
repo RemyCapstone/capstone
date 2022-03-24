@@ -51,25 +51,48 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     //console.log(propertyDetails)
     //console.log(propertyImages)
 
-    let streetName = streetAddress.includes('#') ? streetAddress.substring(0, streetAddress.indexOf('#')) : streetAddress
+    let streetName = streetAddress
+    streetName = streetName.toUpperCase();
+    const removeTerms = ["APT", "#", "FLOOR", "PENTHOUSE", "TOWNHOUSE"];
+    for (let term of removeTerms) {
+        if (streetName.includes(term)) {
+        streetName = streetName.substring(0, streetName.indexOf(term) - 1);
+        }
+    }
+    //console.log('STREET NAME:', streetName)
+
+    const fullLoc = `${streetName} ${zipcode}`;
 
     useEffect(() => {
-        const options = geoOptions(streetName);
+        const options = geoOptions(fullLoc);
         fetchGeoSearch(options).then((response) => {
             const geoSearchProps = response.features[0]?.properties
+            //console.log(fullLoc)
+            //console.log(geoSearchProps)
             return geoSearchProps
         }).then((geoSearchProps) => {
             //console.log(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
-            if(geoSearchProps){
-              const options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
-              fetchOpenApi(options).then((response) => {
-                  //console.log(response)
-                  setVerified(response)
-              })
+             if(geoSearchProps){
+                let options = options = registeredOptions(geoSearchProps.pad_orig_stname, undefined, geoSearchProps.pad_low)
+                fetchOpenApi(options).then((response) => {
+                if(response.length === 0){
+                    options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.housenumber)
+                    fetchOpenApi(options).then((response) => {
+                        setVerified(response)
+                    })
+                }
+                else{
+                    setVerified(response)
+                }
+            })
+            }
+            else{
+                setVerified([])
             }
         })
     }, []);
 
+    
     return (
         <Box maxWidth='1000px' margin='auto' p='4'>
           {/* if the listing has images, we can generate an image scroller*/}
@@ -107,7 +130,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             </Box>
 
 
-
+          
             <br/>
             {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 

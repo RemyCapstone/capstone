@@ -45,24 +45,38 @@ const Property = ({property , isRental,}) => {
     //console.log(addressSplit)
 
     let [residentalName, streetName, city, stateAndZip] = addressSplit;
-    if(streetName.includes("#")){
-        streetName = streetName.substring(0, streetName.indexOf('#'))
+    streetName = streetName.toUpperCase();
+    const removeTerms = ["APT", "#", "FLOOR", "PENTHOUSE", "TOWNHOUSE"];
+    for (let term of removeTerms) {
+        if (streetName.includes(term)) {
+        streetName = streetName.substring(0, streetName.indexOf(term) - 1);
+        }
     }
     //console.log('STREET NAME:', streetName)
 
+    const fullLoc = `${streetName} ${stateAndZip.trim().substring(3)}`;
+
     useEffect(() => {
-        const options = geoOptions(streetName);
+        const options = geoOptions(fullLoc);
         fetchGeoSearch(options).then((response) => {
             const geoSearchProps = response.features[0]?.properties
-            console.log(streetName)
+            console.log(fullLoc)
             console.log(geoSearchProps)
             return geoSearchProps
         }).then((geoSearchProps) => {
             //console.log(geoSearchProps)
             if(geoSearchProps){
-                const options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
+                let options = options = registeredOptions(geoSearchProps.pad_orig_stname, undefined, geoSearchProps.pad_low)
                 fetchOpenApi(options).then((response) => {
-                setVerified(response)
+                if(response.length === 0){
+                    options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.housenumber)
+                    fetchOpenApi(options).then((response) => {
+                        setVerified(response)
+                    })
+                }
+                else{
+                    setVerified(response)
+                }
             })
             }
             else{

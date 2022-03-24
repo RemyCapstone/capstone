@@ -124,7 +124,6 @@ export const filterData = [
 export const getFilterValues = (filterValues) => {
   const {
     purpose,
-    categoryExternalID,
     minPrice,
     maxPrice,
     areaMax,
@@ -132,13 +131,17 @@ export const getFilterValues = (filterValues) => {
     roomsMin,
     bathsMin,
     sortBy,
-    locationExternalIDs,
+    location,
   } = filterValues;
 
   const values = [
     {
       name: 'purpose',
       value: purpose,
+    },
+    {
+      name: 'location',
+      value: location,
     },
     {
       name: 'minPrice',
