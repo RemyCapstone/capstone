@@ -43,7 +43,7 @@ img {
  * All the CSS for the location search box
  */
 .select-search {
-  width: 300px;
+  width: 250px;
   position: relative;
   font-family: "Nunito Sans", sans-serif;
   box-sizing: border-box;
