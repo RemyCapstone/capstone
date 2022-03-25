@@ -9,7 +9,7 @@ import { locations } from '../utils/locationData';
 const SearchFilters = () => {
     const [filters, setFilters] = useState(filterData);
     const router = useRouter();
-    const [placeholder, setplaceholder] = useState('Choose Location');
+    const [placeholder, setplaceholder] = useState('Choose A Location');
     let path = router.pathname;
     let { query } = router;
     const searchInput = useRef();

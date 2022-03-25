@@ -8,7 +8,7 @@ export const registeredOptions = (streetName, number, low, high) => {
             streetname: streetName,
             housenumber: number,
             lowhousenumber: low,
-            highhousenumber: high
+            highhousenumber: high,
         },
         headers: {
             'X-App-Token': 'Q1h4l4Z2UoKHi4Yvz8NeEw4yL',
