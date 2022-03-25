@@ -100,7 +100,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
           <Box w='full' p='6'>
             <Flex paddingTop='2' alignItems='center'>
-              <Text fontWeight='bold' fontSize='3xl'>${price}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
+              <Text fontWeight='bold' fontSize='3xl'>${price.toLocaleString("en-US")}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
               <Spacer/>
               <Flex alignItems='center' p='1' justifyContent='space-between' w='400px' color='blue.400'>
                 <FaBed size={30}/> <Text fontWeight='bold' fontSize='2xl'>{bedrooms} {bedWord} |</Text> <FaBath size={30} /> <Text fontWeight='bold' fontSize='2xl'> {bathrooms} {bathWord} </Text> <Text fontWeight='bold' fontSize='2xl'>| </Text><BsGridFill size={30}/> <Text fontWeight='bold' fontSize='2xl'> {millify(livingArea)} sqft </Text>

@@ -100,7 +100,7 @@ const Property = ({property , isRental,}) => {
                 <Box w="full">
                     <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
                         <Flex alignItems='center'>
-                            <Text fontWeight='bold' fontSize='lg'>${price}{isRental ? '/mo' : ''}</Text>
+                            <Text fontWeight='bold' fontSize='lg'>${price.toLocaleString("en-US")}{isRental ? '/mo' : ''}</Text>
 
                         </Flex>
                         <Flex>
