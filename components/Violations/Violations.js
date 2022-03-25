@@ -88,7 +88,7 @@ const Violations = ({data, registered}) => {
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
             {viewViolations && <Flex justifyContent='right'>
-                <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3'>
+                <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
                     Only Show Open Violations
                 </Checkbox>
             </Flex>}
