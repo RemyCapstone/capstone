@@ -60,8 +60,8 @@ const Property = ({property , isRental,}) => {
         const options = geoOptions(fullLoc);
         fetchGeoSearch(options).then((response) => {
             const geoSearchProps = response.features[0]?.properties
-            console.log(fullLoc)
-            console.log(geoSearchProps)
+            //console.log(fullLoc)
+            //console.log(geoSearchProps)
             return geoSearchProps
         }).then((geoSearchProps) => {
             //console.log(geoSearchProps)

@@ -2,14 +2,17 @@ import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox} fr
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
-import { violationOptions, plutoOptions, fetchOpenApi } from "../../utils/hpdViolations";
+import { violationOptions, plutoOptions, complaint311Options, fetchOpenApi, processComplaints } from "../../utils/hpdViolations";
 import MiniTable from './MiniTable';
 import ViolationsTable from './ViolationsTable';
+import ComplaintsTable from './CompaintsTable';
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
+    const [complaintsData, setComplaintsData] = useState([]);
     const [units, setUnits] = useState(0);
     const [viewViolations, setViewViolations] = useState(false);
+    const [viewComplaints, setViewComplaints] = useState(false);
     const [toggleCheckBox, setCheckBox] = useState(false);
     //console.log(data)
 
@@ -20,6 +23,7 @@ const Violations = ({data, registered}) => {
     if(units && units !== 0) avgVio = openViolations.length === 0 ? 0 : Math.round((openViolations.length / units.unitstotal) * 100) / 100
 
     violationsData.sort((a, b) => (a.inspectiondate < b.inspectiondate) ? 1 : -1)
+    
 
     useEffect(() => {
         if(data){
@@ -41,12 +45,43 @@ const Violations = ({data, registered}) => {
         }
     }, [data]);
 
-      const handleCheck = () => { 
+    useEffect(() => {
+        if(data){
+            const options = complaint311Options(data.buildingid);
+            fetchOpenApi(options).then((response) => {
+                return response;
+            }).then((response) => {
+                let complaintDescriptions = processComplaints(response);
+                return complaintDescriptions
+            }).then((complaintDescriptions) => {
+                setComplaintsData(complaintDescriptions);
+            })
+        }
+    }, [data]);
+
+    
+    
+    const handleCheck = () => { 
         setCheckBox(!toggleCheckBox)
     }; 
 
     //console.log(violationsData)
     //console.log(units)
+    //console.log(complaintsData)
+
+    //check if complaints have been gotten
+    let complaintsDescriptions = []
+    if(complaintsData.length > 0){
+        for(let i = 0; i < complaintsData.length; i++){
+            //[0] is the actual data
+            complaintsDescriptions.push(complaintsData[i][0])
+        }
+
+        //console.log(complaintsDescriptions)
+    }
+    complaintsDescriptions.sort((a, b) => (a.statusdate < b.statusdate) ? 1 : -1)
+
+    
 
     if(!registered){
         return (
@@ -77,13 +112,24 @@ const Violations = ({data, registered}) => {
                 <MiniTable title='Boro-Block-Lot (BBL)' color='blackAlpha' content={`${data.boro}-${data.block}-${data.lot}`} tooltip='An indentifier used by the Department of Finance Tax Records and Primary Land Use Tax Lot Output'/>
                 <MiniTable title='Total Residential Units' color='twitter' content={units && units !== 0 ? `${units.unitstotal} units` : 'Not available'} tooltip='Used for calculating average amount of violations per unit. Naturally, buildings with more units will have more violations so using the average is a good method.'/>
             </Flex>
-            <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
+            <Flex>
                 <MiniTable title='Total Violations' color='orange' content={`${violationsData.length} total HPD violations in this building`} height='40' tooltip='This includes the history of every violation submitted for this building, both closed and open.'/>
                 <MiniTable title='Current Open Violations' color='red' content={`${openViolations.length} HPD violations are open. Average: ${avgVio} violations per unit.`} height='40' tooltip='Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, the citywide average of 0.8 per residential unit.'/>
                 <MiniTable title='Landlord/ Owner' color='purple' content={units && units !== 0 ? units.ownername : 'Not available'} height='40' tooltip='Most common name associated with the building'/>
             </Flex>
+            <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
+                <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='40' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
+                <MiniTable title='Open Investigations' color='pink' content={`CHANGE ME`} height='40' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
+                <MiniTable title='Categories' color='green' content={`CHANGE ME`} height='40' tooltip='Complaints categorized into their most common types.'/>
+            </Flex>
 
-            <Flex onClick={() => setViewViolations(!viewViolations)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
+            <Flex onClick={() => setViewComplaints(!viewComplaints)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
+                <Text>View All Complaints</Text>
+                <Icon paddingLeft='2' w='7' as={BsFilter} />
+            </Flex>
+            {viewComplaints && <ComplaintsTable data={complaintsDescriptions} />}
+
+            <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={5}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
                 <Text>View All Violations</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
@@ -93,6 +139,9 @@ const Violations = ({data, registered}) => {
                 </Checkbox>
             </Flex>}
             {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
+
+
+            
         </Box>
     )
 }
