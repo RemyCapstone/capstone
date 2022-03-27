@@ -95,7 +95,7 @@ const Violations = ({data, registered}) => {
         )
     }
 
-    let complaintCategories = hashMapBuilder(filteredComplaints, 'majorcategory');
+    let complaintCategories = hashMapBuilder(complaintsDescriptions, 'majorcategory');
     let sortableCategories = [];
     for (var complaint in complaintCategories) {
         sortableCategories.push([complaint, complaintCategories[complaint]]);
