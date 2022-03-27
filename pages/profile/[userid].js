@@ -1,4 +1,4 @@
-const PropertyDetailsPage = ({}) => {
+const ProfileDetailsPage = ({}) => {
     return (
         <Box>
 
