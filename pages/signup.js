@@ -1,6 +1,4 @@
 import SignupForm from "../components/SignupForm";
-import { useSession } from "next-auth/react";
-import AlreadyLoggedIn from "../components/AlreadyLoggedIn";
 
 function SignupPage() {
     async function addUserHandler(enteredUserData) {
@@ -21,15 +19,7 @@ function SignupPage() {
         else return ""; //no error message to return
     }
 
-    const { data: session, status } = useSession(); // session state
-    if (session) return <AlreadyLoggedIn />;
-    
-    if (status === "loading") {
-        return <div></div>
-    }
-    
-    return <SignupForm onSignup={addUserHandler}></SignupForm>;
-
+    return <SignupForm onSignup={addUserHandler}></SignupForm>
 }
 
 export default SignupPage;

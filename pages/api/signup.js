@@ -15,9 +15,7 @@ async function handler(req, res) {
             firstName: newUserData.firstName,
             lastName: newUserData.lastName,
             email: newUserData.email,
-            password: passwordHash,
-            savedProps: [],
-
+            password: passwordHash
         };
         console.log(submitUserData);
 
