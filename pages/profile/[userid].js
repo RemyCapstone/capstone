@@ -1,3 +1,6 @@
+import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
+import { useRouter } from 'next/router';
+
 const ProfileDetailsPage = ({}) => {
     return (
         <Box>
