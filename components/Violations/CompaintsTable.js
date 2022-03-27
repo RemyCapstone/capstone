@@ -7,7 +7,7 @@ const ComplaintsTable = ({data}) => {
     return(
         <Box overflowY="auto" maxHeight="500px">
             <Table variant='striped' colorScheme='gray'>
-                <TableCaption position="sticky" bottom={0} bgColor="white">Complaint History</TableCaption>
+                <TableCaption position="sticky" bottom={0} bgColor="white">Complaint History ({data.length} complaints displayed)</TableCaption>
                 <Thead position="sticky" top={0} bgColor="white">
                     <Tr>
                         <Th>Date</Th>
