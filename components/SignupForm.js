@@ -2,7 +2,6 @@ import { Fragment, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import styles from './Form.module.css'
 
@@ -14,7 +13,6 @@ import {
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
-import AlreadyLoggedIn from "./AlreadyLoggedIn";
 
 /*
 * @returns a form to be used for signing a user up.
@@ -22,17 +20,12 @@ import AlreadyLoggedIn from "./AlreadyLoggedIn";
 const SignupForm = (props) => {
   
   /* HOOKS */
-  const { data: session } = useSession(); // session state
   const [show, setShow] = useState(false); // hook for showing/hiding password
   const [confirmShow, setConfirmShow] = useState(false); // hook for showing/hiding confirm password
   const [btnLoading, setBtnLoading] = useState(false); // hook for button loading state
   const toast = useToast(); // Chakra UI Toast
   const router = useRouter(); // next.js router
 
-
-  // Check if a user is already logged in and they did not just logged in. If so, display error.
-  // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  if (session) return <AlreadyLoggedIn />;
   /* Form management via formik,
    * Validation via Yup
    * See here: https://formik.org/docs/tutorial#schema-validation-with-yup

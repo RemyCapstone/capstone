@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from 'next/router';
 
 import styles from './Form.module.css'
@@ -15,7 +15,6 @@ import {
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
-import AlreadyLoggedIn from './AlreadyLoggedIn';
 
 const LoginForm = () => {
 
@@ -25,14 +24,6 @@ const LoginForm = () => {
   const [btnLoading, setBtnLoading] = useState(false); // hook for button loading state
 
   const router = useRouter(); // next.js router
-
-  // newAuth: This hook is so that when they log in, they don't immediately see the AlreadyLoggedIn component while they're being redirected.
-  const [newAuth, setNewAuth] = useState(false);
-  const { data: session } = useSession(); // session state
-
-  // Check if a user is already logged in and they did not just logged in. If so, display error.
-  // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  if (session && !newAuth) return <AlreadyLoggedIn />;
 
   return (
     <Fragment>
@@ -69,8 +60,7 @@ const LoginForm = () => {
             });
             setBtnLoading(false);
           } else {
-            setNewAuth(true);
-            router.push("/");
+            router.push("/"); //redirect to home
           }
         }}
       >
