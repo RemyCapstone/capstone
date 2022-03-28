@@ -5,6 +5,7 @@ import {BsStar, BsStarFill} from 'react-icons/bs'
 import { DUMMY_DATA } from "./DUMMY_DATA";
 import { useSession } from 'next-auth/react';
 import { useState } from "react";
+import Link from 'next/link';
 
 const SingleReview = ({data}) => {
     //amount of review stars
@@ -49,7 +50,6 @@ const Reviews = () => {
         let inputValue = e.target.value
         setTextValue(inputValue)
     }
-
     return(
         <>
         <Box overflowY="auto" maxHeight="650px">
@@ -94,7 +94,7 @@ const Reviews = () => {
             </ModalContent>
         </Modal>
 
-        <Box marginTop={4} border='1px' borderColor='gray.300' minHeight='400px'>
+        {session && <Box marginTop={4} border='1px' borderColor='gray.300' minHeight='400px'>
             <Flex padding={6}>
                 <Flex>
                     <Icon cursor='pointer' as={starFilled === 0 ? BsStar : BsStarFill} w={8} h={8} marginRight={2} color={starFilled === 0 ? 'gray.400' : 'red.400'} onClick={() => handleStarHover(1)} />
@@ -123,7 +123,45 @@ const Reviews = () => {
                     Post your review
                 </Button>
             </Box>
+        </Box>}
+
+        {!session && <Box marginTop={4} border='1px' borderColor='gray.300' minHeight='400px'>
+            <Flex padding={6}>
+                <Flex>
+                    <Icon cursor='pointer' as={starFilled === 0 ? BsStar : BsStarFill} w={8} h={8} marginRight={2} color={starFilled === 0 ? 'gray.400' : 'red.400'} onClick={() => handleStarHover(1)} />
+                    <Icon cursor='pointer' as={starFilled < 2 ? BsStar: BsStarFill} w={8} h={8} marginRight={2} color={starFilled < 2 ? 'gray.400' : 'red.400'} onClick={() => handleStarHover(2)} />
+                    <Icon cursor='pointer' as={starFilled < 3 ? BsStar: BsStarFill} w={8} h={8} marginRight={2} color={starFilled < 3 ? 'gray.400' : 'red.400'} onClick={() => handleStarHover(3)} />
+                    <Icon cursor='pointer' as={starFilled < 4 ? BsStar: BsStarFill} w={8} h={8} marginRight={2} color={starFilled < 4 ? 'gray.400' : 'red.400'} onClick={() => handleStarHover(4)} />
+                    <Icon cursor='pointer' as={starFilled < 5 ? BsStar: BsStarFill} w={8} h={8} marginRight={2} color={starFilled < 5 ? 'gray.400' : 'red.400'} onClick={() => handleStarHover(5)} />
+                    <Text fontSize='xl' paddingTop={.5} marginLeft={6}>
+                        {starFilled === 0 ? 'Select your rating': starFilled === 1 ? 'Horrible experience' : starFilled === 2 ? 'Could have been better' : starFilled === 3 ? 'It was alright' : starFilled === 4 ? 'Pretty good' : 'Great experience'}
+                    </Text>
+                </Flex>
+            </Flex>
+            <Box padding={6} paddingTop={4}>
+            <Textarea
+                isDisabled
+                padding={6}
+                value={textValue}
+                onChange={handleInputChange}
+                placeholder='In order to write a review and contribute to the community, you must make an account and log in.'
+                size='lg'
+                minHeight='200px'
+            />
+            </Box>
+
+            <Flex marginLeft={6}>
+                <Button colorScheme='teal' size='lg' isDisabled>
+                    You must login to post
+                </Button>
+                <Spacer/>
+                <Link href="/login" passHref><Button colorScheme='gray' size='lg' marginRight={6}>
+                    Login
+                </Button></Link>
+            </Flex>
         </Box>
+        }
+        
         </>
     )
 }
