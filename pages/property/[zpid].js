@@ -20,7 +20,7 @@ import Violations from '../../components/Violations/Violations';
 import Reviews from '../../components/Reviews/Reviews';
 
 
-const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop)   
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)   
 
 const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     const reviewRef = useRef(null)
