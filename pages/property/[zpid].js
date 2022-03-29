@@ -13,11 +13,12 @@ import Map from '../../components/Map/Map';
 import WalkScore from '../../components/WalkScore';
 import PriceHistoryTable from '../../components/PriceHistory/PriceHistoryTable';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import {geoOptions, fetchGeoSearch} from '../../utils/geoSearch'
 import { registeredOptions, fetchOpenApi } from "../../utils/hpdViolations";
 import Violations from '../../components/Violations/Violations';
 import { getSession } from 'next-auth/react';
+import Reviews from '../../components/Reviews/Reviews';
 
 const saveHandler = async(property, user) => {
   // console.log('Saved!', property,  '\n', user)
@@ -47,9 +48,17 @@ const fetchUserHandler = async (id) => {
   return data.user;
 }
 
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)   
 
+  
 const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) => {
     const toast = useToast();
+    const reviewRef = useRef(null)
+  
+    function handleBackClick() {
+        // Scroll to review element
+        scrollToRef(reviewRef)
+    }
     const [isVerified, setVerified] = useState([]);
 
     const user = fetchUserHandler(session ? session.user._id : null)
@@ -175,7 +184,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
                   Save
                 </Button>
 
-                <Button leftIcon={<MdStarRate />} colorScheme='blue' size='lg' variant='outline'>
+                <Button leftIcon={<MdStarRate />} colorScheme='blue' size='lg' variant='outline' onClick={handleBackClick}>
                   Review
                 </Button>
 
@@ -208,7 +217,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
             <br /><br />
 
 
-            <Flex flexWrap='wrap' textTransform='uppercase' justifyContent='space-between'>
+            <Flex flexWrap='wrap' textTransform='uppercase' justifyContent='space-between' borderBottom='1px' borderColor='gray.400'>
               <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3'>
                   <Text>Type</Text>
                   <Text fontWeight='bold'>{homeType}</Text>
@@ -242,6 +251,12 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
                   </Flex>
                 )}
             </Flex>
+
+            <br />
+
+            <div ref={reviewRef}>
+            <Reviews></Reviews>
+            </div>
 
           </Box>
 
