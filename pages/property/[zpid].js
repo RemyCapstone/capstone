@@ -43,7 +43,7 @@ const fetchUserHandler = async (id) => {
   });
 
   const data = await response.json();
-  // console.log(data.user);
+  console.log(data.user);
   return data.user;
 }
 
@@ -52,8 +52,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
     const toast = useToast();
     const [isVerified, setVerified] = useState([]);
 
-    // const user = fetchUser(session ? session.user._id : null)
-    // console.log("hmm", user);
+    const user = fetchUserHandler(session ? session.user._id : null)
+    console.log("hmm", user);
     
     //break down property details fetched data into these parts
     const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
