@@ -155,6 +155,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
         bedrooms: propertyDetails.bedrooms,
         bathrooms: propertyDetails.bathrooms,
         livingArea: propertyDetails.livingArea,
+        isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
       };
       saveHandler(propertyToSave, user);
     }
