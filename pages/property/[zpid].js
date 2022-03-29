@@ -1,5 +1,5 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
-import { Button, ButtonGroup, Stack, HStack, VStack } from '@chakra-ui/react'
+import { Button, ButtonGroup, Stack, HStack, VStack, useToast } from '@chakra-ui/react'
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
 import { MdFavoriteBorder, MdStarRate, MdLaunch } from 'react-icons/md';
@@ -17,12 +17,44 @@ import { useEffect, useState } from 'react';
 import {geoOptions, fetchGeoSearch} from '../../utils/geoSearch'
 import { registeredOptions, fetchOpenApi } from "../../utils/hpdViolations";
 import Violations from '../../components/Violations/Violations';
+import { getSession } from 'next-auth/react';
+
+const saveHandler = async(property, user) => {
+  // console.log('Saved!', property,  '\n', user)
+  const response = await fetch('/api/saveProperty', {
+    method: 'POST',
+    body: JSON.stringify([property, user]),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const data = await response.json();
+  console.log(data);
+}
+
+const fetchUserHandler = async (id) => {
+  const response = await fetch("/api/user", {
+    method: "POST",
+    body: JSON.stringify(id),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+  // console.log(data.user);
+  return data.user;
+}
 
 
-const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
-
+const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) => {
+    const toast = useToast();
     const [isVerified, setVerified] = useState([]);
 
+    // const user = fetchUser(session ? session.user._id : null)
+    // console.log("hmm", user);
+    
     //break down property details fetched data into these parts
     const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
         livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools,
@@ -91,8 +123,33 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             }
         })
     }, []);
-
     
+    // Call API to add this property to the current user's list of saved properties.
+    const saveProperty = () => {
+      if (!session) { //if there's no session, toast a message alerting them of this.
+        return toast({
+          title: "Not logged in",
+          description:
+            "You can't save a property because you're not logged in.",
+          status: "error",
+          isClosable: true,
+          position: "top",
+          duration: 2000,
+        });
+      }
+      const user = session.user;
+      const propertyToSave = {
+        zpid: propertyDetails.zpid,
+        address: `${brokerageName}, ${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
+        imgSrc: propertyDetails.imgSrc,
+        price: propertyDetails.price,
+        bedrooms: propertyDetails.bedrooms,
+        bathrooms: propertyDetails.bathrooms,
+        livingArea: propertyDetails.livingArea,
+      };
+      saveHandler(propertyToSave, user);
+    }
+
     return (
         <Box maxWidth='1000px' margin='auto' p='4'>
           {/* if the listing has images, we can generate an image scroller*/}
@@ -114,7 +171,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
               </Text>
               {/*These buttons don't do anything atm, will put in functionality later*/}
               <HStack spacing='24px' paddingBottom='3'>
-                <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline'>
+                <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
                   Save
                 </Button>
 
@@ -192,7 +249,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     )
 }
 
-export async function getServerSideProps({ params: { zpid } }) {
+export async function getServerSideProps({ params: { zpid }, req }) {
     //generate the fetch object for the property details and images
   const myProperty = propertyDetailOptions(zpid);
   const myImages = propertyImageOptions(zpid);
@@ -203,10 +260,14 @@ export async function getServerSideProps({ params: { zpid } }) {
   await new Promise(resolve => setTimeout(resolve, 500));
   const images = await fetchZillowApi(myImages);
 
+  const session = await getSession({ req });
+
   return {
     props: {
       propertyDetails: data,
-      propertyImages: images
+      propertyImages: images,
+      session: session,
+      zpid: zpid
     },
   };
 }
