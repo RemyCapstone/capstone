@@ -15,7 +15,7 @@ import { registeredOptions, fetchOpenApi } from "../utils/hpdViolations";
  * @returns a reusable component that is used to display a specific property listing "card"
  */
 const Property = ({ property, isRental }) => {
-  console.log("FROM PROPERTY PAGE: ", property )
+  // console.log("FROM PROPERTY PAGE: ", property )
   //the specific zillow property gets passed in props so we destructure the individual listing
   //this contains things such as the image, price, id of the apartment (known as zpid or zillow property id)
   // console.log("PROPERTY DETAILS:\n", property)
