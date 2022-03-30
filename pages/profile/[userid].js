@@ -11,14 +11,19 @@ import {
   List,
   ListIcon,
   ListItem,
+  Heading,
+  Flex
 } from "@chakra-ui/react";
 import { RiBuilding4Line, RiHomeHeartLine, RiStarLine } from "react-icons/ri";
 import { getSession } from 'next-auth/react';
-
+import Property from '../../components/Property';
 const ProfileDetailsPage = ({ session }) => {
   const name = session.user.firstName + " " + session.user.lastName;
   const joined = new Date(session.user.joined)
 
+  const properties = session.user.savedProps;
+
+  console.log(properties);
   return (
     <Grid
       h="85vh"
@@ -64,14 +69,18 @@ const ProfileDetailsPage = ({ session }) => {
       </GridItem>
 
       {/* PROPERTIES */}
-      <GridItem rowSpan={9} colSpan={5} bg="papayawhip"></GridItem>
-      {/* USER STATISTICS
-      <GridItem rowSpan={1} colSpan={2} bg="blue"> */}
+      <GridItem rowSpan={9} colSpan={5} padding={4}>
+        <Heading size='xl' paddingBottom={4}> Saved Properties </Heading> 
+        <Flex flexWrap="wrap">
+          {properties.map( (property) => 
+            <Property property={property} key={property.zpid} isRental={property.isRental} />
+           )}
+        </Flex>
 
-      {/* </GridItem> */}
+      </GridItem>
 
       {/* REVIEWS/REPORTS */}
-      <GridItem rowSpan={5} colSpan={2} bg="blue"></GridItem>
+      <GridItem rowSpan={5} colSpan={2} bg="white"></GridItem>
     </Grid>
   );
 }
