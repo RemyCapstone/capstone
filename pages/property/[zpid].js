@@ -4,7 +4,7 @@ import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
 import { MdFavoriteBorder, MdStarRate, MdLaunch } from 'react-icons/md';
 import millify from 'millify';
-import { useRouter } from 'next/router';
+import { useRouter, Router } from 'next/router';
 
 import { fetchZillowApi, propertyDetailOptions, propertyImageOptions} from "../../utils/fetchZillowApi";
 import ImageScrollbar from '../../components/ImageScrollBar';
@@ -30,8 +30,8 @@ const saveHandler = async(property, user) => {
     }
   });
 
-  const data = await response.json();
-  console.log(data);
+  const res = await response;
+  const data = await res.json();
 }
 
 const fetchUserHandler = async (id) => {
@@ -44,26 +44,25 @@ const fetchUserHandler = async (id) => {
   });
 
   const data = await response.json();
-  console.log(data.user);
+  console.log('FETCHUSERHANDLER', data.user);
   return data.user;
 }
 
-const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)   
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)
 
-  
 const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) => {
     const toast = useToast();
-    const reviewRef = useRef(null)
-  
+    const reviewRef = useRef(null);
+
     function handleBackClick() {
         // Scroll to review element
-        scrollToRef(reviewRef)
+        scrollToRef(reviewRef);
     }
     const [isVerified, setVerified] = useState([]);
 
-    const user = fetchUserHandler(session ? session.user._id : null)
+    const user = fetchUserHandler(session ? session.user._id : null);
     console.log("hmm", user);
-    
+
     //break down property details fetched data into these parts
     const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
         livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools,
@@ -132,7 +131,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
             }
         })
     }, []);
-    
+
     // Call API to add this property to the current user's list of saved properties.
     const saveProperty = () => {
       if (!session) { //if there's no session, toast a message alerting them of this.
@@ -197,7 +196,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
             </Box>
 
 
-          
+
             <br/>
             {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 

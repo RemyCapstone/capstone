@@ -68,12 +68,15 @@ const ProfileDetailsPage = ({ session }) => {
             <List spacing={3}>
               <ListItem>
                 <ListIcon as={RiBuilding4Line} h={5} w={5} />
-                <b>{properties.filter((p) => p.isRental).length}</b>
-                &nbsp;rental properties saved
+                {properties ? <p><b>{properties.filter((p) => p.isRental).length}</b>
+                &nbsp;rental properties saved</p> : <p>No rental properties saved</p>}
+
               </ListItem>
               <ListItem>
                 <ListIcon as={RiHomeHeartLine} h={5} w={5} />
-                <b>{properties.filter((p) => !p.isRental).length}</b>&nbsp;homes saved
+                {properties ? <p><b>{properties.filter((p) => !p.isRental).length}</b>&nbsp;homes saved</p> :
+                <p>No home properties saved</p>}
+
               </ListItem>
               <ListItem>
                 <ListIcon as={RiStarLine} h={5} w={5} /><b>{session.user.reviews ? session.user.reviews.length : 0}</b> Reviews
@@ -96,13 +99,14 @@ const ProfileDetailsPage = ({ session }) => {
         overflowY="auto"
       >
         <Flex flexWrap="wrap">
-          {properties.map((property) => (
+          {properties ? (properties.map((property) => (
             <Property
               property={property}
               key={property.zpid}
               isRental={property.isRental}
             />
-          ))}
+          ))) : <p>No properties</p>}
+
         </Flex>
       </GridItem>
 
@@ -115,7 +119,7 @@ const ProfileDetailsPage = ({ session }) => {
 
 export async function getServerSideProps({ params: { userid }, req }) {
   const session = await getSession({ req });
-  
+
   return {
     props: {
       session: session,

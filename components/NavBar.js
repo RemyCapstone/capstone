@@ -7,7 +7,7 @@ import {
   Avatar,
   Text,
   HStack,
-  IconButton, Button
+  IconButton, Button,
 } from '@chakra-ui/react';
 import {
   ChevronDownIcon
@@ -41,7 +41,7 @@ const NavBar = () =>{
     // console.log("This is my session from Navbar:", session);
 
     return (
-      <Flex p="2" borderBottom="1px" borderColor="gray.100">
+      <Flex p="2" borderBottom="1px" borderColor="gray.100" align="center">
         {isDesktopWidth ? (
           // Desktop styles
           <>
@@ -75,44 +75,42 @@ const NavBar = () =>{
             </Link>
             {/* Show User info if logged in, nothing if not. */}
             {session ? (
-              <HStack spacing="6px" marginLeft={20} paddingRight={5}>
+              <Flex align="center">
                 <Box fontSize="xl">
                   <Avatar
                     fontWeight="bold"
+                    alignSelf="end"
                     size="sm"
                     name={`${
                       session.user.firstName + " " + session.user.lastName
                     }`}
                     src={session.user.imageUrl ? session.user.imageUrl : null}
-                  />
+                />
                 </Box>
-                <Menu>
-                  <MenuButton
-                    as={Button}
-                    variant="ghost"
-                    rightIcon={<ChevronDownIcon />}
-                    _hover={{ bg: "white" }}
-                  >
-                    <Box>
-                      <Text fontSize="lg" as="b">
-                        {session.user.firstName}
-                      </Text>
-                    </Box>
-                  </MenuButton>
-                  <MenuList>
-                    <Link href={`/profile/${session.user._id}`} passHref>
-                      <MenuItem icon={<FcManager />}>Profile</MenuItem>
-                    </Link>
-                    <Link href="/settings" passHref>
-                      <MenuItem icon={<FcKey />}>Settings</MenuItem>
-                    </Link>
-                    <MenuDivider />
-                    <MenuItem onClick={() => signOut({callbackUrl: '/'})} icon={<FcExport />}>
-                      Sign Out
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
-              </HStack>
+                <Box>
+                  <Menu>
+                    <MenuButton
+                        as={Button}
+                        variant="ghost"
+                        rightIcon={<ChevronDownIcon />}
+                        _hover={{ bg: "white" }}
+                      >
+                        <Text fontSize="lg" as="b">
+                          {session.user.firstName}
+                        </Text>
+                    </MenuButton>
+                      <MenuList>
+                        <Link href={`/profile/${session.user._id}`} passHref>
+                          <MenuItem icon={<FcManager />}>Profile</MenuItem>
+                        </Link>
+                        <MenuDivider />
+                        <MenuItem onClick={() => signOut({callbackUrl: '/'})} icon={<FcExport />}>
+                          Sign Out
+                        </MenuItem>
+                      </MenuList>
+                  </Menu>
+                </Box>
+              </Flex>
             ) : null}
             {/* If there is a session, the sign out option should replace the login option. */}
             {session ? null : (
@@ -183,19 +181,19 @@ const NavBar = () =>{
                   </MenuGroup>
                   <MenuGroup title="User Options">
                     {/* If there is a session, the sign out option should replace the login option. */}
-                    {session ? (
+                    {session ? (<>
+                      <Link href={`/profile/${session.user._id}`} passHref>
+                        <MenuItem icon={<FcManager />}>Profile</MenuItem>
+                      </Link>
                       <MenuItem onClick={() => signOut({callbackUrl: '/'})} icon={<FcManager />}>
                         Sign Out
                       </MenuItem>
+                      </>
                     ) : (
                       <Link href="/login" passHref>
                         <MenuItem icon={<FcManager />}>Login</MenuItem>
                       </Link>
                     )}
-
-                    <Link href="/settings" passHref>
-                      <MenuItem icon={<FcKey />}>Settings</MenuItem>
-                    </Link>
                   </MenuGroup>
                 </MenuList>
               </Menu>
