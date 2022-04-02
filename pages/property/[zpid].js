@@ -108,11 +108,11 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
           {/*.............. Gallery and general info ..............*/}
           <Flex w='full' marginTop='2%'>
-            <Box w='45%'>
+            <Box w='55%'>
               {images && <ImageScrollbar data={images}/>}
             </Box>
             <Spacer />
-            <Box w='45%' marginTop='1%'>
+            <Box w='42%' marginTop='1%'>
               <Text fontSize='2xl' marginBottom='1' fontWeight='semibold'>
                 {brokerageName} {streetAddress}
               </Text>
