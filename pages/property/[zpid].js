@@ -238,9 +238,11 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 <Button leftIcon={<MdStarRate />} colorScheme='blue' size='md' variant='outline' onClick={handleBackClick}>
                   Review
                 </Button>
-                <Button leftIcon={<MdLaunch />} colorScheme='blue' size='md' variant='outline'>
-                  Apply
-                </Button>
+                <Link href={makeZillowUrl(zpid)} isExternal>
+                  <Button leftIcon={<MdLaunch />} colorScheme='blue' size='md' variant='outline'>
+                    Apply
+                  </Button>
+                </Link>
               </HStack>
               <Divider />
               <Flex w='75%' p='3'>
