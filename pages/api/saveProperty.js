@@ -16,13 +16,14 @@ const handler = async (req, res) => {
     const userResult = await usersCollection.findOne({
       _id: ObjectId(user._id),
     });
-    console.log('userresult', userResult);
-
 
     // if user doesnt exist, close the db connection and return status of 404
     if (!userResult) {
       client.close();
-      return res.status(404).json({ message:  "User not found."} );
+      return res.status(404).json({
+        message:  "User not found.",
+        type: "error"
+      } );
     }
 
     console.log(userResult.savedProps)
@@ -38,10 +39,12 @@ const handler = async (req, res) => {
         }
       );
       client.close();
-      return res.status(200).json({ message: "Property unsaved!" });
+      return res.status(200).json({
+        message: "Property unsaved!",
+        type: "success"
+      });
     }
     else {
-      console.log('HERERERERERERER')
       await usersCollection.updateOne(
         { _id: ObjectId(user._id) },
         {
@@ -54,13 +57,19 @@ const handler = async (req, res) => {
         }
       );
       client.close();
-      return res.status(200).json({ message: "Property saved!" });
+      return res.status(200).json({
+        message: "Property saved!",
+        type: "success"
+      });
     }
     // console.log(result ? result : null)
 
   } catch (error) {
     console.log(error);
-    return res.status(502).json({ message: "Could not connect to the database."})
+    return res.status(502).json({
+      message: "Could not connect to the database.",
+      type: "error"
+    })
   }
 
 }

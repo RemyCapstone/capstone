@@ -1,10 +1,10 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
-import { Button, ButtonGroup, Stack, HStack, VStack, useToast } from '@chakra-ui/react'
+import { Button, ButtonGroup, Stack, HStack, VStack, useToast, Link } from '@chakra-ui/react'
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
 import { MdFavoriteBorder, MdStarRate, MdLaunch } from 'react-icons/md';
 import millify from 'millify';
-import { useRouter, Router } from 'next/router';
+import { useRouter } from 'next/router';
 
 import { fetchZillowApi, propertyDetailOptions, propertyImageOptions} from "../../utils/fetchZillowApi";
 import ImageScrollbar from '../../components/ImageScrollBar';
@@ -21,7 +21,6 @@ import { getSession } from 'next-auth/react';
 import Reviews from '../../components/Reviews/Reviews';
 
 const saveHandler = async(property, user) => {
-  // console.log('Saved!', property,  '\n', user)
   const response = await fetch('/api/saveProperty', {
     method: 'POST',
     body: JSON.stringify([property, user]),
@@ -32,6 +31,7 @@ const saveHandler = async(property, user) => {
 
   const res = await response;
   const data = await res.json();
+  return [data.message, data.type];
 }
 
 const fetchUserHandler = async (id) => {
@@ -53,27 +53,26 @@ const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)
 const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) => {
     const toast = useToast();
     const reviewRef = useRef(null);
+    const router = useRouter();
+    const [isVerified, setVerified] = useState([]);
+
+    const user = fetchUserHandler(session ? session.user._id : null);
 
     function handleBackClick() {
         // Scroll to review element
         scrollToRef(reviewRef);
     }
-    const [isVerified, setVerified] = useState([]);
 
-    const user = fetchUserHandler(session ? session.user._id : null);
-    console.log("hmm", user);
-
-    //break down property details fetched data into these parts
+    // Break down property details fetched data into these parts
     const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
         livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools,
         streetAddress, timeOnZillow, url, yearBuilt, zipcode, homeType} = propertyDetails;
 
-
-      const location = {
-        address: streetAddress,
-        lat: latitude,
-        lng: longitude,
-      } // our location object from earlier
+    const location = {
+      address: streetAddress,
+      lat: latitude,
+      lng: longitude,
+    } // our location object from earlier
 
     const {images} = propertyImages;
 
@@ -87,9 +86,6 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
         bathWord = 'Bath'
     }
 
-    const router = useRouter();
-    //console.log(propertyDetails)
-    //console.log(propertyImages)
 
     let streetName = streetAddress
     streetName = streetName.toUpperCase();
@@ -99,41 +95,36 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
         streetName = streetName.substring(0, streetName.indexOf(term) - 1);
         }
     }
-    //console.log('STREET NAME:', streetName)
-
     const fullLoc = `${streetName} ${zipcode}`;
 
     useEffect(() => {
         const options = geoOptions(fullLoc);
         fetchGeoSearch(options).then((response) => {
-            const geoSearchProps = response.features[0]?.properties
-            //console.log(fullLoc)
-            //console.log(geoSearchProps)
-            return geoSearchProps
+            const geoSearchProps = response.features[0]?.properties;
+            return geoSearchProps;
         }).then((geoSearchProps) => {
-            //console.log(geoSearchProps.pad_orig_stname, geoSearchProps.pad_low)
              if(geoSearchProps){
                 let options = options = registeredOptions(geoSearchProps.pad_orig_stname, undefined, geoSearchProps.pad_low)
                 fetchOpenApi(options).then((response) => {
                 if(response.length === 0){
                     options = registeredOptions(geoSearchProps.pad_orig_stname, geoSearchProps.housenumber)
                     fetchOpenApi(options).then((response) => {
-                        setVerified(response)
+                        setVerified(response);
                     })
                 }
-                else{
-                    setVerified(response)
+                else {
+                    setVerified(response);
                 }
             })
             }
-            else{
-                setVerified([])
+            else {
+                setVerified([]);
             }
         })
     }, []);
 
     // Call API to add this property to the current user's list of saved properties.
-    const saveProperty = () => {
+    const saveProperty = async () => {
       if (!session) { //if there's no session, toast a message alerting them of this.
         return toast({
           title: "Not logged in",
@@ -146,6 +137,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
         });
       }
       const user = session.user;
+      // Save a "snapshot" of the property due to API throttling.
       const propertyToSave = {
         zpid: propertyDetails.zpid,
         address: `${brokerageName}, ${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
@@ -156,12 +148,25 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
         livingArea: propertyDetails.livingArea,
         isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
       };
-      saveHandler(propertyToSave, user);
+      const res = await saveHandler(propertyToSave, user);
+      // React to result of the save
+        toast({
+          title: res[0],
+          status: res[1],
+          isClosable: true,
+          position: "top",
+          duration: 2000,
+        });
+      }
+
+    // Make Zillow URL - not fully tested
+    const makeZillowUrl = (zpid) => {
+      return "https://www.zillow.com/homes/" + zpid + "_zpid/";
     }
 
     return (
         <Box maxWidth='1000px' margin='auto' p='4'>
-          {/* if the listing has images, we can generate an image scroller*/}
+          {/* If the listing has images, we can generate an image scroller*/}
           {images && <ImageScrollbar data={images}/>}
 
           <Box w='full' p='6'>
@@ -178,7 +183,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
                 <br/>
                 {address.city}, {address.state} {zipcode}
               </Text>
-              {/*These buttons don't do anything atm, will put in functionality later*/}
+              {/* TO-DO: Add functionality for review and apply */}
               <HStack spacing='24px' paddingBottom='3'>
                 <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
                   Save
@@ -188,9 +193,11 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
                   Review
                 </Button>
 
-                <Button leftIcon={<MdLaunch />} colorScheme='blue' size='lg' variant='outline'>
-                  Apply
-                </Button>
+                <Link href={makeZillowUrl(zpid)} isExternal>
+                  <Button leftIcon={<MdLaunch />} colorScheme='blue' size='lg' variant='outline'>
+                    Apply
+                  </Button>
+                </Link>
               </HStack>
               <Text lineHeight='2' color='gray.600'>{description}</Text>
             </Box>

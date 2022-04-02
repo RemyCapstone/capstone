@@ -17,6 +17,7 @@ import {
 import { RiBuilding4Line, RiHomeHeartLine, RiStarLine } from "react-icons/ri";
 
 import { getSession } from 'next-auth/react';
+import Link from 'next/link';
 
 import Property from '../../components/Property';
 import { server } from '../../config/index'; // dyanmic absolute routes
@@ -42,7 +43,6 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
   // const properties = session.user.savedProps;
   const properties = savedProps;
   console.log('properties', properties)
-  // console.log(properties);
 
   return (
     <Grid
@@ -53,7 +53,8 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
       margin={2}
     >
       {/* USER INFORMATION */}
-      <GridItem rowSpan={6} colSpan={2} padding={4}>
+      <GridItem rowSpan={10} colSpan={2} padding={4}>
+        {/* LEFT COLUMN */}
         <VStack
           divider={<StackDivider borderColor="gray.200" />}
           spacing={2}
@@ -81,33 +82,42 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
               }/${joined.getDate()}/${joined.getFullYear()}`}{" "}
             </Text>
           </Box>
+          {/* LEFT COLUMN - BOTTOM HALF */}
           <Box padding={3}>
-            <List spacing={3}>
+
+          </Box>
+        </VStack>
+        <List>
               <ListItem>
                 <ListIcon as={RiBuilding4Line} h={5} w={5} />
-                {properties ? <p><b>{properties.filter((p) => p.isRental).length}</b>
-                &nbsp;rental properties saved</p> : <p>No rental properties saved</p>}
-
+                {properties ?
+                  <p><b>{properties.filter((p) => p.isRental).length}</b>
+                  &nbsp;rental properties saved</p>
+                    :
+                  <p><b>O</b> rental properties saved</p>}
               </ListItem>
               <ListItem>
                 <ListIcon as={RiHomeHeartLine} h={5} w={5} />
-                {properties ? <p><b>{properties.filter((p) => !p.isRental).length}</b>&nbsp;homes saved</p> :
-                <p>No home properties saved</p>}
-
+                {properties ?
+                  <p><b>{properties.filter((p) => !p.isRental).length}</b>&nbsp;homes saved</p>
+                    :
+                  <p><b>0</b> homes saved</p>}
               </ListItem>
               <ListItem>
-                <ListIcon as={RiStarLine} h={5} w={5} /><b>{session.user.reviews ? session.user.reviews.length : 0}</b> Reviews
+                <ListIcon as={RiStarLine} h={5} w={5} />
+                <p><b>
+                    {session.user.reviews ? session.user.reviews.length : 0}
+                </b> Reviews</p>
               </ListItem>
             </List>
-          </Box>
-        </VStack>
       </GridItem>
+      {/* RIGHT COLUMN */}
       <GridItem rowSpan={1} colSpan={5}>
         <Heading size="xl" padding={4}>
           Saved Properties
         </Heading>
       </GridItem>
-      {/* PROPERTIES */}
+      {/* RIGHT COLUMN - PROPERTIES */}
       <GridItem
         rowSpan={14}
         colSpan={5}
@@ -116,29 +126,37 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
         overflowY="auto"
       >
         <Flex flexWrap="wrap">
-          {properties ? (properties.map((property) => (
+          {(properties && properties.length > 0) ? (properties.map((property) => (
+          // User has saved properties, display them.
             <Property
               property={property}
               key={property.zpid}
               isRental={property.isRental}
             />
-          ))) : <p>No properties</p>}
-
+          ))) :
+          // User has no saved properties, say as much.
+          <p>
+            You have no saved properties. Search for your next happy home
+            <Link href='/search?purpose=for-rent'>
+              <Button colorScheme='blue' variant='link' paddingLeft='1'>
+                here.
+              </Button>
+            </Link>
+          </p>
+          }
         </Flex>
       </GridItem>
 
-      {/* REVIEWS/REPORTS */}
+      {/* TO-DO: USER'S REVIEWS */}
       <GridItem rowSpan={7} colSpan={2} bg="white"></GridItem>
+
+      {/* TO-DO: USER'S REPORTS */}
     </Grid>
   );
 }
 
-
 export async function getServerSideProps({ params: { userid }, req }) {
   const session = await getSession({ req });
-  console.log('userid', userid);
-  // const user = await fetchUserHandler(userid);
-  // console.log('getserversideprops', user)
   const res = await fetchUserSavedPropertiesHandler(userid);
   const data = await res.json();
   const savedProps = await data.savedProperties;
