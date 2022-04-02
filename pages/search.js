@@ -78,16 +78,16 @@ export async function getServerSideProps({ query }) {
     method: 'GET',
     url: 'https://zillow-com1.p.rapidapi.com/propertyExtendedSearch',
     params: {
-      location: 'Queens, New York, NY',
+      location: query.location || 'Upper East Side, New York',
       status_type: query.purpose === 'for-rent' ? 'ForRent' : 'ForSale',
       home_type: 'Apartments',
       rentMinPrice: query.minPrice || '100',
-      rentMaxPrice: query.maxPrice || '5000',
+      rentMaxPrice: query.maxPrice || '10000',
       bathsMin: query.bathsMin || '1',
       bathsMax: '10',
       bedsMin: query.roomsMin || '1',
       bedsMax: '10',
-      sort: query.sortBy || '',
+      sort: query.sortBy || 'Newest',
       sqftMin: query.areaMin || '1',
       sqftMax: query.areaMax || '10000'
     },
@@ -101,7 +101,7 @@ export async function getServerSideProps({ query }) {
 
   return {
     props: {
-      properties: fetchedProperties?.props,
+      properties: fetchedProperties?.props || [],
     },
   };
 }

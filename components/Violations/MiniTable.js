@@ -5,15 +5,19 @@ import { GoQuestion } from 'react-icons/go';
 const MiniTable = ({title, color, content, height, tooltip}) => {
     return(
         <Box w='33%'>
-                <Table variant='striped' colorScheme={color} size="lg" height={height}>
+                <Table variant='striped' colorScheme={color} size="lg">
                         <Thead position="sticky" top={0} bgColor="white">
                             <Tr>
                                 <Th>{tooltip ? <Tooltip label={tooltip} placement='right-end' bg='gray.50' color='black'>{title}</Tooltip> : title}</Th>
                             </Tr>
                         </Thead>
-                        <Tbody >
+                        <Tbody>
                             <Tr>
-                                <Td><Text fontWeight='medium' textAlign='center'>{content}</Text></Td>
+                                <Td>
+                                    <Box overflowY="auto" height={height}>
+                                        <Text fontWeight='medium' textAlign='center' fontSize='sm'>{content}</Text>
+                                    </Box>
+                                </Td>
                             </Tr>
                         </Tbody>
                 </Table>

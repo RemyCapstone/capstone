@@ -27,10 +27,12 @@ const options = {
         const user = await res.json();
         if (res.status === 200) {
           return {
-            id: user.result._id,
+            _id: user.result._id,
             email: user.result.email,
             firstName: user.result.firstName,
             lastName: user.result.lastName,
+            joined: user.result.joined,
+            savedProps: user.result.savedProps,
           };
         }
         return null;
@@ -41,7 +43,7 @@ const options = {
       clientSecret: process.env.GOOGLE_SECRET,
       profile(profile) { // Override default Google profile options
         return {
-          id: profile.sub,
+          _id: profile.sub,
           name: profile.name,
           email: profile.email,
           lastName: profile.family_name,
@@ -62,10 +64,12 @@ const options = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user._id;
+        token._id = user._id;
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
+        token.joined = user.joined;
+        token.savedProps = user.savedProps;
 
         if (user.image) {
           token.imageUrl = user.image;
@@ -75,11 +79,12 @@ const options = {
     },
     async session({ session, token }) {
       // Send properties to the client, like an access_token from a provider.
-      session.user.id = token._id;
+      session.user._id = token._id;
       session.user.email = token.email;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-
+      session.user.joined = token.joined;
+      session.user.savedProps = token.savedProps;
       if (token.imageUrl)
       {
         session.user.imageUrl = token.imageUrl;

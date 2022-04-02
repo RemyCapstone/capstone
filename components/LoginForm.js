@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
-import AlreadyLoggedIn from './AlreadyLoggedIn';
+import AuthError from './AuthError';
 
 const LoginForm = () => {
 
@@ -32,7 +32,7 @@ const LoginForm = () => {
 
   // Check if a user is already logged in and they did not just logged in. If so, display error.
   // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  if (session && !newAuth) return <AlreadyLoggedIn />;
+  if (session && !newAuth) return <AuthError title="Already Logged In!" desc="You cannot access this page because you are already logged in." />;
 
   return (
     <Fragment>

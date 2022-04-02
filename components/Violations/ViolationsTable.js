@@ -7,7 +7,7 @@ const ViolationsTable = ({data}) => {
     return(
         <Box overflowY="auto" maxHeight="500px">
             <Table variant='striped' colorScheme='gray'>
-                <TableCaption position="sticky" bottom={0} bgColor="white">Violation History</TableCaption>
+                <TableCaption position="sticky" bottom={0} bgColor="white">Violation History ({data.length} violations displayed)</TableCaption>
                 <Thead position="sticky" top={0} bgColor="white">
                     <Tr>
                         <Th>Date</Th>
