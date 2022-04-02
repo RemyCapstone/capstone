@@ -1,4 +1,4 @@
-import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center} from '@chakra-ui/react';
+import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip} from '@chakra-ui/react';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { MdReportProblem } from 'react-icons/md';
 
@@ -32,10 +32,15 @@ const ViolationsOpen = ({data, avgViolations}) => {
                     </Center>
                 </Box>
                 <Center>
-                    <Box>
+                    <Box width='330px' paddingLeft={5}>
                         <Text fontWeight='semibold'>{`This listing has ${data.length} open violations.`}</Text>
                         <Text>{`Average: ${avgViolations} violations per unit`}</Text>
                     </Box>
+                    <Flex>
+                        <Tooltip label={'Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, the citywide average of 0.8 per residential unit.'} placement='right-end' bg='gray.50' color='black'>
+                            <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.5em', paddingLeft: '.5em', borderRadius: '50%'}}>{'?'}</span>
+                        </Tooltip>
+                    </Flex>
                 </Center>
             </Flex>
         </Box>

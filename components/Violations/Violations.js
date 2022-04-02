@@ -151,17 +151,37 @@ const Violations = ({data, registered}) => {
                 <Box w='45%'>
                     <Flex>
                         <Box w='50%' textAlign='left'>
-                            <Text textTransform='uppercase' fontWeight='semibold'> HPD Building ID <Tooltip label={'Unique identifier for a building registered with the HPD'} placement='right-end' bg='gray.50' color='black'><span className='circle'>?</span></Tooltip></Text>
+                            <Text textTransform='uppercase' fontWeight='semibold'> 
+                                {`HPD Building ID `}
+                                <Tooltip label={'Unique identifier for a building registered with the HPD'} placement='right-end' bg='gray.50' color='black'>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                </Tooltip>
+                            </Text>
                             <Text>{data.buildingid}</Text>
                             <br/>
-                            <Text textTransform='uppercase' fontWeight='semibold'>Total Residential Units</Text>
+                            <Text textTransform='uppercase' fontWeight='semibold'>
+                                {` Total Units `}
+                                <Tooltip label={'Used for calculating average amount of violations per unit. Naturally, buildings with more units will have more violations so using the average is a good method.'} placement='right-end' bg='gray.50' color='black'>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                </Tooltip>
+                            </Text>
                             <Text>{units && units !== 0 ? `${units.unitstotal} units` : 'Not available'}</Text> 
                         </Box>
                         <Box w='50%' textAlign='left' paddingLeft='20px'>
-                            <Text textTransform='uppercase' fontWeight='semibold'>Boro-Block-Lot (BBL)</Text>
+                            <Text textTransform='uppercase' fontWeight='semibold'>
+                                {` Boro-Block-Lot `}
+                                <Tooltip label={'An indentifier used by the Department of Finance Tax Records and Primary Land Use Tax Lot Output.'} placement='right-end' bg='gray.50' color='black'>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                </Tooltip>
+                            </Text>
                             <Text>{`${data.boro}-${data.block}-${data.lot}`}</Text>
                             <br/>
-                            <Text textTransform='uppercase' fontWeight='semibold'>Landlord/Owner</Text>
+                            <Text textTransform='uppercase' fontWeight='semibold'>
+                                {` Landlord/Owner `}
+                                <Tooltip label={'Most common name associated with the building.'} placement='right-end' bg='gray.50' color='black'>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                </Tooltip>
+                            </Text>
                             <Text>{units && units !== 0 ? units.ownername : 'Not available'}</Text>
                         
                         </Box>
