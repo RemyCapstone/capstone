@@ -15,16 +15,33 @@ import {
   Flex
 } from "@chakra-ui/react";
 import { RiBuilding4Line, RiHomeHeartLine, RiStarLine } from "react-icons/ri";
-import { getSession } from 'next-auth/react';
-import Property from '../../components/Property';
 
-const ProfileDetailsPage = ({ session }) => {
+import { getSession } from 'next-auth/react';
+
+import Property from '../../components/Property';
+import { server } from '../../config/index'; // dyanmic absolute routes
+
+// Fetch data
+const fetchUserSavedPropertiesHandler = async (id) => {
+  const response = await fetch(`${server}/api/user/getSaves`, {
+    method: "POST",
+    body: JSON.stringify(id),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response;
+}
+
+// Functional component
+const ProfileDetailsPage = ({ session, savedProps}) => {
   const name = session.user.firstName + " " + session.user.lastName;
   const joined = new Date(session.user.joined)
 
-  const properties = session.user.savedProps;
-
-
+  // const properties = session.user.savedProps;
+  const properties = savedProps;
+  console.log('properties', properties)
   // console.log(properties);
 
   return (
@@ -119,10 +136,17 @@ const ProfileDetailsPage = ({ session }) => {
 
 export async function getServerSideProps({ params: { userid }, req }) {
   const session = await getSession({ req });
+  console.log('userid', userid);
+  // const user = await fetchUserHandler(userid);
+  // console.log('getserversideprops', user)
+  const res = await fetchUserSavedPropertiesHandler(userid);
+  const data = await res.json();
+  const savedProps = await data.savedProperties;
 
   return {
     props: {
       session: session,
+      savedProps: savedProps
     },
   };
 }
