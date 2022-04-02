@@ -32,7 +32,7 @@ const ViolationsOpen = ({data, avgViolations}) => {
                     </Center>
                 </Box>
                 <Center>
-                    <Box width='330px' paddingLeft={5}>
+                    <Box width='290px' paddingLeft={3}>
                         <Text fontWeight='semibold'>{`This listing has ${data.length} open violations.`}</Text>
                         <Text>{`Average: ${avgViolations} violations per unit`}</Text>
                     </Box>

@@ -136,7 +136,7 @@ const Violations = ({data, registered}) => {
             </Flex>
             <br/>
             <Flex>
-                <Box w='45%'>
+                <Box w='40%'>
                     <Flex>
                         {/*Passing over openViolations into ViolationsOpen component*/}
                         <ViolationsOpen data={openViolations} avgViolations={avgVio}></ViolationsOpen>
@@ -148,7 +148,7 @@ const Violations = ({data, registered}) => {
                     </Flex>   
                 </Box>
                 <Spacer />
-                <Box w='45%'>
+                <Box w='50%'>
                     <Flex>
                         <Box w='50%' textAlign='left'>
                             <Text textTransform='uppercase' fontWeight='semibold'> 
@@ -158,6 +158,7 @@ const Violations = ({data, registered}) => {
                                 </Tooltip>
                             </Text>
                             <Text>{data.buildingid}</Text>
+                            <Box paddingTop={3} borderBottom='1px' borderColor='gray.400'></Box>
                             <br/>
                             <Text textTransform='uppercase' fontWeight='semibold'>
                                 {` Total Units `}
@@ -175,6 +176,7 @@ const Violations = ({data, registered}) => {
                                 </Tooltip>
                             </Text>
                             <Text>{`${data.boro}-${data.block}-${data.lot}`}</Text>
+                            <Box paddingTop={3} borderBottom='1px' borderColor='gray.400'></Box>
                             <br/>
                             <Text textTransform='uppercase' fontWeight='semibold'>
                                 {` Landlord/Owner `}

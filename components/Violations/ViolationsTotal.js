@@ -14,7 +14,7 @@ const ViolationsTotal = ({data}) => {
                     </Center>
                 </Box>    
                 <Center>
-                    <Box width='330px' paddingLeft={5}>
+                    <Box width='290px' paddingLeft={3}>
                         <Text fontWeight='semibold'>{`This building has ${data.length} total violations.`}</Text>
                     </Box>
                     <Flex>
