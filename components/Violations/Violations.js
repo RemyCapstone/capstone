@@ -1,4 +1,4 @@
-import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center} from '@chakra-ui/react';
+import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip, Tag} from '@chakra-ui/react';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
@@ -151,7 +151,7 @@ const Violations = ({data, registered}) => {
                 <Box w='45%'>
                     <Flex>
                         <Box w='50%' textAlign='left'>
-                            <Text textTransform='uppercase' fontWeight='semibold'>HPD Building ID</Text>
+                            <Text textTransform='uppercase' fontWeight='semibold'> HPD Building ID <Tooltip label={'Unique identifier for a building registered with the HPD'} placement='right-end' bg='gray.50' color='black'><span className='circle'>?</span></Tooltip></Text>
                             <Text>{data.buildingid}</Text>
                             <br/>
                             <Text textTransform='uppercase' fontWeight='semibold'>Total Residential Units</Text>
