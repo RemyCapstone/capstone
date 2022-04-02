@@ -148,7 +148,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 </Button>
               </HStack>
               <Divider />
-              <Flex w='75%' p='3'>
+              <Flex w='80%' p='3'>
                 <Box>
                   <Flex><FaBed size={20}/><Text marginLeft='10px'>{bedrooms} {bedWord}</Text></Flex>
                 </Box>
