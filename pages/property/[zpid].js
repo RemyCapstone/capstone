@@ -187,7 +187,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <Spacer/>
                 <Box alignItems='right'>
                   {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='15px' float='right'>
+                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' paddingTop={10}>
                     Report a violation
                   </Button>
                 </Box>
