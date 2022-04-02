@@ -2,7 +2,7 @@ import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Button, ButtonGroup, Stack, HStack, VStack, useToast, Link } from '@chakra-ui/react'
 import { FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { MdFavoriteBorder, MdStarRate, MdLaunch } from 'react-icons/md';
+import { MdFavoriteBorder, MdStarRate, MdLaunch, MdFavorite } from 'react-icons/md';
 import millify from 'millify';
 import { useRouter } from 'next/router';
 
@@ -20,6 +20,9 @@ import Violations from '../../components/Violations/Violations';
 import { getSession } from 'next-auth/react';
 import Reviews from '../../components/Reviews/Reviews';
 
+import { server } from '../../config/index'; // dyanmic absolute routes
+
+/* Handle saving/unsaving a property for a user */
 const saveHandler = async(property, user) => {
   const response = await fetch('/api/saveProperty', {
     method: 'POST',
@@ -31,9 +34,10 @@ const saveHandler = async(property, user) => {
 
   const res = await response;
   const data = await res.json();
-  return [data.message, data.type];
+  return [data.message, data.type, res.status];
 }
 
+/* Handle getting a single user's data */
 const fetchUserHandler = async (id) => {
   const response = await fetch("/api/user", {
     method: "POST",
@@ -48,13 +52,30 @@ const fetchUserHandler = async (id) => {
   return data.user;
 }
 
+/* Handle getting the status of a single property for a user */
+const fetchPropertyStatusHandler = async (zpid, userid) => {
+  const response = await fetch(`${server}/api/user/getPropertyStatus`, {
+    method: 'POST',
+    body: JSON.stringify([zpid, userid]),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  const res = await response;
+  const data = await res.json();
+  console.log('fetchPropertyStatusHandler data', data);
+  return data.savedStatus;
+}
+
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)
 
-const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) => {
+const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, savedStatus}) => {
     const toast = useToast();
     const reviewRef = useRef(null);
     const router = useRouter();
     const [isVerified, setVerified] = useState([]);
+    const [isSaved, setIsSaved] = useState(savedStatus);
 
     const user = fetchUserHandler(session ? session.user._id : null);
 
@@ -157,6 +178,10 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
           position: "top",
           duration: 2000,
         });
+
+        if (res[2] == 200) {
+          setIsSaved(!isSaved);
+        }
       }
 
     // Make Zillow URL - not fully tested
@@ -185,9 +210,18 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
               </Text>
               {/* TO-DO: Add functionality for review and apply */}
               <HStack spacing='24px' paddingBottom='3'>
-                <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
-                  Save
-                </Button>
+                {
+                  isSaved ?
+                  // Unsave if saved
+                  <Button leftIcon={<MdFavorite />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
+                    Unsave
+                  </Button>
+                  :
+                  // Save if unsaved
+                  <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
+                    Save
+                  </Button>
+                }
 
                 <Button leftIcon={<MdStarRate />} colorScheme='blue' size='lg' variant='outline' onClick={handleBackClick}>
                   Review
@@ -272,24 +306,27 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid}) =
 }
 
 export async function getServerSideProps({ params: { zpid }, req }) {
-    //generate the fetch object for the property details and images
+  // Generate the fetch object for the property details and images
   const myProperty = propertyDetailOptions(zpid);
   const myImages = propertyImageOptions(zpid);
 
-  //make calls
+  // Make calls
   const data = await fetchZillowApi(myProperty)
-  //prevent throttling errors
+  // Prevent throttling errors
   await new Promise(resolve => setTimeout(resolve, 500));
   const images = await fetchZillowApi(myImages);
 
+  // Get session user info
   const session = await getSession({ req });
+  const propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
 
   return {
     props: {
       propertyDetails: data,
       propertyImages: images,
       session: session,
-      zpid: zpid
+      zpid: zpid,
+      savedStatus: propertySavedStatus
     },
   };
 }
