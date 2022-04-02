@@ -1,4 +1,4 @@
-import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center} from '@chakra-ui/react';
+import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select} from '@chakra-ui/react';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
@@ -7,9 +7,6 @@ import MiniTable from './MiniTable';
 import ViolationsTable from './ViolationsTable';
 import ComplaintsTable from './CompaintsTable';
 import { hashMapBuilder } from '../../utils/hashMapBuilder';
-// import below is from me
-import ViolationsOpen from './ViolationsOpen';
-import ViolationsTotal from './ViolationsTotal';
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
@@ -116,85 +113,43 @@ const Violations = ({data, registered}) => {
     if(!registered){
         return (
             <Box overflowY="auto" maxHeight="500px">
-                <Flex>
-                    <Text fontWeight='bold' fontSize='xl'>HPD Violations Data</Text>
-                </Flex>
-                <br/>
-                <Center>
-                    <Text color='gray.600' fontWeight='semibold'>This building is not registered with the HPD and therefore has no history available.</Text>
-                </Center>
+                <Table variant='simple' colorScheme='facebook'>
+                     <TableCaption position="sticky" bottom={0} bgColor="white">This building is not registered with the HPD and therefore has no history available.</TableCaption>
+                     <Thead position="sticky" top={0} bgColor="white">
+                        <Tr>
+                            <Th>HPD VIOLATIONS DATA</Th>
+                        </Tr>
+                    </Thead>
+                </Table>
             </Box>
         )
     }
 
     return(
         <Box overflowY="auto" borderBottom='1px' borderColor='gray.300'>
-
-            {/*.............. HPD Violations Data ..............*/}
+            <Table variant='simple' colorScheme='facebook'>
+                     <Thead position="sticky" top={0} bgColor="white">
+                        <Tr>
+                            <Th>HPD VIOLATIONS DATA</Th>
+                        </Tr>
+                    </Thead>
+            </Table>
             <Flex>
-                <Text fontWeight='bold' fontSize='xl'>HPD Violations Data</Text>
+                <MiniTable title='HPD Building ID' color='teal' content={data.buildingid} tooltip='Unique identifier for a building registered with the HPD'/>
+                <MiniTable title='Boro-Block-Lot (BBL)' color='blackAlpha' content={`${data.boro}-${data.block}-${data.lot}`} tooltip='An indentifier used by the Department of Finance Tax Records and Primary Land Use Tax Lot Output'/>
+                <MiniTable title='Total Residential Units' color='twitter' content={units && units !== 0 ? `${units.unitstotal} units` : 'Not available'} tooltip='Used for calculating average amount of violations per unit. Naturally, buildings with more units will have more violations so using the average is a good method.'/>
             </Flex>
-            <br/>
             <Flex>
-                <Box w='45%'>
-                    <Flex>
-                        {/*Passing over openViolations into ViolationsOpen component*/}
-                        <ViolationsOpen data={openViolations} avgViolations={avgVio}></ViolationsOpen>
-                    </Flex>
-                    <br/>  
-                    <Flex>
-                        {/*Passing over violationsData into ViolationsTotal component*/}
-                        <ViolationsTotal data={violationsData}></ViolationsTotal>
-                    </Flex>   
-                </Box>
-                <Spacer />
-                <Box w='45%'>
-                    <Flex>
-                        <Box w='50%' textAlign='left'>
-                            <Text textTransform='uppercase' fontWeight='semibold'>HPD Building ID</Text>
-                            <Text>{data.buildingid}</Text>
-                            <br/>
-                            <Text textTransform='uppercase' fontWeight='semibold'>Total Residential Units</Text>
-                            <Text>{units && units !== 0 ? `${units.unitstotal} units` : 'Not available'}</Text> 
-                        </Box>
-                        <Box w='50%' textAlign='left' paddingLeft='20px'>
-                            <Text textTransform='uppercase' fontWeight='semibold'>Boro-Block-Lot (BBL)</Text>
-                            <Text>{`${data.boro}-${data.block}-${data.lot}`}</Text>
-                            <br/>
-                            <Text textTransform='uppercase' fontWeight='semibold'>Landlord/Owner</Text>
-                            <Text>{units && units !== 0 ? units.ownername : 'Not available'}</Text>
-                        
-                        </Box>
-                    </Flex>
-                </Box>
-            </Flex>
-            {/* Violations table  */}
-            <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={5}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
-                <Text>View All Violations</Text>
-                <Icon paddingLeft='2' w='7' as={BsFilter} />
-            </Flex>
-            {viewViolations && <Flex justifyContent='right'>
-                <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
-                    Only Show Open Violations
-                </Checkbox>
-            </Flex>}
-            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
-
-
-            <br/><br/>
-
-
-
-            {/*.............. 311 Complaints ..............*/}
-            <Flex>
-                <Text fontWeight='bold' fontSize='xl'>311 Complaints</Text>
+                <MiniTable title='Total Violations' color='orange' content={`${violationsData.length} total HPD violations in this building`} height='80px' tooltip='This includes the history of every violation submitted for this building, both closed and open.'/>
+                <MiniTable title='Current Open Violations' color='red' content={`${openViolations.length} HPD violations are open. Average: ${avgVio} violations per unit.`} height='80px' tooltip='Open violations are ones that have yet to be fixed. Average is calculated using the total residential units, the citywide average of 0.8 per residential unit.'/>
+                <MiniTable title='Landlord/ Owner' color='purple' content={units && units !== 0 ? units.ownername : 'Not available'} height='80px' tooltip='Most common name associated with the building'/>
             </Flex>
             <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
                 <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='80px' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
                 <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
                 <MiniTable title='Most Common Categories' color='green' content={sortableCategories.map(e => `${e[0]} (${e[1]}), `)} height='80px' tooltip='Complaints categorized into their most common types (heating, plumbing, sanitary conditions, etc.)'/>
             </Flex>
-            {/* Complaints table */}
+
             <Flex onClick={() => setViewComplaints(!viewComplaints)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
                 <Text>View All Complaints</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
@@ -238,9 +193,16 @@ const Violations = ({data, registered}) => {
             </Flex>}
             {viewComplaints && <ComplaintsTable data={filteredComplaints} />}
 
-
-            
-    
+            <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={5}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
+                <Text>View All Violations</Text>
+                <Icon paddingLeft='2' w='7' as={BsFilter} />
+            </Flex>
+            {viewViolations && <Flex justifyContent='right'>
+                <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
+                    Only Show Open Violations
+                </Checkbox>
+            </Flex>}
+            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
 
 
             

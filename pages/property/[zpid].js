@@ -1,8 +1,8 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
-import { Button, ButtonGroup, Stack, HStack, VStack } from '@chakra-ui/react'
-import { FaBed, FaBath } from 'react-icons/fa';
+import { Button, ButtonGroup, Stack, HStack, VStack, Divider, Center } from '@chakra-ui/react'
+import { FaStar, FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { MdFavoriteBorder, MdStarRate, MdLaunch } from 'react-icons/md';
+import { MdFavoriteBorder, MdStarRate, MdLaunch, MdReportProblem } from 'react-icons/md';
 import millify from 'millify';
 import { useRouter } from 'next/router';
 
@@ -103,62 +103,131 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
     
     return (
-        <Box maxWidth='1000px' margin='auto' p='4'>
-          {/* if the listing has images, we can generate an image scroller*/}
-          {images && <ImageScrollbar data={images}/>}
 
-          <Box w='full' p='6'>
-            <Flex paddingTop='2' alignItems='center'>
-              <Text fontWeight='bold' fontSize='3xl'>${price.toLocaleString("en-US")}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
-              <Spacer/>
-              <Flex alignItems='center' p='1' justifyContent='space-between' w='400px' color='blue.400'>
-                <FaBed size={30}/> <Text fontWeight='bold' fontSize='2xl'>{bedrooms} {bedWord} |</Text> <FaBath size={30} /> <Text fontWeight='bold' fontSize='2xl'> {bathrooms} {bathWord} </Text> <Text fontWeight='bold' fontSize='2xl'>| </Text><BsGridFill size={30}/> <Text fontWeight='bold' fontSize='2xl'> {millify(livingArea)} sqft </Text>
-              </Flex>
-            </Flex>
-            <Box marginTop='2'>
-              <Text fontSize='2xl' marginBottom='2' fontWeight='semibold'>
+        <Box maxWidth='1000px' margin='auto' p='4'>
+
+          {/*.............. Gallery and general info ..............*/}
+          <Flex w='full' marginTop='2%'>
+            <Box w='45%'>
+              {images && <ImageScrollbar data={images}/>}
+            </Box>
+            <Spacer />
+            <Box w='45%' marginTop='1%'>
+              <Text fontSize='2xl' marginBottom='1' fontWeight='semibold'>
                 {brokerageName} {streetAddress}
-                <br/>
+              </Text>
+              <Text fontSize='xl'>
                 {address.city}, {address.state} {zipcode}
               </Text>
-              {/*These buttons don't do anything atm, will put in functionality later*/}
-              <HStack spacing='24px' paddingBottom='3'>
-                <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline'>
+              {/* Divide price and average rating here */}
+              <Flex> 
+                  <Box w='70%' textAlign='left'>
+                    <Text fontWeight='bold' fontSize='2xl'>${price.toLocaleString("en-US")}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
+                  </Box>
+                  {/* Dummy rating here */}
+                  <Box w='30%' textAlign='right'>
+                    <Flex>
+                      <Center>
+                        <FaStar size={20}/>
+                        <Text fontSize='xl' paddingLeft='5px' >4.5</Text>
+                        <Text fontSize='xl' color='gray.400'>(20)</Text>
+                      </Center>
+                    </Flex>
+                  </Box>
+              </Flex>
+              <br/>
+              <HStack spacing='20px' paddingBottom='3'>
+                <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='md' variant='outline'>
                   Save
                 </Button>
-
-                <Button leftIcon={<MdStarRate />} colorScheme='blue' size='lg' variant='outline' onClick={handleBackClick}>
+                <Button leftIcon={<MdStarRate />} colorScheme='blue' size='md' variant='outline' onClick={handleBackClick}>
                   Review
                 </Button>
-
-                <Button leftIcon={<MdLaunch />} colorScheme='blue' size='lg' variant='outline'>
+                <Button leftIcon={<MdLaunch />} colorScheme='blue' size='md' variant='outline'>
                   Apply
                 </Button>
               </HStack>
-              <Text lineHeight='2' color='gray.600'>{description}</Text>
+              <Divider />
+              <Flex w='75%' p='3'>
+                <Box>
+                  <Flex><FaBed size={20}/><Text marginLeft='10px'>{bedrooms} {bedWord}</Text></Flex>
+                </Box>
+                <Box w='10%'>
+                  <Center><Text color='#C4C4C4'>•</Text></Center>
+                </Box>        
+                <Box>
+                  <Flex><FaBath size={20} /><Text marginLeft='10px'>{bathrooms} {bathWord}</Text></Flex>
+                </Box>
+                <Box w='10%'>
+                  <Center><Text color='#C4C4C4'>•</Text></Center>
+                </Box>   
+                <Box>
+                  <Flex><BsGridFill size={20}/><Text marginLeft='10px'>{millify(livingArea)} sqft</Text></Flex>
+                </Box>
+              </Flex>
+              <Divider />
+              <Flex> 
+                <Box w='50%' textAlign='left'>
+                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
+                  <Text>{homeType}</Text>
+                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
+                  <Text>{listingProvider.agentName}</Text> 
+                </Box>
+                <Box w='50%' textAlign='left'>
+                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Purpose</Text>
+                  <Text>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
+                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed for</Text>
+                  <Text>{timeOnZillow}</Text>
+                </Box>
+              </Flex>
+              <Flex w='full'>
+                <Box>
+                  {/* Placeholder to move the report button */}
+                </Box>
+                <Spacer/>
+                <Box alignItems='right'>
+                  {/* User can report a violation outside of HPD/311, currently does nothing*/}
+                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='15px' float='right'>
+                    Report a violation
+                  </Button>
+                </Box>
+              </Flex>
             </Box>
-
-
-          
-            <br/>
-            {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
-
-            <br />
-
-            <Flex>
-              <Box w='50%'>
+          </Flex>
+          <br/>
+          <Flex w='full'>
+            <Text fontWeight='bold' fontSize='xl'>Description</Text>
+          </Flex>
+          <Flex w='full'>
+            <Text lineHeight='2' color='gray.600'>{description}</Text>
+          </Flex>
+          <br/>
+          <Flex>
+              <Box w='45%'>
                 <Map location={location}></Map>
                 <WalkScore long={longitude} lat={latitude} address={streetAddress}/>
               </Box>
+              <Spacer/>
               <Box w='50%' paddingLeft={10}>
                 {/* insert price history chart here*/}
                 <PriceHistoryTable data={priceHistory}/>
               </Box>
-            </Flex>
+          </Flex>
+
+          <br/><br/>
+
+          {/*.............. Violations and Complaints ..............*/}
+          {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 
 
-            <br /><br />
 
+        <br/><br/><br/><br/>
+
+
+          {/* PREVIOUS DESIGN */}
+          {/* if the listing has images, we can generate an image scroller*/}
+
+          <Box w='full' p='6'>
 
             <Flex flexWrap='wrap' textTransform='uppercase' justifyContent='space-between' borderBottom='1px' borderColor='gray.400'>
               <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3'>
