@@ -240,14 +240,9 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
         <br/>
 
-
-          {/* PREVIOUS DESIGN */}
           {/* if the listing has images, we can generate an image scroller*/}
                 
           <Box w='full' p='5'>
-
-           
-
             <br />
 
             <div ref={reviewRef}>
