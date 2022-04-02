@@ -104,15 +104,15 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     
     return (
 
-        <Box maxWidth='1000px' margin='auto' p='4'>
+        <Box maxWidth='1400px' margin='auto' p='4'>
 
           {/*.............. Gallery and general info ..............*/}
           <Flex w='full' marginTop='2%'>
-            <Box w='55%'>
+            <Box w='60%'>
               {images && <ImageScrollbar data={images}/>}
             </Box>
             <Spacer />
-            <Box w='42%' marginTop='1%'>
+            <Box w='35%' marginTop='1%'>
               <Text fontSize='2xl' marginBottom='1' fontWeight='semibold'>
                 {brokerageName} {streetAddress}
               </Text>
@@ -168,16 +168,16 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
               <Divider />
               <Flex> 
                 <Box w='50%' textAlign='left'>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
-                  <Text>{homeType}</Text>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
-                  <Text>{listingProvider.agentName}</Text> 
+                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
+                  <Text fontSize='lg'>{homeType}</Text>
+                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
+                  <Text fontSize='lg'>{listingProvider.agentName}</Text> 
                 </Box>
                 <Box w='50%' textAlign='left'>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Purpose</Text>
-                  <Text>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed for</Text>
-                  <Text>{timeOnZillow}</Text>
+                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Purpose</Text>
+                  <Text fontSize='lg'>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
+                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed for</Text>
+                  <Text fontSize='lg'>{timeOnZillow}</Text>
                 </Box>
               </Flex>
               <Flex w='full'>
@@ -195,6 +195,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             </Box>
           </Flex>
           <br/>
+          <Box maxWidth='1000px' margin='auto' p='4'>
           <Flex w='full'>
             <Text fontWeight='bold' fontSize='xl'>Description</Text>
           </Flex>
@@ -218,7 +219,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
 
           {/*.............. Violations and Complaints ..............*/}
           {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
-
+        
 
 
         <br/><br/><br/><br/>
@@ -271,7 +272,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
             </div>
 
           </Box>
-
+        
+          </Box>
         </Box>
     )
 }

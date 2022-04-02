@@ -60,7 +60,7 @@ const ImageScrollbar = ({ data }) => {
       <>
       <Box backgroundColor="rgb(251, 251, 251);">
          <Flex justifyContent='center' alignItems='center' p='5'>
-            <Image src={image} height={400} width={620} />
+            <Image src={image} height={400} width={680} />
         </Flex>
       </Box>
     <ScrollMenu>
