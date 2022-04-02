@@ -168,16 +168,32 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
               <Divider />
               <Flex> 
                 <Box w='50%' textAlign='left'>
-                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
+                  {homeType && <>
+                    <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
                   <Text fontSize='lg'>{homeType}</Text>
-                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
-                  <Text fontSize='lg'>{listingProvider.agentName}</Text> 
+                  </>}
+                  
+                  {listingProvider.agentName && <>
+                      <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
+                  <Text fontSize='lg'>{listingProvider.agentName}</Text>
+                  </>}
+                  {yearBuilt && <><Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Year Built</Text>
+                  <Text fontSize='lg'>{yearBuilt}</Text>  </>}
+                  
                 </Box>
                 <Box w='50%' textAlign='left'>
                   <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Purpose</Text>
                   <Text fontSize='lg'>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
+                  {timeOnZillow && <>
                   <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed for</Text>
                   <Text fontSize='lg'>{timeOnZillow}</Text>
+                  </>}                  
+                  {brokerageName && 
+                      <>
+                      <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Brokerage Name</Text>
+                      <Text fontSize='lg'>{brokerageName}</Text>
+                      </>
+                  }
                 </Box>
               </Flex>
               <Flex w='full'>
@@ -222,48 +238,15 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
         
 
 
-        <br/><br/><br/><br/>
+        <br/>
 
 
           {/* PREVIOUS DESIGN */}
           {/* if the listing has images, we can generate an image scroller*/}
+                
+          <Box w='full' p='5'>
 
-          <Box w='full' p='6'>
-
-            <Flex flexWrap='wrap' textTransform='uppercase' justifyContent='space-between' borderBottom='1px' borderColor='gray.400'>
-              <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3'>
-                  <Text>Type</Text>
-                  <Text fontWeight='bold'>{homeType}</Text>
-                </Flex>
-                <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3'>
-                  <Text>Purpose</Text>
-                  <Text fontWeight='bold'>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
-                </Flex>
-                {brokerageName && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Brokerage Name</Text>
-                    <Text fontWeight='bold'>{brokerageName}</Text>
-                  </Flex>
-                )}
-                {listingProvider.agentName && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Listing Provider:</Text>
-                    <Text fontWeight='bold'>{listingProvider.agentName}</Text>
-                  </Flex>
-                )}
-                {yearBuilt && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Year Built:</Text>
-                    <Text fontWeight='bold'>{yearBuilt}</Text>
-                  </Flex>
-                )}
-                {timeOnZillow && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Listed for:</Text>
-                    <Text fontWeight='bold'>{timeOnZillow}</Text>
-                  </Flex>
-                )}
-            </Flex>
+           
 
             <br />
 
