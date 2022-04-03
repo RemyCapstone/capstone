@@ -95,6 +95,7 @@ const Violations = ({data, registered}) => {
     //console.log('test', complaintsDescriptions)
     let filteredComplaints = complaintsDescriptions;
     const investigatedComplaints = complaintsDescriptions.filter(complaints => complaints.status === 'CLOSE')
+    const emergencyComplaints = complaintsDescriptions.filter(complaints => complaints.type === 'EMERGENCY')
     if(filterComplaint !== ''){
         //console.log(filterComplaint)
         filteredComplaints = complaintsDescriptions.filter(complaint =>
@@ -217,7 +218,7 @@ const Violations = ({data, registered}) => {
             </Flex>
             <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
                 <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='80px' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
-                <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
+                <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated. ${emergencyComplaints.length} of these complaints are emergencies.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
                 <MiniTable title='Most Common Categories' color='green' content={sortableCategories.map(e => `${e[0]} (${e[1]}), `)} height='80px' tooltip='Complaints categorized into their most common types (heating, plumbing, sanitary conditions, etc.)'/>
             </Flex>
             {/* Complaints table */}

@@ -6,59 +6,110 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarEle
 
 const BarChart = ({data}) => {
     
-    //console.log('Bar:', data)
+    console.log('Bar:', data)
 
-    const quarterlyDataNonEmergency = []
-    const quarterlyDataEmergency = []
     const dataPoint = {}
+    const dataPointEmergency = {}
     for(let i=0; i<data.length; i++){
         const [year, month, date] = data[i].statusdate.split('-')
+        
         if(month === '01' || month === '02' || month === '03'){
-            if(!dataPoint[`${year} Q1`]){
-                dataPoint[`${year} Q1`] = 1
+            if(data[i].type === 'EMERGENCY'){
+                if(!dataPointEmergency[`${year} Q1`]){
+                dataPointEmergency[`${year} Q1`] = 1
+                }
+                else{
+                    dataPointEmergency[`${year} Q1`] += 1;
+                }
             }
             else{
-                dataPoint[`${year} Q1`] += 1;
+                if(!dataPoint[`${year} Q1`]){
+                    dataPoint[`${year} Q1`] = 1
+                }
+                else{
+                    dataPoint[`${year} Q1`] += 1;
+                }
             }
         }
         if(month === '04' || month === '05' || month === '06'){
-            if(!dataPoint[`${year} Q2`]){
-                dataPoint[`${year} Q2`] = 1
+            if(data[i].type === 'EMERGENCY'){
+                if(!dataPointEmergency[`${year} Q2`]){
+                dataPointEmergency[`${year} Q2`] = 1
+                }
+                else{
+                    dataPointEmergency[`${year} Q2`] += 1;
+                }
             }
             else{
-                dataPoint[`${year} Q2`] += 1;
+                if(!dataPoint[`${year} Q2`]){
+                    dataPoint[`${year} Q2`] = 1
+                }
+                else{
+                    dataPoint[`${year} Q2`] += 1;
+                }
             }
         }
         if(month === '07' || month === '08' || month === '09'){
-            if(!dataPoint[`${year} Q3`]){
-                dataPoint[`${year} Q3`] = 1
+            if(data[i].type === 'EMERGENCY'){
+                if(!dataPointEmergency[`${year} Q3`]){
+                dataPointEmergency[`${year} Q3`] = 1
+                }
+                else{
+                    dataPointEmergency[`${year} Q3`] += 1;
+                }
             }
             else{
-                dataPoint[`${year} Q3`] += 1;
+                if(!dataPoint[`${year} Q3`]){
+                    dataPoint[`${year} Q3`] = 1
+                }
+                else{
+                    dataPoint[`${year} Q3`] += 1;
+                }
             }
         }
         if(month === '10' || month === '11' || month === '12'){
-            if(!dataPoint[`${year} Q4`]){
-                dataPoint[`${year} Q4`] = 1
+            if(data[i].type === 'EMERGENCY'){
+                if(!dataPointEmergency[`${year} Q4`]){
+                dataPointEmergency[`${year} Q4`] = 1
+                }
+                else{
+                    dataPointEmergency[`${year} Q4`] += 1;
+                }
             }
             else{
-                dataPoint[`${year} Q4`] += 1;
+                if(!dataPoint[`${year} Q4`]){
+                    dataPoint[`${year} Q4`] = 1
+                }
+                else{
+                    dataPoint[`${year} Q4`] += 1;
+                }
             }
         }
     }
 
     //console.log(dataPoint)
-    const arrayOfObj = Object.entries(dataPoint).map((e) => ( { x: e[0], y: e[1] } ));
-    console.log(arrayOfObj)
-    console.log('Total')
+    const quarterlyDataNonEmergency = Object.entries(dataPoint).map((e) => ( { x: e[0], y: e[1] } ));
+    const quarterlyDataEmergency = Object.entries(dataPointEmergency).map((e) => ( { x: e[0], y: e[1] } ));
+    let allLabels = quarterlyDataEmergency.concat(quarterlyDataNonEmergency);
+    for(let i=0; i<allLabels.length; i++){
+        allLabels[i] = allLabels[i].x
+    }
+    let uniqueLabels = [];
+    allLabels.forEach((c) => {
+        if (!uniqueLabels.includes(c)) {
+            uniqueLabels.push(c);
+        }
+    });
+    uniqueLabels.sort()
+    //console.log(uniqueLabels)
 
         return(
                 <Bar
                     data={{
-                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange', 'Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        labels: uniqueLabels,
                         datasets: [{
                             label: 'Non-Emergency',
-                            data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
+                            data: quarterlyDataNonEmergency,
                             backgroundColor: [
                                 'rgba(255, 206, 86, 0.2)',
                             ],
@@ -70,7 +121,7 @@ const BarChart = ({data}) => {
                         },
                         {
                             label: 'Emergency',
-                            data: [12, 19, 3, 5, 2, 3, 12, 19, 3, 5, 2, 3],
+                            data: quarterlyDataEmergency,
                             backgroundColor: [
                                 'rgba(255, 99, 132, 0.2)',
                             ],
