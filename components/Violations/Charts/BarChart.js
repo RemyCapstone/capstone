@@ -1,12 +1,17 @@
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import {useState} from 'react';
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement);
 
 
 const BarChart = ({data}) => {
-    
-    console.log('Bar:', data)
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const clickHandler = (page) => {
+      setCurrentPage(page);
+    }
+    //console.log('Bar:', data)
 
     const dataPoint = {}
     const dataPointEmergency = {}
@@ -88,8 +93,8 @@ const BarChart = ({data}) => {
     }
 
     //console.log(dataPoint)
-    const quarterlyDataNonEmergency = Object.entries(dataPoint).map((e) => ( { x: e[0], y: e[1] } ));
-    const quarterlyDataEmergency = Object.entries(dataPointEmergency).map((e) => ( { x: e[0], y: e[1] } ));
+    let quarterlyDataNonEmergency = Object.entries(dataPoint).map((e) => ( { x: e[0], y: e[1] } ));
+    let quarterlyDataEmergency = Object.entries(dataPointEmergency).map((e) => ( { x: e[0], y: e[1] } ));
     let allLabels = quarterlyDataEmergency.concat(quarterlyDataNonEmergency);
     for(let i=0; i<allLabels.length; i++){
         allLabels[i] = allLabels[i].x
@@ -100,10 +105,30 @@ const BarChart = ({data}) => {
             uniqueLabels.push(c);
         }
     });
-    uniqueLabels.sort()
-    //console.log(uniqueLabels)
+    uniqueLabels.sort().reverse()
+
+    /*
+        Pagination for bar chart if its too big
+    */
+    let limit = uniqueLabels.length <= 10*(currentPage+1) ? uniqueLabels.length : 10*(currentPage+1);
+    const iterations = Math.ceil(uniqueLabels.length / 10);
+    const pages = []
+
+    for(let i=1; i<=iterations; i++){
+      pages.push(i)
+    }
+
+    
+
+
+   if(uniqueLabels.length > 10){
+       uniqueLabels = uniqueLabels.slice(10*currentPage, limit)
+       quarterlyDataNonEmergency = quarterlyDataNonEmergency.filter(e => uniqueLabels.includes(e.x))
+       quarterlyDataEmergency = quarterlyDataEmergency.filter(e => uniqueLabels.includes(e.x))
+   }
 
         return(
+            <>
                 <Bar
                     data={{
                         labels: uniqueLabels,
@@ -147,6 +172,11 @@ const BarChart = ({data}) => {
                         }                        
                     }}
                 />
+
+                    {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
+                        {pages.map((page, index) => <Text onClick={() => clickHandler(index)} fontSize='lg' p='4' fontWeight='bold' key={page} color={index === currentPage ? 'blue.700' : 'blue.300'} textAlign='center'>{page}</Text>)}
+                    </Flex>}
+                </>
         )
 }
 
