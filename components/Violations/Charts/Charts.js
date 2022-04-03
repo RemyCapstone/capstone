@@ -7,7 +7,7 @@ const Charts = ({data, complaints}) => {
     //console.log(data)
         if(complaints.length === 0){
             return (
-                <Text>Loading...</Text>
+                <Text>There is no history of complaints for this building.</Text>
             )
         }
         return(
