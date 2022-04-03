@@ -5,7 +5,7 @@ import {useState} from 'react';
 ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarElement);
 
 
-const BarChart = ({data}) => {
+const BarChartVio = ({data}) => {
     const [currentPage, setCurrentPage] = useState(0);
 
     const clickHandler = (page) => {
@@ -174,10 +174,10 @@ const BarChart = ({data}) => {
                 />
 
                     {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
-                        {pages.map((page, index) => <Box onClick={() => clickHandler(index)} fontSize='lg' margin={4} fontWeight='bold' key={page} color={index === currentPage ? 'red.700' : 'red.300'}  height='20px' width='20px'  backgroundColor={index === currentPage ? 'red.700' : 'red.300'} textAlign='center' borderRadius='50%'>{}</Box>)}
+                        {pages.map((page, index) => <Text onClick={() => clickHandler(index)} fontSize='lg' p='4' fontWeight='bold' key={page} color={index === currentPage ? 'red.700' : 'red.300'} textAlign='center'>{⚪}</Text>)}
                     </Flex>}
                 </>
         )
 }
 
-export default BarChart;
+export default BarChartVio;
