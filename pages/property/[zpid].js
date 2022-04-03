@@ -191,14 +191,14 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
 
     return (
 
-        <Box maxWidth='1000px' margin='auto' p='4'>
+        <Box maxWidth='1400px' margin='auto' p='4'>
           {/*.............. Gallery and general info ..............*/}
           <Flex w='full' marginTop='2%'>
-            <Box w='45%'>
+            <Box w='60%'>
               {images && <ImageScrollbar data={images}/>}
             </Box>
             <Spacer />
-            <Box w='45%' marginTop='1%'>
+            <Box w='35%' marginTop='1%'>
               <Text fontSize='2xl' marginBottom='1' fontWeight='semibold'>
                 {brokerageName} {streetAddress}
               </Text>
@@ -245,7 +245,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 </Link>
               </HStack>
               <Divider />
-              <Flex w='75%' p='3'>
+              <Flex w='80%' p='3'>
                 <Box>
                   <Flex><FaBed size={20}/><Text marginLeft='10px'>{bedrooms} {bedWord}</Text></Flex>
                 </Box>
@@ -265,16 +265,31 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
               <Divider />
               <Flex>
                 <Box w='50%' textAlign='left'>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
-                  <Text>{homeType}</Text>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
-                  <Text>{listingProvider.agentName}</Text>
+                  {homeType && <>
+                    <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Type</Text>
+                  <Text fontSize='lg'>{homeType}</Text>
+                  </>}
+
+                  {listingProvider.agentName && <>
+                      <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
+                  <Text fontSize='lg'>{listingProvider.agentName}</Text>
+                  </>}
+                  {yearBuilt && <><Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Year Built</Text>
+                  <Text fontSize='lg'>{yearBuilt}</Text>  </>}
                 </Box>
                 <Box w='50%' textAlign='left'>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Purpose</Text>
-                  <Text>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
-                  <Text textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed for</Text>
-                  <Text>{timeOnZillow}</Text>
+                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Purpose</Text>
+                  <Text fontSize='lg'>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
+                  {timeOnZillow && <>
+                  <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed for</Text>
+                  <Text fontSize='lg'>{timeOnZillow}</Text>
+                  </>}
+                  {brokerageName &&
+                      <>
+                      <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Brokerage Name</Text>
+                      <Text fontSize='lg'>{brokerageName}</Text>
+                      </>
+                  }
                 </Box>
               </Flex>
               <Flex w='full'>
@@ -284,7 +299,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 <Spacer/>
                 <Box alignItems='right'>
                   {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='15px' float='right'>
+                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' paddingTop={10}>
                     Report a violation
                   </Button>
                 </Box>
@@ -292,6 +307,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             </Box>
           </Flex>
           <br/>
+          <Box maxWidth='1000px' margin='auto' p='4'>
           <Flex w='full'>
             <Text fontWeight='bold' fontSize='xl'>Description</Text>
           </Flex>
@@ -316,51 +332,10 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
           {/*.............. Violations and Complaints ..............*/}
           {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 
+        <br/>
 
-
-        <br/><br/><br/><br/>
-
-
-          {/* PREVIOUS DESIGN */}
           {/* if the listing has images, we can generate an image scroller*/}
-
-          <Box w='full' p='6'>
-
-            <Flex flexWrap='wrap' textTransform='uppercase' justifyContent='space-between' borderBottom='1px' borderColor='gray.400'>
-              <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3'>
-                  <Text>Type</Text>
-                  <Text fontWeight='bold'>{homeType}</Text>
-                </Flex>
-                <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3'>
-                  <Text>Purpose</Text>
-                  <Text fontWeight='bold'>{homeStatus === "FOR_RENT" ? "FOR RENT" : "FOR SALE"}</Text>
-                </Flex>
-                {brokerageName && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Brokerage Name</Text>
-                    <Text fontWeight='bold'>{brokerageName}</Text>
-                  </Flex>
-                )}
-                {listingProvider.agentName && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Listing Provider:</Text>
-                    <Text fontWeight='bold'>{listingProvider.agentName}</Text>
-                  </Flex>
-                )}
-                {yearBuilt && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Year Built:</Text>
-                    <Text fontWeight='bold'>{yearBuilt}</Text>
-                  </Flex>
-                )}
-                {timeOnZillow && (
-                  <Flex justifyContent='space-between' w='400px' borderBottom='1px' borderColor='gray.100' p='3' >
-                    <Text>Listed for:</Text>
-                    <Text fontWeight='bold'>{timeOnZillow}</Text>
-                  </Flex>
-                )}
-            </Flex>
-
+          <Box w='full' p='5'>
             <br />
 
             <div ref={reviewRef}>
@@ -369,6 +344,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
 
           </Box>
 
+          </Box>
         </Box>
     )
 }

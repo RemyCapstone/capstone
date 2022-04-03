@@ -60,13 +60,13 @@ const ImageScrollbar = ({ data }) => {
       <>
       <Box backgroundColor="rgb(251, 251, 251);">
          <Flex justifyContent='center' alignItems='center' p='5'>
-            <Image src={image} height={400} width={700} />
+            <Image src={image} height={400} width={680} />
         </Flex>
       </Box>
     <ScrollMenu>
       {data.map((item, i) => (
-        <Box onClick={() => clickHandler(item, i)} backgroundColor={i === selectedPic ? "blue.200" : "white"} border='1px' borderColor='gray.200' cursor='pointer' height="143px" width="200px" key={item} overflow='hidden' p='1'>
-          <Image placeholder="blur" blurDataURL={item} src={item} height={140} width={200} />
+        <Box onClick={() => clickHandler(item, i)} backgroundColor={i === selectedPic ? "blue.200" : "white"} border='1px' borderColor='gray.200' cursor='pointer' height="100px" width="170px" key={item} overflow='hidden' p='1'>
+          <Image placeholder="blur" blurDataURL={item} src={item} height={96} width={170} />
         </Box>
       ))}
     </ScrollMenu>
