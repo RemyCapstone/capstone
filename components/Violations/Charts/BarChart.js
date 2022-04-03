@@ -174,7 +174,7 @@ const BarChart = ({data}) => {
                 />
 
                     {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
-                        {pages.map((page, index) => <Text onClick={() => clickHandler(index)} fontSize='lg' p='4' fontWeight='bold' key={page} color={index === currentPage ? 'blue.700' : 'blue.300'} textAlign='center'>{page}</Text>)}
+                        {pages.map((page, index) => <Text onClick={() => clickHandler(index)} fontSize='lg' p='4' fontWeight='bold' key={page} color={index === currentPage ? 'red.700' : 'red.300'} textAlign='center'>{page}</Text>)}
                     </Flex>}
                 </>
         )
