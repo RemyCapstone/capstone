@@ -105,7 +105,6 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         bathWord = 'Bath'
     }
 
-
     let streetName = streetAddress
     streetName = streetName.toUpperCase();
     const removeTerms = ["APT", "#", "FLOOR", "PENTHOUSE", "TOWNHOUSE"];
@@ -224,12 +223,12 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 {
                   isSaved ?
                   // Unsave if saved
-                  <Button leftIcon={<MdFavorite />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
+                  <Button leftIcon={<MdFavorite />} colorScheme='blue' size='md' variant='outline' onClick={() => saveProperty()}>
                     Unsave
                   </Button>
                   :
                   // Save if unsaved
-                  <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
+                  <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='md' variant='outline' onClick={() => saveProperty()}>
                     Save
                   </Button>
                 }
@@ -297,7 +296,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 <Spacer/>
                 <Box alignItems='right'>
                   {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' paddingTop={10}>
+                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' marginTop={10}>
                     Report a violation
                   </Button>
                 </Box>

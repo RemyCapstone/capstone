@@ -1,5 +1,6 @@
 import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip, Tag} from '@chakra-ui/react';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
 import { violationOptions, plutoOptions, complaint311Options, fetchOpenApi, processComplaints } from "../../utils/hpdViolations";
@@ -10,11 +11,13 @@ import { hashMapBuilder } from '../../utils/hashMapBuilder';
 // import below is from me
 import ViolationsOpen from './ViolationsOpen';
 import ViolationsTotal from './ViolationsTotal';
+import Charts from './Charts/Charts';
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
     const [complaintsData, setComplaintsData] = useState([]);
     const [filterComplaint, setFilterComplaint] = useState('');
+    const [filterVio, setFilterVio] = useState('');
     const [units, setUnits] = useState(0);
     const [viewViolations, setViewViolations] = useState(false);
     const [viewComplaints, setViewComplaints] = useState(false);
@@ -29,7 +32,13 @@ const Violations = ({data, registered}) => {
     if(units && units !== 0) avgVio = openViolations.length === 0 ? 0 : Math.round((openViolations.length / units.unitstotal) * 100) / 100
 
     violationsData.sort((a, b) => (a.inspectiondate < b.inspectiondate) ? 1 : -1)
-
+    let filteredVios = violationsData;
+    if(filterVio !== ''){
+        //console.log(filterVio)
+        filteredVios = filteredVios.filter(vio =>
+            vio.class.includes(filterVio)
+        )
+    }
 
     useEffect(() => {
         if(data){
@@ -69,28 +78,34 @@ const Violations = ({data, registered}) => {
         setCheckBox(!toggleCheckBox)
     };
 
-    const handleSelect = (value) => {
+    const handleSelectComplaints = (value) => {
         setFilterComplaint(value)
         //console.log(value)
     }
 
+    const handleSelectViolations = (value) => {
+        setFilterVio(value)
+    }
+
     //console.log(violationsData)
     //console.log(units)
-    //console.log(complaintsData)
+    //console.log('printing here', complaintsData)
 
     //check if complaints have been gotten
     let complaintsDescriptions = []
     if(complaintsData.length > 0){
         for(let i = 0; i < complaintsData.length; i++){
-            //[0] is the actual data
-            complaintsDescriptions.push(complaintsData[i][0])
+            //[0] is the actual data, if statement to avoid null data
+            if(complaintsData[i][0]?.complaintid) complaintsDescriptions.push(complaintsData[i][0])
         }
 
         //console.log(complaintsDescriptions)
     }
     complaintsDescriptions.sort((a, b) => (a.statusdate < b.statusdate) ? 1 : -1)
+    //console.log('test', complaintsDescriptions)
     let filteredComplaints = complaintsDescriptions;
     const investigatedComplaints = complaintsDescriptions.filter(complaints => complaints.status === 'CLOSE')
+    const emergencyComplaints = complaintsDescriptions.filter(complaints => complaints.type === 'EMERGENCY')
     if(filterComplaint !== ''){
         //console.log(filterComplaint)
         filteredComplaints = complaintsDescriptions.filter(complaint =>
@@ -106,11 +121,10 @@ const Violations = ({data, registered}) => {
     sortableCategories.sort(function(a, b) {
         return b[1] - a[1];
     });
-    if(sortableCategories.length > 4){
-        sortableCategories = sortableCategories.slice(0, 4) // only get the first few
-    }
-    // console.log(sortableCategories)   //comment this out
-
+    //if(sortableCategories.length > 5){
+       // sortableCategories = sortableCategories.slice(0, 5) // only get the first few
+    //}
+    //console.log(sortableCategories)   //comment this out
 
 
     if(!registered){
@@ -199,8 +213,19 @@ const Violations = ({data, registered}) => {
                 <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
                     Only Show Open Violations
                 </Checkbox>
+                 <Select onChange={(e) => handleSelectViolations(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
+                                    <option value={'A'}>
+                                        {'Non-Hazardous'}
+                                    </option>
+                                    <option value={'B'}>
+                                        {'Hazardous'}
+                                    </option>
+                                    <option value={'C'}>
+                                        {'Immediately Hazardous'}
+                                    </option>
+                            </Select>
             </Flex>}
-            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
+            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : filteredVios} />}
 
 
             <br/><br/>
@@ -213,7 +238,7 @@ const Violations = ({data, registered}) => {
             </Flex>
             <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
                 <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='80px' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
-                <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
+                <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated. ${emergencyComplaints.length} of these complaints are emergencies.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
                 <MiniTable title='Most Common Categories' color='green' content={sortableCategories.map(e => `${e[0]} (${e[1]}), `)} height='80px' tooltip='Complaints categorized into their most common types (heating, plumbing, sanitary conditions, etc.)'/>
             </Flex>
             {/* Complaints table */}
@@ -221,44 +246,60 @@ const Violations = ({data, registered}) => {
                 <Text>View All Complaints</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
-            {viewComplaints && <Flex justifyContent='right'>
-                <Select onChange={(e) => handleSelect(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
-                        <option value={'HEAT'}>
-                            {'HEAT'}
-                        </option>
-                        <option value={'UNSANITARY CONDITION'}>
-                            {'UNSANITARY CONDITION'}
-                        </option>
-                        <option value={'WATER'}>
-                            {'WATER'}
-                        </option>
-                        <option value={'PLUMBING'}>
-                            {'PLUMBING'}
-                        </option>
-                        <option value={'ELECTRIC'}>
-                            {'ELECTRIC'}
-                        </option>
-                        <option value={'SAFETY'}>
-                            {'SAFETY'}
-                        </option>
-                        <option value={'DOOR/WINDOW'}>
-                            {'DOOR/WINDOW'}
-                        </option>
-                        <option value={'PAINT/PLASTER'}>
-                            {'PAINT/PLASTER'}
-                        </option>
-                        <option value={'APPLIANCE'}>
-                            {'APPLIANCE'}
-                        </option>
-                        <option value={'GENERAL'}>
-                            {'GENERAL'}
-                        </option>
-                        <option value={'FLOORING/STAIRS'}>
-                            {'FLOORING/STAIRS'}
-                        </option>
-                </Select>
-            </Flex>}
-            {viewComplaints && <ComplaintsTable data={filteredComplaints} />}
+            {viewComplaints &&
+                <Tabs variant='soft-rounded' p={3} isFitted>
+                <TabList>
+                    <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Spreadsheet Summary</Tab>
+                    <Tab _selected={{ color: 'white', bg: 'green.400' }}>Charts</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <Flex justifyContent='right'>
+                            <Select onChange={(e) => handleSelectComplaints(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
+                                    <option value={'HEAT'}>
+                                        {'HEAT'}
+                                    </option>
+                                    <option value={'UNSANITARY CONDITION'}>
+                                        {'UNSANITARY CONDITION'}
+                                    </option>
+                                    <option value={'WATER'}>
+                                        {'WATER'}
+                                    </option>
+                                    <option value={'PLUMBING'}>
+                                        {'PLUMBING'}
+                                    </option>
+                                    <option value={'ELECTRIC'}>
+                                        {'ELECTRIC'}
+                                    </option>
+                                    <option value={'SAFETY'}>
+                                        {'SAFETY'}
+                                    </option>
+                                    <option value={'DOOR/WINDOW'}>
+                                        {'DOOR/WINDOW'}
+                                    </option>
+                                    <option value={'PAINT/PLASTER'}>
+                                        {'PAINT/PLASTER'}
+                                    </option>
+                                    <option value={'APPLIANCE'}>
+                                        {'APPLIANCE'}
+                                    </option>
+                                    <option value={'GENERAL'}>
+                                        {'GENERAL'}
+                                    </option>
+                                    <option value={'FLOORING/STAIRS'}>
+                                        {'FLOORING/STAIRS'}
+                                    </option>
+                            </Select>
+                        </Flex>
+                        <ComplaintsTable data={filteredComplaints} />
+                    </TabPanel>
+                    <TabPanel>
+                        <Charts data={sortableCategories} complaints={complaintsDescriptions} />
+                    </TabPanel>
+                </TabPanels>
+                </Tabs>
+            }
+
 
 
 
