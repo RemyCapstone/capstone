@@ -14,7 +14,7 @@ const Charts = ({data, complaints}) => {
                     <DonutChart data={data} />
                 </Box>
             </Flex>
-            <Text fontSize='xl' fontWeight='medium'>Complaints Timeline:</Text>
+            <Text fontSize='xl' fontWeight='medium'>{complaints.length} Complaints issued since {complaints[complaints.length-1].statusdate.substring(0,complaints[complaints.length-1].statusdate.indexOf('-'))}:</Text>
             <Box w='full' overflowY="auto">
                     <BarChart data={complaints} />
             </Box>

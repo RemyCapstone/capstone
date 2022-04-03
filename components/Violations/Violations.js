@@ -79,19 +79,20 @@ const Violations = ({data, registered}) => {
 
     //console.log(violationsData)
     //console.log(units)
-    //console.log(complaintsData)
+    //console.log('printing here', complaintsData)
 
     //check if complaints have been gotten
     let complaintsDescriptions = []
     if(complaintsData.length > 0){
         for(let i = 0; i < complaintsData.length; i++){
-            //[0] is the actual data
-            complaintsDescriptions.push(complaintsData[i][0])
+            //[0] is the actual data, if statement to avoid null data
+            if(complaintsData[i][0]?.complaintid) complaintsDescriptions.push(complaintsData[i][0])
         }
 
         //console.log(complaintsDescriptions)
     }
     complaintsDescriptions.sort((a, b) => (a.statusdate < b.statusdate) ? 1 : -1)
+    console.log('test', complaintsDescriptions)
     let filteredComplaints = complaintsDescriptions;
     const investigatedComplaints = complaintsDescriptions.filter(complaints => complaints.status === 'CLOSE')
     if(filterComplaint !== ''){
