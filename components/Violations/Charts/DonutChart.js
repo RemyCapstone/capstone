@@ -25,10 +25,22 @@ const DonutChart = ({data}) => {
                         backgroundColor: [
                         'rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)', '#6B8E23', '#7FFF00', '#FFA500', '#00FA9A', '#2E8B57', '#2F4F4F', '#00CED1', '#191970', '#8A2BE2', '	#4B0082', '#FF00FF', '	#FF1493', '#FFE4C4', '#C0C0C0'
                         ],
-                        hoverOffset: 4,
+                        hoverOffset: 6,
                     }]
                     }}
-                    height='300px'
+                    options={{
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 11
+                                }
+                            }
+                            }
+                        }
+                    }}
                 />
         )
 }

@@ -272,7 +272,7 @@ const Violations = ({data, registered}) => {
                         <ComplaintsTable data={filteredComplaints} />
                     </TabPanel>
                     <TabPanel>
-                        <Charts data={sortableCategories}/>
+                        <Charts data={sortableCategories} complaints={complaintsDescriptions} />
                     </TabPanel>
                 </TabPanels>
                 </Tabs>
