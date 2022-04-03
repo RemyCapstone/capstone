@@ -1,5 +1,6 @@
 import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip, Tag} from '@chakra-ui/react';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
 import { violationOptions, plutoOptions, complaint311Options, fetchOpenApi, processComplaints } from "../../utils/hpdViolations";
@@ -10,6 +11,7 @@ import { hashMapBuilder } from '../../utils/hashMapBuilder';
 // import below is from me
 import ViolationsOpen from './ViolationsOpen';
 import ViolationsTotal from './ViolationsTotal';
+import Charts from './Charts/Charts';
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
@@ -18,6 +20,7 @@ const Violations = ({data, registered}) => {
     const [units, setUnits] = useState(0);
     const [viewViolations, setViewViolations] = useState(false);
     const [viewComplaints, setViewComplaints] = useState(false);
+    const [toggleCharts, setToggleCharts] = useState(false);
     const [toggleCheckBox, setCheckBox] = useState(false);
     //console.log(data)
 
@@ -106,10 +109,10 @@ const Violations = ({data, registered}) => {
     sortableCategories.sort(function(a, b) {
         return b[1] - a[1];
     });
-    if(sortableCategories.length > 4){
-        sortableCategories = sortableCategories.slice(0, 4) // only get the first few
-    }
-    console.log(sortableCategories)   //comment this out
+    //if(sortableCategories.length > 5){
+       // sortableCategories = sortableCategories.slice(0, 5) // only get the first few
+    //}
+    //console.log(sortableCategories)   //comment this out
 
     
 
@@ -221,44 +224,60 @@ const Violations = ({data, registered}) => {
                 <Text>View All Complaints</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
-            {viewComplaints && <Flex justifyContent='right'>
-                <Select onChange={(e) => handleSelect(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
-                        <option value={'HEAT'}>
-                            {'HEAT'}
-                        </option>
-                        <option value={'UNSANITARY CONDITION'}>
-                            {'UNSANITARY CONDITION'}
-                        </option>
-                        <option value={'WATER'}>
-                            {'WATER'}
-                        </option>
-                        <option value={'PLUMBING'}>
-                            {'PLUMBING'}
-                        </option>
-                        <option value={'ELECTRIC'}>
-                            {'ELECTRIC'}
-                        </option>
-                        <option value={'SAFETY'}>
-                            {'SAFETY'}
-                        </option>
-                        <option value={'DOOR/WINDOW'}>
-                            {'DOOR/WINDOW'}
-                        </option>
-                        <option value={'PAINT/PLASTER'}>
-                            {'PAINT/PLASTER'}
-                        </option>
-                        <option value={'APPLIANCE'}>
-                            {'APPLIANCE'}
-                        </option>
-                        <option value={'GENERAL'}>
-                            {'GENERAL'}
-                        </option>
-                        <option value={'FLOORING/STAIRS'}>
-                            {'FLOORING/STAIRS'}
-                        </option>
-                </Select>
-            </Flex>}
-            {viewComplaints && <ComplaintsTable data={filteredComplaints} />}
+            {viewComplaints && 
+                <Tabs variant='soft-rounded' p={3} isFitted>
+                <TabList>
+                    <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Spreadsheet Summary</Tab>
+                    <Tab _selected={{ color: 'white', bg: 'green.400' }}>Charts</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <Flex justifyContent='right'>
+                            <Select onChange={(e) => handleSelect(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
+                                    <option value={'HEAT'}>
+                                        {'HEAT'}
+                                    </option>
+                                    <option value={'UNSANITARY CONDITION'}>
+                                        {'UNSANITARY CONDITION'}
+                                    </option>
+                                    <option value={'WATER'}>
+                                        {'WATER'}
+                                    </option>
+                                    <option value={'PLUMBING'}>
+                                        {'PLUMBING'}
+                                    </option>
+                                    <option value={'ELECTRIC'}>
+                                        {'ELECTRIC'}
+                                    </option>
+                                    <option value={'SAFETY'}>
+                                        {'SAFETY'}
+                                    </option>
+                                    <option value={'DOOR/WINDOW'}>
+                                        {'DOOR/WINDOW'}
+                                    </option>
+                                    <option value={'PAINT/PLASTER'}>
+                                        {'PAINT/PLASTER'}
+                                    </option>
+                                    <option value={'APPLIANCE'}>
+                                        {'APPLIANCE'}
+                                    </option>
+                                    <option value={'GENERAL'}>
+                                        {'GENERAL'}
+                                    </option>
+                                    <option value={'FLOORING/STAIRS'}>
+                                        {'FLOORING/STAIRS'}
+                                    </option>
+                            </Select>
+                        </Flex>
+                        <ComplaintsTable data={filteredComplaints} />
+                    </TabPanel>
+                    <TabPanel>
+                        <Charts data={sortableCategories}/>
+                    </TabPanel>
+                </TabPanels>
+                </Tabs>
+            }
+            
 
 
             
