@@ -17,10 +17,10 @@ const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
     const [complaintsData, setComplaintsData] = useState([]);
     const [filterComplaint, setFilterComplaint] = useState('');
+    const [filterVio, setFilterVio] = useState('');
     const [units, setUnits] = useState(0);
     const [viewViolations, setViewViolations] = useState(false);
     const [viewComplaints, setViewComplaints] = useState(false);
-    const [toggleCharts, setToggleCharts] = useState(false);
     const [toggleCheckBox, setCheckBox] = useState(false);
     //console.log(data)
 
@@ -32,7 +32,13 @@ const Violations = ({data, registered}) => {
     if(units && units !== 0) avgVio = openViolations.length === 0 ? 0 : Math.round((openViolations.length / units.unitstotal) * 100) / 100
 
     violationsData.sort((a, b) => (a.inspectiondate < b.inspectiondate) ? 1 : -1)
-    
+    let filteredVios = violationsData;
+    if(filterVio !== ''){
+        //console.log(filterVio)
+        filteredVios = filteredVios.filter(vio =>
+            vio.class.includes(filterVio)
+        )
+    }
 
     useEffect(() => {
         if(data){
@@ -72,9 +78,13 @@ const Violations = ({data, registered}) => {
         setCheckBox(!toggleCheckBox)
     }; 
 
-    const handleSelect = (value) => {
+    const handleSelectComplaints = (value) => {
         setFilterComplaint(value)
         //console.log(value)
+    }
+
+    const handleSelectViolations = (value) => {
+        setFilterVio(value)
     }
 
     //console.log(violationsData)
@@ -204,8 +214,19 @@ const Violations = ({data, registered}) => {
                 <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
                     Only Show Open Violations
                 </Checkbox>
+                 <Select onChange={(e) => handleSelectViolations(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
+                                    <option value={'A'}>
+                                        {'Non-Hazardous'}
+                                    </option>
+                                    <option value={'B'}>
+                                        {'Hazardous'}
+                                    </option>
+                                    <option value={'C'}>
+                                        {'Immediately Hazardous'}
+                                    </option>
+                            </Select>
             </Flex>}
-            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : violationsData} />}
+            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : filteredVios} />}
 
 
             <br/><br/>
@@ -235,7 +256,7 @@ const Violations = ({data, registered}) => {
                 <TabPanels>
                     <TabPanel>
                         <Flex justifyContent='right'>
-                            <Select onChange={(e) => handleSelect(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
+                            <Select onChange={(e) => handleSelectComplaints(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
                                     <option value={'HEAT'}>
                                         {'HEAT'}
                                     </option>

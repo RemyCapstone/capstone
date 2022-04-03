@@ -2,7 +2,7 @@ import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption} from '@chakra-ui/r
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 
 const ViolationsTable = ({data}) => {
-    console.log(data)
+    //console.log(data)
 
     return(
         <Box overflowY="auto" maxHeight="500px">
