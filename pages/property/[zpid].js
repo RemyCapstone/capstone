@@ -362,15 +362,17 @@ export async function getServerSideProps({ params: { zpid }, req }) {
 
   // Get session user info
   const session = await getSession({ req });
-  const propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
-
+  let propertySavedStatus = false;
+  if (session) {
+    propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
+  } 
   return {
     props: {
       propertyDetails: data,
       propertyImages: images,
       session: session,
       zpid: zpid,
-      savedStatus: propertySavedStatus
+      savedStatus: propertySavedStatus,
     },
   };
 }
