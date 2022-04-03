@@ -92,7 +92,7 @@ const Violations = ({data, registered}) => {
         //console.log(complaintsDescriptions)
     }
     complaintsDescriptions.sort((a, b) => (a.statusdate < b.statusdate) ? 1 : -1)
-    console.log('test', complaintsDescriptions)
+    //console.log('test', complaintsDescriptions)
     let filteredComplaints = complaintsDescriptions;
     const investigatedComplaints = complaintsDescriptions.filter(complaints => complaints.status === 'CLOSE')
     if(filterComplaint !== ''){

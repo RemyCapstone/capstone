@@ -6,12 +6,51 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarEle
 
 const BarChart = ({data}) => {
     
-    console.log('Bar:', data)
+    //console.log('Bar:', data)
 
-    const buildTimeLineData = []
+    const quarterlyDataNonEmergency = []
+    const quarterlyDataEmergency = []
+    const dataPoint = {}
     for(let i=0; i<data.length; i++){
-
+        const [year, month, date] = data[i].statusdate.split('-')
+        if(month === '01' || month === '02' || month === '03'){
+            if(!dataPoint[`${year} Q1`]){
+                dataPoint[`${year} Q1`] = 1
+            }
+            else{
+                dataPoint[`${year} Q1`] += 1;
+            }
+        }
+        if(month === '04' || month === '05' || month === '06'){
+            if(!dataPoint[`${year} Q2`]){
+                dataPoint[`${year} Q2`] = 1
+            }
+            else{
+                dataPoint[`${year} Q2`] += 1;
+            }
+        }
+        if(month === '07' || month === '08' || month === '09'){
+            if(!dataPoint[`${year} Q3`]){
+                dataPoint[`${year} Q3`] = 1
+            }
+            else{
+                dataPoint[`${year} Q3`] += 1;
+            }
+        }
+        if(month === '10' || month === '11' || month === '12'){
+            if(!dataPoint[`${year} Q4`]){
+                dataPoint[`${year} Q4`] = 1
+            }
+            else{
+                dataPoint[`${year} Q4`] += 1;
+            }
+        }
     }
+
+    //console.log(dataPoint)
+    const arrayOfObj = Object.entries(dataPoint).map((e) => ( { x: e[0], y: e[1] } ));
+    console.log(arrayOfObj)
+    console.log('Total')
 
         return(
                 <Bar
