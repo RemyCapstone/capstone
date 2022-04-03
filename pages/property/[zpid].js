@@ -107,6 +107,9 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         bathWord = 'Bath'
     }
 
+    // const router = useRouter();
+    // console.log(propertyDetails)
+    //console.log(propertyImages)
 
     let streetName = streetAddress
     streetName = streetName.toUpperCase();
@@ -200,7 +203,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             <Spacer />
             <Box w='35%' marginTop='1%'>
               <Text fontSize='2xl' marginBottom='1' fontWeight='semibold'>
-                {brokerageName} {streetAddress}
+                {brokerageName} {streetAddress} 
               </Text>
               <Text fontSize='xl'>
                 {address.city}, {address.state} {zipcode}
@@ -299,7 +302,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 <Spacer/>
                 <Box alignItems='right'>
                   {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' paddingTop={10}>
+                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' marginTop={10}>
                     Report a violation
                   </Button>
                 </Box>
