@@ -48,7 +48,6 @@ const fetchUserHandler = async (id) => {
   });
 
   const data = await response.json();
-  console.log('FETCHUSERHANDLER', data.user);
   return data.user;
 }
 
@@ -64,7 +63,6 @@ const fetchPropertyStatusHandler = async (zpid, userid) => {
 
   const res = await response;
   const data = await res.json();
-  console.log('fetchPropertyStatusHandler data', data, zpid);
   return data.savedStatus;
 }
 
@@ -362,7 +360,10 @@ export async function getServerSideProps({ params: { zpid }, req }) {
 
   // Get session user info
   const session = await getSession({ req });
-  const propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
+  let propertySavedStatus = false;
+  if (session) {
+    propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
+  }
 
   return {
     props: {

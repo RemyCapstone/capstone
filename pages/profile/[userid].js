@@ -1,18 +1,13 @@
-import { useRouter } from 'next/router';
 import {
   Avatar,
   Box,
   Button,
-  Grid,
-  GridItem,
-  StackDivider,
-  Text,
-  VStack,
-  List,
-  ListIcon,
-  ListItem,
-  Heading,
-  Flex
+  Grid, GridItem,
+  StackDivider, VStack,
+  List, ListIcon, ListItem,
+  Text, Heading,
+  Flex,
+  Tabs, TabList, TabPanels, Tab, TabPanel
 } from "@chakra-ui/react";
 import { RiBuilding4Line, RiHomeHeartLine, RiStarLine } from "react-icons/ri";
 
@@ -36,13 +31,28 @@ const fetchUserSavedPropertiesHandler = async (id) => {
 }
 
 // Functional component
-const ProfileDetailsPage = ({ session, savedProps}) => {
+const ProfileDetailsPage = ({ session, savedProps }) => {
   const name = session.user.firstName + " " + session.user.lastName;
   const joined = new Date(session.user.joined)
-
-  // const properties = session.user.savedProps;
   const properties = savedProps;
-  console.log('properties', properties)
+
+  const noRentalProperties = <p>
+    You have no saved rental properties. Search for your next happy place
+    <Link href='/search?purpose=for-rent'>
+      <Button colorScheme='blue' variant='link' paddingLeft='1'>
+        here.
+      </Button>
+    </Link>
+  </p>
+
+  const noHomes = <p>
+    You have no saved homes. Search for your next happy place
+    <Link href='/search?purpose=for-sale'>
+      <Button colorScheme='blue' variant='link' paddingLeft='1'>
+        here.
+      </Button>
+    </Link>
+  </p>
 
   return (
     <Grid
@@ -82,10 +92,6 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
               }/${joined.getDate()}/${joined.getFullYear()}`}{" "}
             </Text>
           </Box>
-          {/* LEFT COLUMN - BOTTOM HALF */}
-          <Box padding={3}>
-
-          </Box>
         </VStack>
         <List>
               <ListItem>
@@ -117,7 +123,7 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
           Saved Properties
         </Heading>
       </GridItem>
-      {/* RIGHT COLUMN - PROPERTIES */}
+      {/* RIGHT COLUMN - USER'S DATABASE STUFF */}
       <GridItem
         rowSpan={14}
         colSpan={5}
@@ -125,31 +131,62 @@ const ProfileDetailsPage = ({ session, savedProps}) => {
         bg="white"
         overflowY="auto"
       >
-        <Flex flexWrap="wrap">
-          {(properties && properties.length > 0) ? (properties.map((property) => (
-          // User has saved properties, display them.
-            <Property
-              property={property}
-              key={property.zpid}
-              isRental={property.isRental}
-            />
-          ))) :
-          // User has no saved properties, say as much.
-          <p>
-            You have no saved properties. Search for your next happy home
-            <Link href='/search?purpose=for-rent'>
-              <Button colorScheme='blue' variant='link' paddingLeft='1'>
-                here.
-              </Button>
-            </Link>
-          </p>
-          }
-        </Flex>
+        {/* 1 - TABS: SAVED PROPERTIES */}
+        <Tabs>
+          <TabList>
+            <Tab>Rental</Tab>
+            <Tab>Home</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel>
+              <Flex flexWrap="wrap">
+                {(properties && properties.length > 0)
+                  ?
+                  (properties.filter(property => property.isRental).length > 0)
+                    ?
+                    (properties.filter(property => property.isRental).map((property) => (
+                      // User has saved properties, display them.
+                        <Property
+                          property={property}
+                          key={property.zpid}
+                          isRental={property.isRental}
+                        />
+                      )))
+                    :
+                    noRentalProperties
+                :
+                noRentalProperties
+                }
+              </Flex>
+            </TabPanel>
+            <TabPanel>
+            <Flex flexWrap="wrap">
+                {(properties && properties.length > 0)
+                  ?
+                  (properties.filter(property => !property.isRental).length > 0)
+                    ?
+                    (properties.filter(property => !property.isRental).map((property) => (
+                      // User has saved properties, display them.
+                        <Property
+                          property={property}
+                          key={property.zpid}
+                          isRental={property.isRental}
+                        />
+                      )))
+                    :
+                    noHomes
+                :
+                noHomes
+                }
+              </Flex>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+
       </GridItem>
 
       {/* TO-DO: USER'S REVIEWS */}
-      <GridItem rowSpan={7} colSpan={2} bg="white"></GridItem>
-
       {/* TO-DO: USER'S REPORTS */}
     </Grid>
   );
