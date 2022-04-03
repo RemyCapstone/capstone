@@ -13,9 +13,8 @@ const Charts = ({data, complaints}) => {
         return(
             <>
             <Flex>
-                <Box w='40%' overflowY="auto"></Box>
+                <Box w='40%' overflowY="auto"><Text textAlign={'right'} fontSize='xl' fontWeight='medium'>Complaints Breakdown:</Text></Box>
                 <Box w='55%' overflowY="auto">
-                    <Text textAlign={'center'} fontSize='xl' fontWeight='medium'>Complaints Breakdown:</Text>
                     <DonutChart data={data} />
                 </Box>
             </Flex>
