@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Spacer, Text, Image, Icon, Textarea,
-Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, UnorderedList, ListItem } from "@chakra-ui/react";
+Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, UnorderedList, ListItem, useToast } from "@chakra-ui/react";
 import { MdStarRate } from 'react-icons/md';
 import {BsStar, BsStarFill} from 'react-icons/bs'
 import { DUMMY_DATA } from "./DUMMY_DATA";
 import { useSession } from 'next-auth/react';
 import { useState } from "react";
 import Link from 'next/link';
+// import { ObjectId } from "mongodb";
 
 const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => { 
     if (!handleClickStar)
@@ -43,12 +44,13 @@ const SingleReview = ({data}) => {
     )
 }
 
-const Reviews = () => {
+const Reviews = ({zpid, postReviewHandler}) => {
     const { data : session} = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [ starFilled, setStarFilled ] = useState(0)
     const [selectedStar, setSelectedStar] = useState(false);
     const [ textValue, setTextValue ] = useState('')
+    const toast = useToast();
 
     let handleInputChange = (e) => {
         let inputValue = e.target.value
@@ -65,6 +67,35 @@ const Reviews = () => {
         setStarFilled(position);
     }
 
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      const values = {
+        userid: session.user._id,
+        zpid: zpid,
+        stars: starFilled,
+        review: textValue,
+        createdAt: new Date(),
+        lastEdited: new Date(),
+      };
+      
+      const result = await postReviewHandler(values);
+
+      console.log(result.data.message)
+      
+      if (result.status === 201) {
+        toast({
+          title: 'Review posted',
+          description: 'Thanks for telling us how you feel about this property!',
+          status: 'success',
+          duration: 2000,
+          isClosable: true,
+        });
+        setStarFilled(0);
+        setTextValue("");
+      }
+
+    }
     return (
       <>
         <Box overflowY="auto" maxHeight="650px">
@@ -77,21 +108,9 @@ const Reviews = () => {
         </Box>
 
         <Flex>
-          <Text marginTop={10} fontSize="3xl" fontWeight="bold">
-            Review this building:
-          </Text>
+          <Text marginTop={10} fontSize="3xl" fontWeight="bold"> Review this building: </Text>
           <Spacer />
-          <Text
-            onClick={onOpen}
-            cursor="pointer"
-            marginTop={10}
-            fontSize="md"
-            fontWeight="bold"
-            paddingTop={4}
-            color="teal.500"
-          >
-            Read our review guidelines
-          </Text>
+          <Text onClick={onOpen} cursor="pointer" marginTop={10} fontSize="md" fontWeight="bold" paddingTop={4} color="teal.500"> Read our review guidelines </Text>
         </Flex>
 
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -180,7 +199,9 @@ const Reviews = () => {
           </ModalContent>
         </Modal>
 
-        {session && ( <Box marginTop={4} border="1px" borderColor="gray.300" minHeight="400px">
+        {session && ( 
+          <form onSubmit={(e) => handleSubmit(e) }>
+          <Box marginTop={4} border="1px" borderColor="gray.300" minHeight="400px">
             <Flex padding={6}>
                 <Flex>
                     <Star value={1} starFilled={starFilled} handleHoverStar={handleHoverStar} handleClickStar={handleClickStar} />
@@ -205,20 +226,16 @@ const Reviews = () => {
             </Box>
 
             <Box marginLeft={6}>
-              <Button colorScheme="teal" size="lg">
+              <Button type='submit' colorScheme="teal" size="lg">
                 Post your review
               </Button>
             </Box>
           </Box>
+          </form>
         )}
 
         {!session && (
-          <Box
-            marginTop={4}
-            border="1px"
-            borderColor="gray.300"
-            minHeight="400px"
-          >
+          <Box marginTop={4} border="1px" borderColor="gray.300" minHeight="400px">
             <Flex padding={6}>
               <Flex>
                 <Star value={1} starFilled={starFilled} handleHoverStar={handleHoverStar} />

@@ -52,6 +52,19 @@ const fetchUserHandler = async (id) => {
   return data.user;
 }
 
+const postReviewHandler = async (review) => {
+  const response = await fetch("/api/submitReview", {
+    method: "POST",
+    body: JSON.stringify(review),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  // console.log('POSTREVIEWHANDLER', response)
+  return {data, status: response.status}
+}
+
 /* Handle getting the status of a single property for a user */
 const fetchPropertyStatusHandler = async (zpid, userid) => {
   const response = await fetch(`${server}/api/user/getPropertyStatus`, {
@@ -342,7 +355,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             <br />
 
             <div ref={reviewRef}>
-            <Reviews></Reviews>
+            <Reviews zpid={zpid} postReviewHandler={postReviewHandler}></Reviews>
             </div>
 
           </Box>
