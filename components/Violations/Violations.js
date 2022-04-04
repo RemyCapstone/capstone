@@ -12,6 +12,8 @@ import { hashMapBuilder } from '../../utils/hashMapBuilder';
 import ViolationsOpen from './ViolationsOpen';
 import ViolationsTotal from './ViolationsTotal';
 import Charts from './Charts/Charts';
+import BarChartVio from './Charts/BarChartVio';
+import HPDExplaination from './Charts/HPDExplainations';
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
@@ -209,23 +211,41 @@ const Violations = ({data, registered}) => {
                 <Text>View All Violations</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
-            {viewViolations && <Flex justifyContent='right'>
-                <Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
-                    Only Show Open Violations
-                </Checkbox>
-                 <Select onChange={(e) => handleSelectViolations(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
-                                    <option value={'A'}>
-                                        {'Non-Hazardous'}
-                                    </option>
-                                    <option value={'B'}>
-                                        {'Hazardous'}
-                                    </option>
-                                    <option value={'C'}>
-                                        {'Immediately Hazardous'}
-                                    </option>
-                            </Select>
-            </Flex>}
-            {viewViolations && <ViolationsTable data={toggleCheckBox ? openViolations : filteredVios} />}
+            {viewViolations && 
+                <Tabs variant='soft-rounded' p={3} isFitted>
+                <TabList>
+                    <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Spreadsheet Summary</Tab>
+                    <Tab _selected={{ color: 'white', bg: 'green.400' }}>Charts</Tab>
+                </TabList>
+                <TabPanels>
+                    <TabPanel>
+                        <Flex justifyContent='right'>
+							<Checkbox size='md' colorScheme='green' onChange={handleCheck} padding='3' defaultChecked={toggleCheckBox}>
+								Only Show Open Violations
+							</Checkbox>
+							 <Select onChange={(e) => handleSelectViolations(e.target.value)} placeholder={'No Filter Applied'} w='fit-content' p='2'>
+												<option value={'A'}>
+													{'Non-Hazardous'}
+												</option>
+												<option value={'B'}>
+													{'Hazardous'}
+												</option>
+												<option value={'C'}>
+													{'Immediately Hazardous'}
+												</option>
+										</Select>
+						</Flex>
+						<ViolationsTable data={toggleCheckBox ? openViolations : filteredVios} />
+                        <HPDExplaination />
+                        <br />
+                    </TabPanel>
+                    <TabPanel>
+                        <BarChartVio data={violationsData} />
+                        <HPDExplaination />
+                    </TabPanel>
+                </TabPanels>
+                </Tabs>
+            }
 
 
             <br/><br/>
