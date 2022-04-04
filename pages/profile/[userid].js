@@ -140,25 +140,27 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
 
           <TabPanels>
             <TabPanel>
-              <Flex flexWrap="wrap">
+              <Grid templateColumns='repeat(2, 1fr)' gap={1}>
                 {(properties && properties.length > 0)
                   ?
                   (properties.filter(property => property.isRental).length > 0)
                     ?
                     (properties.filter(property => property.isRental).map((property) => (
                       // User has saved properties, display them.
+                      <GridItem>
                         <Property
                           property={property}
                           key={property.zpid}
                           isRental={property.isRental}
                         />
+                      </GridItem>
                       )))
                     :
                     noRentalProperties
                 :
                 noRentalProperties
                 }
-              </Flex>
+              </Grid>
             </TabPanel>
             <TabPanel>
             <Flex flexWrap="wrap">
