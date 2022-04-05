@@ -24,7 +24,7 @@ async function handler(req, res) {
         const client = await MongoClient.connect('mongodb+srv://remycapstone:NSpBNwJpvKxRko6T@cluster0.hwcwt.mongodb.net/users?retryWrites=true&w=majority');
         const db = client.db();
 
-        const usersCollection = db.collection('reviews');
+        const usersCollection = db.collection('users');
         const emailResult = await usersCollection.findOne({
             email: submitUserData.email
         })
