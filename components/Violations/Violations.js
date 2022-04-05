@@ -170,8 +170,8 @@ const Violations = ({data, registered}) => {
                         <Box w='50%' textAlign='left'>
                             <Text textTransform='uppercase' fontWeight='semibold'> 
                                 {`HPD Building ID `}
-                                <Tooltip label={'Unique identifier for a building registered with the HPD'} placement='right-end' bg='gray.50' color='black'>
-                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                <Tooltip label={'Unique identifier for a building registered with the HPD.'} placement='right-end' bg='gray.50' color='black'>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #898C92', color: 'white', backgroundColor: '#595B5E', paddingRight: '.25em', paddingLeft: '.25em', borderRadius: '50%'}}>{'?'}</span>
                                 </Tooltip>
                             </Text>
                             <Text>{data.buildingid}</Text>
@@ -180,7 +180,7 @@ const Violations = ({data, registered}) => {
                             <Text textTransform='uppercase' fontWeight='semibold'>
                                 {` Total Units `}
                                 <Tooltip label={'Used for calculating average amount of violations per unit. Naturally, buildings with more units will have more violations so using the average is a good method.'} placement='right-end' bg='gray.50' color='black'>
-                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #898C92', color: 'white', backgroundColor: '#595B5E', paddingRight: '.25em', paddingLeft: '.25em',  borderRadius: '50%'}}>{'?'}</span>
                                 </Tooltip>
                             </Text>
                             <Text>{units && units !== 0 ? `${units.unitstotal} units` : 'Not available'}</Text> 
@@ -189,7 +189,7 @@ const Violations = ({data, registered}) => {
                             <Text textTransform='uppercase' fontWeight='semibold'>
                                 {` Boro-Block-Lot `}
                                 <Tooltip label={'An indentifier used by the Department of Finance Tax Records and Primary Land Use Tax Lot Output.'} placement='right-end' bg='gray.50' color='black'>
-                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #898C92', color: 'white', backgroundColor: '#595B5E', paddingRight: '.25em', paddingLeft: '.25em', borderRadius: '50%'}}>{'?'}</span>
                                 </Tooltip>
                             </Text>
                             <Text>{`${data.boro}-${data.block}-${data.lot}`}</Text>
@@ -198,7 +198,7 @@ const Violations = ({data, registered}) => {
                             <Text textTransform='uppercase' fontWeight='semibold'>
                                 {` Landlord/Owner `}
                                 <Tooltip label={'Most common name associated with the building.'} placement='right-end' bg='gray.50' color='black'>
-                                    <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
+                                    <span style={{fontWeight: 'bold', border: '2px solid #898C92', color: 'white', backgroundColor: '#595B5E', paddingRight: '.25em', paddingLeft: '.25em', borderRadius: '50%'}}>{'?'}</span>
                                 </Tooltip>
                             </Text>
                             <Text>{units && units !== 0 ? units.ownername : 'Not available'}</Text>
@@ -216,7 +216,7 @@ const Violations = ({data, registered}) => {
                 <Tabs variant='soft-rounded' p={3} isFitted>
                 <TabList>
                     <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Spreadsheet Summary</Tab>
-                    <Tab _selected={{ color: 'white', bg: 'green.400' }}>Charts</Tab>
+                    <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Charts</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel>
@@ -271,7 +271,7 @@ const Violations = ({data, registered}) => {
                 <Tabs variant='soft-rounded' p={3} isFitted>
                 <TabList>
                     <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Spreadsheet Summary</Tab>
-                    <Tab _selected={{ color: 'white', bg: 'green.400' }}>Charts</Tab>
+                    <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Charts</Tab>
                 </TabList>
                 <TabPanels>
                     <TabPanel>

@@ -23,7 +23,7 @@ const ComplaintsTable = ({data}) => {
                                 return (
                                     <Tr key={complaint.complaintid}>
                                         <Td>{complaint.statusdate.substring(0,complaint.statusdate.indexOf('T'))}</Td>
-                                        <Td><Text>{complaint.type === 'EMERGENCY' ? 'EMERGENCY' : 'NON EMERGENCY'}</Text></Td>
+                                        <Td><Text color={complaint.type === 'EMERGENCY' && 'red'}>{complaint.type === 'EMERGENCY' ? 'EMERGENCY' : 'NON EMERGENCY'}</Text></Td>
                                         <Td>{complaint.majorcategory}</Td>
                                         <Td>{complaint.minorcategory} {complaint.code !== 'N/A' && `(${complaint.code})`}</Td>
                                         <Td>{complaint.spacetype}</Td>

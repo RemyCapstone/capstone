@@ -104,7 +104,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
     
     return (
 
-        <Box maxWidth='1400px' margin='auto' p='4'>
+        <Box maxWidth='1300px' margin='auto' p='4'>
 
           {/*.............. Gallery and general info ..............*/}
           <Flex w='full' marginTop='2%'>
@@ -128,7 +128,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                   <Box w='30%' textAlign='right'>
                     <Flex>
                       <Center>
-                        <FaStar size={20}/>
+                        <FaStar size={20} color='#FFC107'/>
                         <Text fontSize='xl' paddingLeft='5px' >4.5</Text>
                         <Text fontSize='xl' color='gray.400'>(20)</Text>
                       </Center>
@@ -203,7 +203,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages}) => {
                 <Spacer/>
                 <Box alignItems='right'>
                   {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='20px' float='right' marginTop={10}>
+                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='16px' float='right' marginTop={10}>
                     Report a violation
                   </Button>
                 </Box>
