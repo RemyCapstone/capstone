@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 
 const getSavesHandler = async (req, res) => {
-  const userid = req.body;
+  const user = req.body;
 
   try {
     const client = await MongoClient.connect(
@@ -11,7 +11,7 @@ const getSavesHandler = async (req, res) => {
     const usersCollection = db.collection("users");
 
     const userResult = await usersCollection.findOne({
-      _id: ObjectId(userid),
+      email: user.email
     });
     console.log('userresult from get saves', userResult);
 

@@ -23,7 +23,7 @@ const ViolationsTable = ({data}) => {
                                 <Tr key={violation.violationid}>
                                     <Td>{violation.inspectiondate.substring(0,violation.inspectiondate.indexOf('T'))}</Td>
                                     <Td><Text color={violation.violationstatus === 'Open' && 'red'}>{violation.violationstatus}</Text></Td>
-                                    <Td>{violation.class === 'A' ? 'Non-Hazardous' : violation.class === 'B' ? 'Hazardous' : violation.class === 'C' ? 'Immediately Hazardous' : 'Fundamental Property Issue'}</Td>
+                                    <Td>{`${violation.class}`}</Td>
                                     <Td>{violation.novdescription}</Td>
                                 </Tr>
                             )

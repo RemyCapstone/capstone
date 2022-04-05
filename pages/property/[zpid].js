@@ -92,7 +92,6 @@ const fetchPropertyStatusHandler = async (zpid, userid) => {
 
   const res = await response;
   const data = await res.json();
-  console.log('fetchPropertyStatusHandler data', data, zpid);
   return data.savedStatus;
 }
 
@@ -117,7 +116,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const sortedPropertyReviews = propertyReviews.sort((a, b) => {
       (a.createdAt > b.createdAt) ? 1 : ((a.createdAt.getTime() === b.createdAt.getTime())  ? ((a.user.firstName > a.user.firstName) ? 1 : -1) : -1)
     }).filter((e) => e !== userReview)
-    
+
     // console.log('all reviews for this property:', sortedPropertyReviews)
     function handleBackClick() {
         // Scroll to review element
@@ -146,10 +145,6 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     if(bathrooms == 1) {
         bathWord = 'Bath'
     }
-
-    // const router = useRouter();
-    // console.log(propertyDetails)
-    //console.log(propertyImages)
 
     let streetName = streetAddress
     streetName = streetName.toUpperCase();
@@ -243,7 +238,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             <Spacer />
             <Box w='35%' marginTop='1%'>
               <Text fontSize='2xl' marginBottom='1' fontWeight='semibold'>
-                {brokerageName} {streetAddress} 
+                {brokerageName} {streetAddress}
               </Text>
               <Text fontSize='xl'>
                 {address.city}, {address.state} {zipcode}
@@ -269,12 +264,12 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                 {
                   isSaved ?
                   // Unsave if saved
-                  <Button leftIcon={<MdFavorite />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
+                  <Button leftIcon={<MdFavorite />} colorScheme='blue' size='md' variant='outline' onClick={() => saveProperty()}>
                     Unsave
                   </Button>
                   :
                   // Save if unsaved
-                  <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='lg' variant='outline' onClick={() => saveProperty()}>
+                  <Button leftIcon={<MdFavoriteBorder />} colorScheme='blue' size='md' variant='outline' onClick={() => saveProperty()}>
                     Save
                   </Button>
                 }
@@ -414,10 +409,10 @@ export async function getServerSideProps({ params: { zpid }, req }) {
     propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
     // user = await fetchUserHandler(session.user._id);
     propertyReviews = await fetchReviewsHandler(zpid);
-  } 
+  }
 
   // const propertyReviews = await fetchReviewsHandler(zpid);
-  
+
   return {
     props: {
       propertyDetails: data,

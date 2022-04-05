@@ -14,24 +14,37 @@ const handler = async (req, res) => {
     const usersCollection = db.collection("users");
 
     const userResult = await usersCollection.findOne({
-      _id: ObjectId(user._id),
+      // _id: ObjectId(user._id),
+      email: user.email
     });
+    console.log('User',user);
 
-    // if user doesnt exist, close the db connection and return status of 404
-    if (!userResult) {
+    if (!userResult) { // Google provider account
+      // client.close();
+      // return res.status(404).json({
+      //   message:  "User not found.",
+      //   type: "error"
+      // } );
+
+      let submitUserData = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        savedProps: [property],
+      };
+      await usersCollection.insertOne(submitUserData);
       client.close();
-      return res.status(404).json({
-        message:  "User not found.",
-        type: "error"
-      } );
+      return res.status(200).json({
+        message:"Property saved!",
+        type: "success"
+      })
     }
 
-    console.log(userResult.savedProps)
     if (userResult.savedProps !== undefined && userResult.savedProps.find( (e) => e.zpid === property.zpid )) {
       // Handle unsave
       console.log("Found one.")
       await usersCollection.updateOne(
-        { _id: ObjectId(user._id) },
+        { email: user.email },
         {
           $pullAll: {
             savedProps: [property]
@@ -46,7 +59,7 @@ const handler = async (req, res) => {
     }
     else {
       await usersCollection.updateOne(
-        { _id: ObjectId(user._id) },
+        { email: user.email },
         {
           $push: {
             savedProps: {
