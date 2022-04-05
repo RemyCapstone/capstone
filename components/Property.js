@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Box, Button, Flex, Spacer, Text, Tooltip } from "@chakra-ui/react";
-import { FaBed, FaBath } from 'react-icons/fa';
+import { Box, Button, IconButton, Flex, Spacer, Text, Tooltip, Center } from "@chakra-ui/react";
+import { FaBed, FaBath, FaStar } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
+import { MdFavoriteBorder, MdInfoOutline} from 'react-icons/md';
 import millify from 'millify';
 import { GoVerified, GoQuestion } from 'react-icons/go';
 import {useState, useEffect} from 'react';
@@ -93,23 +94,68 @@ const Property = ({property , isRental,}) => {
         //for new tab <a target="_blank" rel="noreferrer"></a>
         <Link href={`/property/${zpid}/`} passHref>
 
-            <Flex flexWrap='wrap' w='420px' p='5' paddingTop='0px' justifyContent='flex-start' cursor='pointer' >
-                <Box>
-                    <Image src={imgSrc ? imgSrc : DefaultImage} alt="home" width={400} height={260}/>
+            {/* NOTE: Brute forced the styling for the card margins to give spacing between each property, will probably need to adjust this in index.js and search.js */}
+            <Flex flexWrap='wrap' w='400px' paddingTop='0px' justifyContent='flex-start' cursor='pointer' borderWidth='1px' borderRadius='2xl' marginRight='26px' marginBottom='25px'>
+                <Box backgroundImage={imgSrc ? imgSrc : DefaultImage} backgroundPosition="center" width={400} height={200} borderTopLeftRadius='2xl' borderTopRightRadius='2xl'>
+                    <Flex>
+                        {/* TO-DO: Display ratings on property cards if available */}
+                        {/* 
+                        <Box backgroundColor='white' borderRadius='2xl' width={70} p='2' marginLeft='3' marginTop='3'>
+                            <Flex>
+                                <FaStar size={20} color='#FFC107'/>
+                                <Text marginLeft={2}>3.5</Text>
+                            </Flex>
+                        </Box>
+                        */}
+                        
+                        {/* TO-DO: Add Save functionality to pages with multiple property cards */}
+                        {/* Save button on top right of property card */}
+                        {/*
+                        <Box marginLeft='255' marginTop='3'> 
+                            <IconButton
+                                variant='outline'
+                                backgroundColor='white'
+                                borderColor='white'
+                                color='#B0B0B0'
+                                aria-label='Save property'
+                                borderRadius='50%'
+                                icon={<MdFavoriteBorder size={25}/>}  
+                            />    
+                        </Box>
+                        */}
+                    </Flex>
+                    
+                    
+                     
                 </Box>
-                <Box w="full">
+                <Box w="full" paddingLeft='5' paddingRight='5' paddingBottom='5'>
                     <Flex paddingTop='2' alignItems='center' justifyContent='space-between'>
                         <Flex alignItems='center'>
                             <Text fontWeight='bold' fontSize='lg'>${price.toLocaleString("en-US")}{isRental ? '/mo' : ''}</Text>
 
                         </Flex>
                         <Flex>
-                            <Text fontWeight='bold' fontSize='lg' color={isVerified.length > 0 ? 'teal.400' : 'red.400'}>{isVerified.length > 0 ? 'HPD Verified' : 'Not Verified'}</Text>
-                            <Box paddingLeft='2' paddingTop='0' _hover={{ color: "teal.600"}} color= {isVerified.length >0 ? 'green.500' : 'gray.500'}>{isVerified.length >0 ? <GoVerified /> : <Link href='/notregistered' passHref><Text fontSize='xs'>Learn More</Text></Link> }</Box>
+                            <Text fontWeight='semibold' fontSize='sm' paddingLeft='2' paddingRight='2' paddingTop='1' paddingBottom='1' borderRadius='lg' textTransform='uppercase' backgroundColor={isVerified.length > 0 ? '#329785' : '#CB4C4C'} color={'white'}>{isVerified.length > 0 ? 'HPD Verified' : 'Not Verified'}</Text>
+                            {/*<Box paddingLeft='2' paddingTop='0' _hover={{ color: "teal.600"}} color= {isVerified.length >0 ? 'green.500' : 'gray.500'}>{isVerified.length >0 ? <GoVerified /> : <Link href='/notregistered' passHref><Text fontSize='xs'>Learn More</Text></Link> }</Box>*/}
+                            <Box paddingTop='0' _hover={{ color: "teal.600"}} color= {isVerified.length >0 ? 'green.500' : 'gray.500'}>{isVerified.length >0 ? <Text></Text> : <Text marginLeft='2'><Link href='/notregistered' passHref><MdInfoOutline/></Link></Text> }</Box>
                         </Flex>
                     </Flex>
-                    <Flex alignItems='center' p='1' justifyContent='space-between' w='260px' color='blue.400'>
-                        <FaBed /> {bedrooms} {bedWord} | <FaBath /> {bathrooms} {bathWord} | <BsGridFill /> {millify(livingArea)} sqft
+                    <Flex alignItems='center' p='1' justifyContent='space-between' w='300px' color='#6F7583'>
+                        <Box>
+                            <Flex><FaBed size={20}/><Text marginLeft='10px'>{bedrooms} {bedWord}</Text></Flex>
+                        </Box>
+                        <Box>
+                            <Text>•</Text>
+                        </Box>        
+                        <Box>
+                            <Flex><FaBath size={20}/><Text marginLeft='10px'>{bathrooms} {bathWord}</Text></Flex>
+                        </Box>
+                        <Box>
+                            <Text>•</Text>
+                        </Box>   
+                        <Box>
+                            <Flex><BsGridFill size={20}/><Text marginLeft='10px'>{millify(livingArea)} sqft</Text></Flex>
+                        </Box>
                     </Flex>
                     <Text fontSize='md' color='gray.700'>
                         {residentalName} {streetName}

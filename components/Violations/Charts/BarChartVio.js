@@ -154,10 +154,10 @@ const BarChartVio = ({data}) => {
                             label: 'Class A',
                             data: quarterlyDataClassA,
                             backgroundColor: [
-                                'rgba(135, 171, 230, 0.2)',
+                                'rgba(224, 193, 57, 0.2)',
                             ],
                             borderColor: [
-                                'rgba(58, 30, 117, 0.5)',
+                                'rgba(184, 143, 27, 0.5)',
                             ],
                             stack: 1,
                             borderWidth: 2
@@ -166,10 +166,10 @@ const BarChartVio = ({data}) => {
                             label: 'Class B',
                             data: quarterlyDataClassB,
                             backgroundColor: [
-                                'rgba(55, 83, 191, 0.3)',
+                                'rgba(217, 119, 66, 0.3)',
                             ],
                             borderColor: [
-                                'rgba(58, 30, 117, 0.5)',
+                                'rgba(170, 95, 55, 0.5)',
                             ],
                             stack: 1,
                             borderWidth: 2
@@ -178,10 +178,10 @@ const BarChartVio = ({data}) => {
                             label: 'Class C',
                             data: quarterlyDataClassC,
                             backgroundColor: [
-                                'rgba(83, 0, 130, 0.3)',
+                                'rgba(191, 71, 97, 0.3)',
                             ],
                             borderColor: [
-                                'rgba(58, 30, 117, 0.5)',
+                                'rgba(140, 28, 51, 0.5)',
                             ],
                             stack: 1,
                             borderWidth: 2
@@ -207,7 +207,7 @@ const BarChartVio = ({data}) => {
                 />
 
                     {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
-                        {pages.map((page, index) => <Box onClick={() => clickHandler(index)} fontSize='lg' margin={4} fontWeight='bold' key={page} height='20px' width='20px'  backgroundColor={index == currentPage ? 'purple.600' : 'purple.200'} textAlign='center' borderRadius='50%'>{}</Box>)}
+                        {pages.map((page, index) => <Box onClick={() => clickHandler(index)} fontSize='lg' margin={4} fontWeight='bold' key={page} height='20px' width='20px'  backgroundColor={index == currentPage ? 'blue.500' : 'blue.100'} textAlign='center' borderRadius='50%'>{}</Box>)}
                     </Flex>}
                 </>
         )
