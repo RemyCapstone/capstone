@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { useState } from "react";
 import Link from 'next/link';
 import SingleReview from "./SingleReview";
-
+import { useRouter } from "next/router";
 const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => { 
     if (!handleClickStar)
         handleClickStar = () => {};
@@ -22,7 +22,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     const [selectedStar, setSelectedStar] = useState(false);
     const [ textValue, setTextValue ] = useState('')
     const toast = useToast();
-
+    const router = useRouter();
     let handleInputChange = (e) => {
         let inputValue = e.target.value
         setTextValue(inputValue)
@@ -65,47 +65,48 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
         setStarFilled(0);
         setTextValue("");
       }
-
+      router.reload(window.location.pathname)
+      
     }
     return (
       <>
-        {userReview && (
+        {userReview ? (
           <Box>
             <Text fontWeight="bold" fontSize="xl" textAlign="center">
               Your Review
             </Text>
             <SingleReview data={userReview} />
           </Box>
-        )}
+        ) : null}
         <Box overflowY="auto" maxHeight="650px">
           <Text fontWeight="bold" fontSize="xl" textAlign="center">
-            Recommended Reviews
+            Property Reviews
           </Text>
           {propertyReviews
             ? propertyReviews.map((e) => <SingleReview key={e.id} data={e} />)
             : null}
         </Box>
-
-        <Flex>
-          <Text marginTop={10} fontSize="3xl" fontWeight="bold">
-            {" "}
-            Review this building:{" "}
-          </Text>
-          <Spacer />
-          <Text
-            onClick={onOpen}
-            cursor="pointer"
-            marginTop={10}
-            fontSize="md"
-            fontWeight="bold"
-            paddingTop={4}
-            color="teal.500"
-          >
-            {" "}
-            Read our review guidelines{" "}
-          </Text>
-        </Flex>
-
+        {!userReview && (
+          <Flex>
+            <Text marginTop={10} fontSize="3xl" fontWeight="bold">
+              {" "}
+              Review this building:{" "}
+            </Text>
+            <Spacer />
+            <Text
+              onClick={onOpen}
+              cursor="pointer"
+              marginTop={10}
+              fontSize="md"
+              fontWeight="bold"
+              paddingTop={4}
+              color="teal.500"
+            >
+              {" "}
+              Read our review guidelines{" "}
+            </Text>
+          </Flex>
+        )}
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent maxW="56rem">
@@ -192,7 +193,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
           </ModalContent>
         </Modal>
 
-        {session && (
+        {session && !userReview && (
           <form onSubmit={(e) => handleSubmit(e)}>
             <Box
               marginTop={4}
