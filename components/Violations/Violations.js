@@ -26,10 +26,10 @@ const Violations = ({data, registered}) => {
     const [toggleCheckBox, setCheckBox] = useState(false);
     //console.log(data)
 
-
+   
 
     const openViolations = violationsData.filter(vio => vio.violationstatus === 'Open')
-
+    
     let avgVio = 'N/A'
     if(units && units !== 0) avgVio = openViolations.length === 0 ? 0 : Math.round((openViolations.length / units.unitstotal) * 100) / 100
 
@@ -75,10 +75,10 @@ const Violations = ({data, registered}) => {
             })
         }
     }, [data]);
-
-    const handleCheck = () => {
+    
+    const handleCheck = () => { 
         setCheckBox(!toggleCheckBox)
-    };
+    }; 
 
     const handleSelectComplaints = (value) => {
         setFilterComplaint(value)
@@ -128,6 +128,7 @@ const Violations = ({data, registered}) => {
     //}
     //console.log(sortableCategories)   //comment this out
 
+    
 
     if(!registered){
         return (
@@ -157,17 +158,17 @@ const Violations = ({data, registered}) => {
                         {/*Passing over openViolations into ViolationsOpen component*/}
                         <ViolationsOpen data={openViolations} avgViolations={avgVio}></ViolationsOpen>
                     </Flex>
-                    <br/>
+                    <br/>  
                     <Flex>
                         {/*Passing over violationsData into ViolationsTotal component*/}
                         <ViolationsTotal data={violationsData}></ViolationsTotal>
-                    </Flex>
+                    </Flex>   
                 </Box>
                 <Spacer />
                 <Box w='50%'>
                     <Flex>
                         <Box w='50%' textAlign='left'>
-                            <Text textTransform='uppercase' fontWeight='semibold'>
+                            <Text textTransform='uppercase' fontWeight='semibold'> 
                                 {`HPD Building ID `}
                                 <Tooltip label={'Unique identifier for a building registered with the HPD'} placement='right-end' bg='gray.50' color='black'>
                                     <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
@@ -182,7 +183,7 @@ const Violations = ({data, registered}) => {
                                     <span style={{fontWeight: 'bold', border: '2px solid #666', color: 'white', backgroundColor: '#38393b', paddingRight: '.25em', paddingLeft: '.25em'}}>{'?'}</span>
                                 </Tooltip>
                             </Text>
-                            <Text>{units && units !== 0 ? `${units.unitstotal} units` : 'Not available'}</Text>
+                            <Text>{units && units !== 0 ? `${units.unitstotal} units` : 'Not available'}</Text> 
                         </Box>
                         <Box w='50%' textAlign='left' paddingLeft='20px'>
                             <Text textTransform='uppercase' fontWeight='semibold'>
@@ -201,7 +202,7 @@ const Violations = ({data, registered}) => {
                                 </Tooltip>
                             </Text>
                             <Text>{units && units !== 0 ? units.ownername : 'Not available'}</Text>
-
+                        
                         </Box>
                     </Flex>
                 </Box>
@@ -322,11 +323,11 @@ const Violations = ({data, registered}) => {
 
 
 
+            
+    
 
 
-
-
-
+            
         </Box>
     )
 }

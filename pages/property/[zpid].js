@@ -39,7 +39,7 @@ const saveHandler = async(property, user) => {
 
 /* Handle getting a single user's data */
 const fetchUserHandler = async (id) => {
-  const response = await fetch("/api/user", {
+  const response = await fetch(`${server}/api/user`, {
     method: "POST",
     body: JSON.stringify(id),
     headers: {
@@ -48,9 +48,38 @@ const fetchUserHandler = async (id) => {
   });
 
   const data = await response.json();
+  // console.log("FETCHUSERHANDLER", data);
   return data.user;
+};
+
+
+/* Handle creating a new review */
+const postReviewHandler = async (review) => {
+  const response = await fetch(`${server}/api/submitReview`, {
+    method: "POST",
+    body: JSON.stringify(review),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  // console.log('POSTREVIEWHANDLER', response)
+  return {data, status: response.status}
 }
 
+/* Handle getting all reviews for this property */
+const fetchReviewsHandler = async (property) =>  {
+  const response = await fetch(`${server}/api/fetchPropertyReviews`, {
+    method: "POST",
+    body: JSON.stringify(property),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  const data = await response.json();
+  return data.reviews;
+}
 /* Handle getting the status of a single property for a user */
 const fetchPropertyStatusHandler = async (zpid, userid) => {
   const response = await fetch(`${server}/api/user/getPropertyStatus`, {
@@ -66,17 +95,29 @@ const fetchPropertyStatusHandler = async (zpid, userid) => {
   return data.savedStatus;
 }
 
+
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)
 
-const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, savedStatus}) => {
+const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, savedStatus, propertyReviews}) => {
     const toast = useToast();
     const reviewRef = useRef(null);
     const router = useRouter();
     const [isVerified, setVerified] = useState([]);
     const [isSaved, setIsSaved] = useState(savedStatus);
+    // console.log('reviews for this property:', propertyReviews)
+    const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : {};
+    // console.log('This user\'s review:',userReview)
+    /*
+      Sort all reviews based on timestamp.
+      If in the unlikely event someone makes a review at the exact same time, we sort by their first name. If they ALSO have the same first name, it's doomed.
 
-    const user = fetchUserHandler(session ? session.user._id : null);
+      Then filter the user review from all reviews to display separately.
+    */
+    const sortedPropertyReviews = propertyReviews.sort((a, b) => {
+      (a.createdAt > b.createdAt) ? 1 : ((a.createdAt.getTime() === b.createdAt.getTime())  ? ((a.user.firstName > a.user.firstName) ? 1 : -1) : -1)
+    }).filter((e) => e !== userReview)
 
+    // console.log('all reviews for this property:', sortedPropertyReviews)
     function handleBackClick() {
         // Scroll to review element
         scrollToRef(reviewRef);
@@ -336,7 +377,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             <br />
 
             <div ref={reviewRef}>
-            <Reviews></Reviews>
+              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} reviews={sortedPropertyReviews} > </Reviews>
             </div>
 
           </Box>
@@ -359,10 +400,18 @@ export async function getServerSideProps({ params: { zpid }, req }) {
 
   // Get session user info
   const session = await getSession({ req });
+
   let propertySavedStatus = false;
+  // let userReview = {};
+  let propertyReviews = []
+  // let user = {};
   if (session) {
     propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
+    // user = await fetchUserHandler(session.user._id);
+    propertyReviews = await fetchReviewsHandler(zpid);
   }
+
+  // const propertyReviews = await fetchReviewsHandler(zpid);
 
   return {
     props: {
@@ -370,7 +419,9 @@ export async function getServerSideProps({ params: { zpid }, req }) {
       propertyImages: images,
       session: session,
       zpid: zpid,
-      savedStatus: propertySavedStatus
+      savedStatus: propertySavedStatus,
+      // user: user,
+      propertyReviews: propertyReviews,
     },
   };
 }

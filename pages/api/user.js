@@ -4,21 +4,21 @@ import { MongoClient, ObjectId } from "mongodb";
 const handler = async (req, res) => {
   const userid = req.body;
 
+
   try {
     const client = await MongoClient.connect(
       "mongodb+srv://remycapstone:NSpBNwJpvKxRko6T@cluster0.hwcwt.mongodb.net/users?retryWrites=true&w=majority"
     );
-    const db = client.db();
+    const db = client.db("users");
     const usersCollection = db.collection("users");
     const result = await usersCollection.findOne({
       _id: ObjectId(userid),
     });
-    
-    if (!result) {
-      client.close();
-      return res.status(404).json({ message: "User not found.", user: null })
-    }
     client.close();
+    
+    if (!result) 
+      return res.status(404).json({ message: "User not found.", user: null })
+    
     return res.status(200).json({ message: "User found.", user: result })
 
   } catch (error) {

@@ -17,7 +17,7 @@ import {
 import InputField from './InputField';
 import AuthError from './AuthError';
 
-const LoginForm = () => {
+const LoginForm = ({previousPage}) => {
 
   /* HOOKS */
   const [show, setShow] = useState(false); // hook for show password state
