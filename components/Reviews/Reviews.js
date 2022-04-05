@@ -1,12 +1,11 @@
-import { Box, Button, Flex, Spacer, Text, Image, Icon, Textarea,
+import { Box, Button, Flex, Spacer, Text, Icon, Textarea,
 Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, UnorderedList, ListItem, useToast } from "@chakra-ui/react";
-import { MdStarRate } from 'react-icons/md';
 import {BsStar, BsStarFill} from 'react-icons/bs'
 import { DUMMY_DATA } from "./DUMMY_DATA";
 import { useSession } from 'next-auth/react';
 import { useState } from "react";
 import Link from 'next/link';
-// import { ObjectId } from "mongodb";
+import SingleReview from "./SingleReview";
 
 const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => { 
     if (!handleClickStar)
@@ -15,36 +14,8 @@ const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => {
         <Icon cursor='pointer' as={starFilled < value ? BsStar: BsStarFill} w={8} h={8} marginRight={2} color={starFilled < value ? 'gray.400' : 'red.400'} onMouseOver={() => handleHoverStar(value) } onClick={() => handleClickStar(value)} />
     );
 }
-const SingleReview = ({data}) => {
-    //amount of review stars
 
-    let stars = []
-    for(let i=0; i< data.rating; i++){
-        stars.push(i)
-    }
-
-
-    return (
-        <Box marginTop={5} overflowY="auto" maxHeight="150px" w='100%' maxWidth='1000px'>
-            <Flex>
-                <Image borderRadius='full' boxSize='150px' src={data.profile_picture_url} alt='User Pfp' width='130px' height='130px'/>
-                <Box>
-                    <Box paddingLeft='5'>
-                        <Flex minWidth={770} maxWidth={770}>
-                            <Text fontWeight='medium' fontSize='md' marginRight={5}>{data.user}</Text>
-                            <Flex color='red'>{stars.map((e,i) => <Icon  key={i} as={MdStarRate} w={5} h={5} marginRight={2} />)}</Flex>
-                            <Spacer />
-                            <Text textAlign='right' fontWeight='medium' fontSize='md' color='gray.400'>{data.createdDate}</Text>
-                        </Flex>
-                        <Text fontSize='md' marginRight={5} as='i'>{data.description}</Text>                      
-                    </Box>
-                </Box>
-            </Flex>
-        </Box>
-    )
-}
-
-const Reviews = ({zpid, postReviewHandler}) => {
+const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     const { data : session} = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [ starFilled, setStarFilled ] = useState(0)
@@ -98,19 +69,41 @@ const Reviews = ({zpid, postReviewHandler}) => {
     }
     return (
       <>
+        {userReview && (
+          <Box>
+            <Text fontWeight="bold" fontSize="xl" textAlign="center">
+              Your Review
+            </Text>
+            <SingleReview data={userReview} />
+          </Box>
+        )}
         <Box overflowY="auto" maxHeight="650px">
           <Text fontWeight="bold" fontSize="xl" textAlign="center">
             Recommended Reviews
           </Text>
-          {DUMMY_DATA.map((e) => (
-            <SingleReview key={e.id} data={e} />
-          ))}
+          {propertyReviews
+            ? propertyReviews.map((e) => <SingleReview key={e.id} data={e} />)
+            : null}
         </Box>
 
         <Flex>
-          <Text marginTop={10} fontSize="3xl" fontWeight="bold"> Review this building: </Text>
+          <Text marginTop={10} fontSize="3xl" fontWeight="bold">
+            {" "}
+            Review this building:{" "}
+          </Text>
           <Spacer />
-          <Text onClick={onOpen} cursor="pointer" marginTop={10} fontSize="md" fontWeight="bold" paddingTop={4} color="teal.500"> Read our review guidelines </Text>
+          <Text
+            onClick={onOpen}
+            cursor="pointer"
+            marginTop={10}
+            fontSize="md"
+            fontWeight="bold"
+            paddingTop={4}
+            color="teal.500"
+          >
+            {" "}
+            Read our review guidelines{" "}
+          </Text>
         </Flex>
 
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -199,51 +192,115 @@ const Reviews = ({zpid, postReviewHandler}) => {
           </ModalContent>
         </Modal>
 
-        {session && ( 
-          <form onSubmit={(e) => handleSubmit(e) }>
-          <Box marginTop={4} border="1px" borderColor="gray.300" minHeight="400px">
-            <Flex padding={6}>
+        {session && (
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <Box
+              marginTop={4}
+              border="1px"
+              borderColor="gray.300"
+              minHeight="400px"
+            >
+              <Flex padding={6}>
                 <Flex>
-                    <Star value={1} starFilled={starFilled} handleHoverStar={handleHoverStar} handleClickStar={handleClickStar} />
-                    <Star value={2} starFilled={starFilled} handleHoverStar={handleHoverStar} handleClickStar={handleClickStar} />
-                    <Star value={3} starFilled={starFilled} handleHoverStar={handleHoverStar} handleClickStar={handleClickStar} />
-                    <Star value={4} starFilled={starFilled} handleHoverStar={handleHoverStar} handleClickStar={handleClickStar} />
-                    <Star value={5} starFilled={starFilled} handleHoverStar={handleHoverStar} handleClickStar={handleClickStar} />
-                    <Text fontSize='xl' paddingTop={.5} marginLeft={6}>
-                        {starFilled === 0 ? 'Select your rating': starFilled === 1 ? 'Horrible experience' : starFilled === 2 ? 'Could have been better' : starFilled === 3 ? 'It was alright' : starFilled === 4 ? 'Pretty good' : 'Great experience'} 
-                    </Text>
+                  <Star
+                    value={1}
+                    starFilled={starFilled}
+                    handleHoverStar={handleHoverStar}
+                    handleClickStar={handleClickStar}
+                  />
+                  <Star
+                    value={2}
+                    starFilled={starFilled}
+                    handleHoverStar={handleHoverStar}
+                    handleClickStar={handleClickStar}
+                  />
+                  <Star
+                    value={3}
+                    starFilled={starFilled}
+                    handleHoverStar={handleHoverStar}
+                    handleClickStar={handleClickStar}
+                  />
+                  <Star
+                    value={4}
+                    starFilled={starFilled}
+                    handleHoverStar={handleHoverStar}
+                    handleClickStar={handleClickStar}
+                  />
+                  <Star
+                    value={5}
+                    starFilled={starFilled}
+                    handleHoverStar={handleHoverStar}
+                    handleClickStar={handleClickStar}
+                  />
+                  <Text fontSize="xl" paddingTop={0.5} marginLeft={6}>
+                    {starFilled === 0
+                      ? "Select your rating"
+                      : starFilled === 1
+                      ? "Horrible experience"
+                      : starFilled === 2
+                      ? "Could have been better"
+                      : starFilled === 3
+                      ? "It was alright"
+                      : starFilled === 4
+                      ? "Pretty good"
+                      : "Great experience"}
+                  </Text>
                 </Flex>
-            </Flex>
-            <Box padding={6} paddingTop={4}>
-              <Textarea
-                padding={6}
-                value={textValue}
-                onChange={handleInputChange}
-                placeholder="Write review in this text box. Remember to follow our guidelines on how to write a proper review or else yours may be removed."
-                size="lg"
-                minHeight="200px"
-              />
-            </Box>
+              </Flex>
+              <Box padding={6} paddingTop={4}>
+                <Textarea
+                  padding={6}
+                  value={textValue}
+                  onChange={handleInputChange}
+                  placeholder="Write review in this text box. Remember to follow our guidelines on how to write a proper review or else yours may be removed."
+                  size="lg"
+                  minHeight="200px"
+                />
+              </Box>
 
-            <Box marginLeft={6}>
-              <Button type='submit' colorScheme="teal" size="lg">
-                Post your review
-              </Button>
+              <Box marginLeft={6}>
+                <Button type="submit" colorScheme="teal" size="lg">
+                  Post your review
+                </Button>
+              </Box>
             </Box>
-          </Box>
           </form>
         )}
 
         {!session && (
-          <Box marginTop={4} border="1px" borderColor="gray.300" minHeight="400px">
+          <Box
+            marginTop={4}
+            border="1px"
+            borderColor="gray.300"
+            minHeight="400px"
+          >
             <Flex padding={6}>
               <Flex>
-                <Star value={1} starFilled={starFilled} handleHoverStar={handleHoverStar} />
-                <Star value={2} starFilled={starFilled} handleHoverStar={handleHoverStar} />
-                <Star value={3} starFilled={starFilled} handleHoverStar={handleHoverStar} />
-                <Star value={4} starFilled={starFilled} handleHoverStar={handleHoverStar} />
-                <Star value={5} starFilled={starFilled} handleHoverStar={handleHoverStar} />
-
+                <Star
+                  value={1}
+                  starFilled={starFilled}
+                  handleHoverStar={handleHoverStar}
+                />
+                <Star
+                  value={2}
+                  starFilled={starFilled}
+                  handleHoverStar={handleHoverStar}
+                />
+                <Star
+                  value={3}
+                  starFilled={starFilled}
+                  handleHoverStar={handleHoverStar}
+                />
+                <Star
+                  value={4}
+                  starFilled={starFilled}
+                  handleHoverStar={handleHoverStar}
+                />
+                <Star
+                  value={5}
+                  starFilled={starFilled}
+                  handleHoverStar={handleHoverStar}
+                />
 
                 <Text fontSize="xl" paddingTop={0.5} marginLeft={6}>
                   {starFilled === 0

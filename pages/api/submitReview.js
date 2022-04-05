@@ -12,7 +12,7 @@ const handler = async (req, res) => {
     const client = await MongoClient.connect(
       "mongodb+srv://remycapstone:NSpBNwJpvKxRko6T@cluster0.hwcwt.mongodb.net/users?retryWrites=true&w=majority"
     );
-    const reviewsCollection = client.db("properties").collection('reviews'); 
+    const reviewsCollection = client.db("users").collection('reviews'); 
 
 
     const existingReview = await reviewsCollection.findOne({
