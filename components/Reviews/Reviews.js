@@ -29,7 +29,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     // console.log('is new reviewer?:', newReviewer)
     // console.log('review:', userReview)
-    console.log('these property reviews:', propertyReviews)
+    // console.log('these property reviews:', propertyReviews)
     const toast = useToast();
     const router = useRouter();
     let handleInputChange = (e) => {
