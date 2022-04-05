@@ -18,7 +18,7 @@ const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => {
 
 
 const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
-  console.log('reviews: ', propertyReviews)
+  // console.log('reviews: ', propertyReviews)
     const { data : session} = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [ starFilled, setStarFilled ] = useState(0)
@@ -46,6 +46,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
       e.preventDefault();
 
       const values = {
+        email: session.user.email,
         userid: session.user._id,
         zpid: zpid,
         stars: starFilled,
@@ -71,26 +72,20 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
       }
       router.reload(window.location.pathname);
 
-
-      
     }
     return (
       <>
         {userReview ? (
-          <Box>
-            <Text fontWeight="bold" fontSize="xl" textAlign="center">
-              Your Review
-            </Text>
+          <Box marginBottom={5}>
+            <Text fontWeight="bold" fontSize="xl" textAlign="center"> Your Review </Text>
             <SingleReview data={userReview} />
           </Box>
         ) : null}
         <Box overflowY="auto" maxHeight="650px">
-          <Text fontWeight="bold" fontSize="xl" textAlign="center">
-            Property Reviews
-          </Text>
-          {/* {propertyReviews
+          <Text fontWeight="bold" fontSize="xl" textAlign="center"> Property Reviews </Text>
+          {propertyReviews
             ? propertyReviews.map((e) => <SingleReview key={e.id} data={e} />)
-            : null} */}
+            : DUMMY_DATA.map((e) => <SingleReview key={e.id} data={e} />)}
         </Box>
         {!userReview && (
           <Flex>

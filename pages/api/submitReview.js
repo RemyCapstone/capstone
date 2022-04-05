@@ -1,10 +1,7 @@
 import { MongoClient, ObjectId } from "mongodb";
 
 const handler = async (req, res) => {
-  const newReview = {
-    ...req.body, 
-    userid: ObjectId(req.body.userid)
-  };
+  const newReview = req.body;
 
   console.log("review?:", newReview)
 

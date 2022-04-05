@@ -18,8 +18,8 @@ const handler = async (req, res) => {
         $lookup:
         {
           from: 'users',
-          localField: 'userid',
-          foreignField: '_id',
+          localField: 'email',
+          foreignField: 'email',
           as: 'user'
         }
       }
