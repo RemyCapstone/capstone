@@ -13,7 +13,7 @@ const handler = async (req, res) => {
 
 
     const existingReview = await reviewsCollection.findOne({
-      userid: newReview.userid,
+      email: newReview.email,
       zpid: newReview.zpid,
     });
 

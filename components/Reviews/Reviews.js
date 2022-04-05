@@ -27,8 +27,8 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     const [ newReviewer, setNewReviewer ] = useState(!userReview);
     const [ newReview, setNewReview ] = useState(undefined);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
-    console.log('is new reviewer?:', newReviewer)
-    console.log('review:', userReview)
+    // console.log('is new reviewer?:', newReviewer)
+    // console.log('review:', userReview)
     const toast = useToast();
     const router = useRouter();
     let handleInputChange = (e) => {
@@ -100,7 +100,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
         {!newReviewer && (userReview || newReview) ? (
           <Box marginBottom={5}>
             <Text fontWeight="bold" fontSize="xl" textAlign="center"> Your Review </Text>
-            {/* <SingleReview data={userReview ? userReview : newReview} /> */}
+            <SingleReview data={userReview ? userReview : newReview} />
           </Box>
         ) : null}
         <Box overflowY="auto" maxHeight="650px">
