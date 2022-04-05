@@ -24,6 +24,7 @@ const handler = async (req, res) => {
         }
       }
     ]).toArray()
+
     // console.log('these: ', reviews)
     // const existingReviews = await reviewsCollection.find({
     //   zpid: property,
