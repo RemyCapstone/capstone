@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
-import AlreadyLoggedIn from "./AlreadyLoggedIn";
+import AuthError from "./AuthError";
 
 /*
 * @returns a form to be used for signing a user up.
@@ -32,7 +32,7 @@ const SignupForm = (props) => {
 
   // Check if a user is already logged in and they did not just logged in. If so, display error.
   // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  if (session) return <AlreadyLoggedIn />;
+  if (session) return <AuthError title="Already Logged In!" desc="You cannot access this page because you are already logged in."  />;
   /* Form management via formik,
    * Validation via Yup
    * See here: https://formik.org/docs/tutorial#schema-validation-with-yup

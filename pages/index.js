@@ -1,5 +1,5 @@
 import Banner from "../components/Banner";
-import { Flex, Box, Text, Button } from "@chakra-ui/react";
+import { Flex, Box, Text, Button, Heading } from "@chakra-ui/react";
 import { baseListingURL, baseOptions, defaultSearch, fetchZillowApi } from "../utils/fetchZillowApi";
 import Property from "../components/Property";
 
@@ -15,11 +15,11 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
 
   //const usablePropertiesForSale = propertiesForSale.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
   //console.log(usablePropertiesForSale)
-  
+
   return(
     <Box> {/*Box is a div in @chakra-UI */}
       {/* A component that gives a "banner" type look, if you want to change the UI for this please check the Banner component*/}
-      <Banner 
+      <Banner
         purpose="VIEW RENTAL PROPERTIES"
         title1="Browse All Apartments"
         title2="For NYCers!"
@@ -36,7 +36,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
 
 
       {/* Repeated everything on top, just for sale properties*/}
-      <Banner 
+      <Banner
         purpose="VIEW SALE PROPERTIES"
         title1="Find, Buy & Own Condos"
         title2="For NYCers!"
@@ -50,7 +50,7 @@ const HomePage = ({propertiesForRent, propertiesForSale}) => {
         {/* propertiesForSale.map((property) => <Property property={property} key={property.id}/>) */}
       </Flex>
     </Box>
-  ) 
+  )
 };
 
 //this makes the initial api calls when we load our home page, these get passed to the HomePage component so we dont need to use any useEffect hooks
@@ -65,7 +65,7 @@ export async function getStaticProps(){
   //these are the props that you see passed in the HomePage component
   return {
     props: {
-      //the ? means that if our search result was success and if it exists, then get the .props property of the object that is return, 
+      //the ? means that if our search result was success and if it exists, then get the .props property of the object that is return,
       //.props in our case is the listings of all the apartments that match our search
       propertiesForRent: propertyForRent?.props,
       //propertiesForSale: propertyForSale?.props

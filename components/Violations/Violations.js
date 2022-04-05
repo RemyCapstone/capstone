@@ -267,7 +267,7 @@ const Violations = ({data, registered}) => {
                 <Text>View All Complaints</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
-            {viewComplaints && 
+            {viewComplaints &&
                 <Tabs variant='soft-rounded' p={3} isFitted>
                 <TabList>
                     <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Spreadsheet Summary</Tab>
@@ -320,7 +320,7 @@ const Violations = ({data, registered}) => {
                 </TabPanels>
                 </Tabs>
             }
-            
+
 
 
             

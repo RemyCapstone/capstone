@@ -1,6 +1,6 @@
 import { Alert, AlertIcon, AlertTitle, AlertDescription } from '@chakra-ui/react';
 
-const AlreadyLoggedIn = () => {
+const AuthError = ({title, desc}) => {
   return (
     <Alert
       status="error"
@@ -12,12 +12,12 @@ const AlreadyLoggedIn = () => {
       height="100px"
     >
       <AlertIcon />
-      <AlertTitle mr={2}> Already logged in! </AlertTitle>
+      <AlertTitle mr={2}> {title} </AlertTitle>
       <AlertDescription>
-        You cannot access this page because you are already logged in.
+        {desc}
       </AlertDescription>
     </Alert>
   );
 };
 
-export default AlreadyLoggedIn;
+export default AuthError;

@@ -15,14 +15,16 @@ async function handler(req, res) {
             firstName: newUserData.firstName,
             lastName: newUserData.lastName,
             email: newUserData.email,
-            password: passwordHash
+            password: passwordHash,
+            savedProps: [],
+            joined: new Date(), 
         };
         console.log(submitUserData);
 
         const client = await MongoClient.connect('mongodb+srv://remycapstone:NSpBNwJpvKxRko6T@cluster0.hwcwt.mongodb.net/users?retryWrites=true&w=majority');
         const db = client.db();
 
-        const usersCollection = db.collection('users');
+        const usersCollection = db.collection('reviews');
         const emailResult = await usersCollection.findOne({
             email: submitUserData.email
         })
