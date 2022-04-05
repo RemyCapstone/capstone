@@ -33,7 +33,7 @@ const fetchUserSavedPropertiesHandler = async (id) => {
 // Functional component
 const ProfileDetailsPage = ({ session, savedProps }) => {
   const name = session.user.firstName + " " + session.user.lastName;
-  const joined = new Date(session.user.joined)
+  const joined = session.user.joined ? new Date(session.user.joined) : null;
   const properties = savedProps;
 
   const noRentalProperties = <p>
@@ -85,12 +85,16 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
               {name}
             </Text>
             <Text fontSize="xl"> {session.user.email} </Text>
+            {joined ?
             <Text fontSize="md">
               User since&nbsp;
               {`${
                 joined.getMonth() + 1
               }/${joined.getDate()}/${joined.getFullYear()}`}{" "}
             </Text>
+            :
+            <></>
+            }
           </Box>
         </VStack>
         <List>
@@ -140,7 +144,7 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
 
           <TabPanels>
             <TabPanel>
-              <Grid templateColumns='repeat(2, 1fr)' gap={1}>
+              <Flex flexWrap="wrap">
                 {(properties && properties.length > 0)
                   ?
                   (properties.filter(property => property.isRental).length > 0)
@@ -160,7 +164,7 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
                 :
                 noRentalProperties
                 }
-              </Grid>
+              </Flex>
             </TabPanel>
             <TabPanel>
             <Flex flexWrap="wrap">
@@ -195,10 +199,16 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
 }
 
 export async function getServerSideProps({ params: { userid }, req }) {
+  console.log(userid)
   const session = await getSession({ req });
-  const res = await fetchUserSavedPropertiesHandler(userid);
-  const data = await res.json();
-  const savedProps = await data.savedProperties;
+
+  let savedProps = [];
+  if (session) {
+    const res = await fetchUserSavedPropertiesHandler(session.user);
+    console.log('res userid', res)
+    const data = await res.json();
+    savedProps = await data.savedProperties;
+  }
 
   return {
     props: {

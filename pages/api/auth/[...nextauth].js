@@ -1,7 +1,7 @@
 import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials";
-import { resolveHref } from "next/dist/shared/lib/router/router";
+import { server } from '../../../config/index';
 
 // import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 // import clientPromise from "./lib/mongodb";
@@ -19,7 +19,7 @@ const options = {
         password: "",
       },
       async authorize(credentials, req) {
-        const res = await fetch("http://localhost:3000/api/login", {
+        const res = await fetch(`${server}/api/login`, {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -32,7 +32,7 @@ const options = {
             firstName: user.result.firstName,
             lastName: user.result.lastName,
             joined: user.result.joined,
-            savedProps: user.result.savedProps,
+            // savedProps: user.result.savedProps,
           };
         }
         return null;
@@ -44,6 +44,7 @@ const options = {
       profile(profile) { // Override default Google profile options
         return {
           _id: profile.sub,
+          id: profile.sub, // Necessary for NextAuth bug
           name: profile.name,
           email: profile.email,
           lastName: profile.family_name,
@@ -68,9 +69,9 @@ const options = {
         token.email = user.email;
         token.firstName = user.firstName;
         token.lastName = user.lastName;
-        token.joined = user.joined;
-        token.savedProps = user.savedProps;
-
+        if (user.joined) {
+          token.joined = user.joined;
+        }
         if (user.image) {
           token.imageUrl = user.image;
         }
@@ -83,14 +84,26 @@ const options = {
       session.user.email = token.email;
       session.user.firstName = token.firstName;
       session.user.lastName = token.lastName;
-      session.user.joined = token.joined;
-      session.user.savedProps = token.savedProps;
       if (token.imageUrl)
       {
         session.user.imageUrl = token.imageUrl;
       }
+      if (token.joined) {
+        session.user.joined = token.joined;
+      }
       return session;
     },
+    // async signIn({ account, profile }) {
+    //   if (account.provider === "google") {
+    //     const res = await fetch("`${server}/api/signup`, {
+    //       method: "POST",
+    //       body: JSON.stringify(credentials),
+    //       headers: { "Content-Type": "application/json" },
+    //     });
+    //     return true;
+    //   }
+    //   return true;
+    // },
   },
   debug: false,
   // adapter: MongoDBAdapter(clientPromise),
