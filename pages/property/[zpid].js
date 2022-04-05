@@ -67,20 +67,6 @@ const postReviewHandler = async (review) => {
   return {data, status: response.status}
 }
 
-// /* Handle getting a single user's review */
-// const fetchUserReviewHandler = async (userid, zpid) => {
-//   const response = await fetch(`${server}/api/fetchUserReview`, {
-//     method: "POST",
-//     body: JSON.stringify([userid, zpid]),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-
-//   const data = await response.json();
-//   console.log('fetchuserreviewhandler:', data)
-//   return data.review;
-// }
 /* Handle getting all reviews for this property */
 const fetchReviewsHandler = async (property) =>  {
   const response = await fetch(`${server}/api/fetchPropertyReviews`, {
@@ -113,14 +99,14 @@ const fetchPropertyStatusHandler = async (zpid, userid) => {
 
 const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop+500)
 
-const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, savedStatus, propertyReviews, user}) => {
+const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, savedStatus, propertyReviews}) => {
     const toast = useToast();
     const reviewRef = useRef(null);
     const router = useRouter();
     const [isVerified, setVerified] = useState([]);
     const [isSaved, setIsSaved] = useState(savedStatus);
     // console.log('reviews for this property:', propertyReviews)
-    const userReview = propertyReviews.find( (review) => review.userid === user._id )
+    const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : {};
     // console.log('This user\'s review:',userReview) 
     /*
       Sort all reviews based on timestamp.
@@ -396,7 +382,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             <br />
 
             <div ref={reviewRef}>
-              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} reviews={sortedPropertyReviews}> </Reviews>
+              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} reviews={sortedPropertyReviews} > </Reviews>
             </div>
 
           </Box>
@@ -423,10 +409,10 @@ export async function getServerSideProps({ params: { zpid }, req }) {
   let propertySavedStatus = false;
   // let userReview = {};
   let propertyReviews = []
-  let user = {};
+  // let user = {};
   if (session) {
     propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
-    user = await fetchUserHandler(session.user._id);
+    // user = await fetchUserHandler(session.user._id);
     propertyReviews = await fetchReviewsHandler(zpid);
   } 
 
@@ -439,8 +425,7 @@ export async function getServerSideProps({ params: { zpid }, req }) {
       session: session,
       zpid: zpid,
       savedStatus: propertySavedStatus,
- 
-      user: user,
+      // user: user,
       propertyReviews: propertyReviews,
     },
   };

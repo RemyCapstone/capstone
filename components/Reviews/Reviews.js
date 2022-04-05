@@ -3,7 +3,8 @@ Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalClo
 import {BsStar, BsStarFill} from 'react-icons/bs'
 import { DUMMY_DATA } from "./DUMMY_DATA";
 import { useSession } from 'next-auth/react';
-import { useState } from "react";
+
+import { useState, useRef } from "react";
 import Link from 'next/link';
 import SingleReview from "./SingleReview";
 import { useRouter } from "next/router";
@@ -15,12 +16,15 @@ const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => {
     );
 }
 
+
 const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
+  console.log('reviews: ', propertyReviews)
     const { data : session} = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [ starFilled, setStarFilled ] = useState(0)
     const [selectedStar, setSelectedStar] = useState(false);
     const [ textValue, setTextValue ] = useState('')
+
     const toast = useToast();
     const router = useRouter();
     let handleInputChange = (e) => {
@@ -65,7 +69,9 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
         setStarFilled(0);
         setTextValue("");
       }
-      router.reload(window.location.pathname)
+      router.reload(window.location.pathname);
+
+
       
     }
     return (
@@ -82,9 +88,9 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
           <Text fontWeight="bold" fontSize="xl" textAlign="center">
             Property Reviews
           </Text>
-          {propertyReviews
+          {/* {propertyReviews
             ? propertyReviews.map((e) => <SingleReview key={e.id} data={e} />)
-            : null}
+            : null} */}
         </Box>
         {!userReview && (
           <Flex>
