@@ -106,7 +106,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const [isVerified, setVerified] = useState([]);
     const [isSaved, setIsSaved] = useState(savedStatus);
     // console.log('reviews for this property:', propertyReviews)
-    const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : {};
+    const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : undefined;
     // console.log('This user\'s review:',userReview) 
     /*
       Sort all reviews based on timestamp.

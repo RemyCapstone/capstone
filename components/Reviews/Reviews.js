@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Spacer, Text, Icon, Textarea,
-Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, UnorderedList, ListItem, useToast } from "@chakra-ui/react";
+Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure, UnorderedList, ListItem, useToast, BeatLoad } from "@chakra-ui/react";
 import {BsStar, BsStarFill} from 'react-icons/bs'
 import { DUMMY_DATA } from "./DUMMY_DATA";
 import { useSession } from 'next-auth/react';
@@ -22,9 +22,13 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     const { data : session} = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [ starFilled, setStarFilled ] = useState(0)
-    const [selectedStar, setSelectedStar] = useState(false);
+    const [ selectedStar, setSelectedStar ] = useState(false);
     const [ textValue, setTextValue ] = useState('')
-
+    const [ newReviewer, setNewReviewer ] = useState(!userReview);
+    const [ newReview, setNewReview ] = useState(undefined);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
+    console.log('is new reviewer?:', newReviewer)
+    console.log('review:', userReview)
     const toast = useToast();
     const router = useRouter();
     let handleInputChange = (e) => {
@@ -44,7 +48,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-
+      setIsSubmitting(true);
       const values = {
         email: session.user.email,
         userid: session.user._id,
@@ -70,15 +74,33 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
         setStarFilled(0);
         setTextValue("");
       }
-      router.reload(window.location.pathname);
-
+      // router.reload(window.location.pathname);
+      setNewReviewer(false);
+      setNewReview({
+        ...values,
+        user: [
+          {
+            firstName: session.user.firstName,
+            lastName: session.user.lastName,
+            email: session.user.email,
+            profileImage: session.user.profileImage
+              ? session.user.profileImage
+              : "",
+          },
+        ],
+      });
+      setIsSubmitting(false);
     }
+
+    // console.log(newReview);
+
+
     return (
       <>
-        {userReview ? (
+        {!newReviewer && (userReview || newReview) ? (
           <Box marginBottom={5}>
             <Text fontWeight="bold" fontSize="xl" textAlign="center"> Your Review </Text>
-            <SingleReview data={userReview} />
+            {/* <SingleReview data={userReview ? userReview : newReview} /> */}
           </Box>
         ) : null}
         <Box overflowY="auto" maxHeight="650px">
@@ -87,7 +109,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
             ? propertyReviews.map((e) => <SingleReview key={e.id} data={e} />)
             : DUMMY_DATA.map((e) => <SingleReview key={e.id} data={e} />)}
         </Box>
-        {!userReview && (
+        {newReviewer && !userReview && (
           <Flex>
             <Text marginTop={10} fontSize="3xl" fontWeight="bold">
               {" "}
@@ -194,7 +216,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
           </ModalContent>
         </Modal>
 
-        {session && !userReview && (
+        {session && newReviewer && (
           <form onSubmit={(e) => handleSubmit(e)}>
             <Box
               marginTop={4}
@@ -261,7 +283,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
               </Box>
 
               <Box marginLeft={6}>
-                <Button type="submit" colorScheme="teal" size="lg">
+                <Button isLoading={isSubmitting} type="submit" colorScheme="blue" size="lg">
                   Post your review
                 </Button>
               </Box>
