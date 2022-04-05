@@ -378,7 +378,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
             <br />
 
             <div ref={reviewRef}>
-              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} reviews={sortedPropertyReviews} > </Reviews>
+              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} propertyReviews={sortedPropertyReviews} > </Reviews>
             </div>
 
           </Box>
