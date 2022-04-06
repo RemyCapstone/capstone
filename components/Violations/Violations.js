@@ -1,5 +1,6 @@
 import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip} from '@chakra-ui/react';
 import { MdReportProblem } from 'react-icons/md';
+import {AiFillBug} from 'react-icons/ai';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { BsFilter } from 'react-icons/bs';
@@ -169,7 +170,34 @@ const Violations = ({data, registered}) => {
                     <Flex>
                         {/*Passing over violationsData into ViolationsTotal component*/}
                         <ViolationsTotal data={violationsData}></ViolationsTotal>
-                    </Flex>   
+                    </Flex>  
+                    <Flex>
+                        {pestTag.length > 0 && <Box marginTop='5' w='full' backgroundColor={'#63140b'} color={'#f2d6d3'} border='1px' borderColor={'black'} borderRadius='lg'>
+                            <Box p='3.5'>
+                                <Flex w='100%'>
+                                    <Box w='17%'>
+                                        <AiFillBug size={45}/>
+                                    </Box>
+                                    <Text fontSize={'2xl'} paddingTop='2px' fontWeight='bold'>{`This unit contains pests!`}</Text>
+                                </Flex>
+                                
+                                <Center>
+                                    {bedBugs.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
+                                        <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                                        <TagLabel>BEDBUGS</TagLabel>
+                                    </Tag></Flex>}
+                                    {mice.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
+                                        <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                                        <TagLabel>MICE</TagLabel>
+                                    </Tag></Flex>}
+                                    {roach.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
+                                        <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                                        <TagLabel>ROACHES</TagLabel>
+                                    </Tag></Flex>}
+                                </Center>
+                            </Box>
+                        </Box>}
+                    </Flex> 
                 </Box>
                 <Spacer />
                 <Box w='50%'>
@@ -214,21 +242,7 @@ const Violations = ({data, registered}) => {
                     </Flex>
                 </Box>
             </Flex>
-
-            <Box w='40%'>
-                {bedBugs.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
-                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>BEDBUGS</TagLabel>
-                </Tag>}
-                {mice.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
-                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>MICE</TagLabel>
-                </Tag>}
-                {roach.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
-                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>ROACHES</TagLabel>
-                </Tag>}
-            </Box>
+            
 
             {/* Violations table  */}
             <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={2}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
