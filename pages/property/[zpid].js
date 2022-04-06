@@ -404,15 +404,12 @@ export async function getServerSideProps({ params: { zpid }, req }) {
 
   let propertySavedStatus = false;
   // let userReview = {};
-  let propertyReviews = []
+  const propertyReviews = await fetchReviewsHandler(zpid);
   // let user = {};
   if (session) {
     propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
     // user = await fetchUserHandler(session.user._id);
-    propertyReviews = await fetchReviewsHandler(zpid);
   }
-
-  // const propertyReviews = await fetchReviewsHandler(zpid);
 
   return {
     props: {
