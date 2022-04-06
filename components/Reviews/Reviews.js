@@ -29,7 +29,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     // console.log('is new reviewer?:', newReviewer)
     // console.log('review:', userReview)
-    console.log('these property reviews:', propertyReviews)
+    // console.log('these property reviews:', propertyReviews)
     const toast = useToast();
     const router = useRouter();
     let handleInputChange = (e) => {
@@ -107,7 +107,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
         <Box overflowY="auto" maxHeight="650px">
           <Text fontWeight="bold" fontSize="xl" textAlign="center"> Property Reviews </Text>
           {(propertyReviews.length > 0 )
-            ? propertyReviews.map((e) => <SingleReview key={e.id} data={e} />)
+            ? propertyReviews.map((e) => <SingleReview key={e._id} data={e} />)
             : DUMMY_DATA.map((e) => <SingleReview key={e.id} data={e} />)}
         </Box>
         {newReviewer && !userReview && (
