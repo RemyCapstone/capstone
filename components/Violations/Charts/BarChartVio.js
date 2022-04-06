@@ -24,6 +24,7 @@ const BarChartVio = ({data}) => {
     const dataClassA = {}
     const dataClassB = {}
     const dataClassC = {}
+    const dataClassI = {}
 
     
         for(let i=0; i<data.length; i++){
@@ -34,27 +35,32 @@ const BarChartVio = ({data}) => {
                 if(month == '01' || month == '02' || month == '03'){
                     if(data[i].class == 'B') !dataClassB[`${year} Q1`] ? dataClassB[`${year} Q1`] = 1 : dataClassB[`${year} Q1`] += 1;
                     else if (data[i].class == 'C') !dataClassC[`${year} Q1`] ? dataClassC[`${year} Q1`] = 1 : dataClassC[`${year} Q1`] += 1;
+                    else if (data[i].class == 'I') !dataClassI[`${year} Q1`] ? dataClassI[`${year} Q1`] = 1 : dataClassI[`${year} Q1`] += 1;
                     else !dataClassA[`${year} Q1`] ? dataClassA[`${year} Q1`] = 1 : dataClassA[`${year} Q1`] += 1;
                 }
                 if(month == '04' || month == '05' || month == '06'){
                     if(data[i].class == 'B') !dataClassB[`${year} Q2`] ? dataClassB[`${year} Q2`] = 1 : dataClassB[`${year} Q2`] += 1;
                     else if (data[i].class == 'C') !dataClassC[`${year} Q2`] ? dataClassC[`${year} Q2`] = 1 : dataClassC[`${year} Q2`] += 1;
+                    else if (data[i].class == 'I') !dataClassI[`${year} Q2`] ? dataClassI[`${year} Q2`] = 1 : dataClassI[`${year} Q2`] += 1;
                     else !dataClassA[`${year} Q2`] ? dataClassA[`${year} Q2`] = 1 : dataClassA[`${year} Q2`] += 1;
                 }
                 if(month == '07' || month == '08' || month == '09'){
                     if(data[i].class == 'B') !dataClassB[`${year} Q3`] ? dataClassB[`${year} Q3`] = 1 : dataClassB[`${year} Q3`] += 1;
                     else if (data[i].class == 'C') !dataClassC[`${year} Q3`] ? dataClassC[`${year} Q3`] = 1 : dataClassC[`${year} Q3`] += 1;
+                    else if (data[i].class == 'I') !dataClassI[`${year} Q3`] ? dataClassI[`${year} Q3`] = 1 : dataClassI[`${year} Q3`] += 1;
                     else !dataClassA[`${year} Q3`] ? dataClassA[`${year} Q3`] = 1 : dataClassA[`${year} Q3`] += 1;
                 }
                 if(month == '10' || month == '11' || month == '12'){
                     if(data[i].class == 'B') !dataClassB[`${year} Q4`] ? dataClassB[`${year} Q4`] = 1 : dataClassB[`${year} Q4`] += 1; 
                     else if (data[i].class =='C') !dataClassC[`${year} Q4`] ? dataClassC[`${year} Q4`] = 1 : dataClassC[`${year} Q4`] += 1;
+                    else if (data[i].class == 'I') !dataClassI[`${year} Q4`] ? dataClassI[`${year} Q4`] = 1 : dataClassI[`${year} Q4`] += 1;
                     else !dataClassA[`${year} Q4`] ? dataClassA[`${year} Q4`] = 1 : dataClassA[`${year} Q4`] += 1;   
                 }
             }
             if(interval == 'Yearly'){
                  if(data[i].class == 'B') !dataClassB[`${year}`] ? dataClassB[`${year}`] = 1 : dataClassB[`${year}`] += 1;
                  if(data[i].class == 'C') !dataClassC[`${year}`] ? dataClassC[`${year}`] = 1 : dataClassC[`${year}`] += 1;
+                 if(data[i].class == 'C') !dataClassI[`${year}`] ? dataClassI[`${year}`] = 1 : dataClassI[`${year}`] += 1;
                  else !dataClassA[`${year}`] ? dataClassA[`${year}`] = 1 : dataClassA[`${year}`] += 1;
             }
             if(interval == 'Monthly'){
@@ -66,6 +72,7 @@ const BarChartVio = ({data}) => {
                     month == '11' ? 'Nov' :  'Dec';
                  if(data[i].class == 'B') !dataClassB[`${year} ${month} ${monthString}`] ? dataClassB[`${year} ${month} ${monthString}`] = 1 : dataClassB[`${year} ${month} ${monthString}`] += 1;
                  else if(data[i].class == 'C') !dataClassC[`${year} ${month} ${monthString}`] ? dataClassC[`${year} ${month} ${monthString}`] = 1 : dataClassC[`${year} ${month} ${monthString}`] += 1;
+                  else if(data[i].class == 'I') !dataClassI[`${year} ${month} ${monthString}`] ? dataClassI[`${year} ${month} ${monthString}`] = 1 : dataClassI[`${year} ${month} ${monthString}`] += 1;
                  else !dataClassA[`${year} ${month} ${monthString}`] ? dataClassA[`${year} ${month} ${monthString}`] = 1 : dataClassA[`${year} ${month} ${monthString}`] += 1;
             }
         }
@@ -77,7 +84,8 @@ const BarChartVio = ({data}) => {
     let quarterlyDataClassA = Object.entries(dataClassA).map((e) => ( { x: e[0], y: e[1] } ));
     let quarterlyDataClassB = Object.entries(dataClassB).map((e) => ( { x: e[0], y: e[1] } ));
     let quarterlyDataClassC = Object.entries(dataClassC).map((e) => ( { x: e[0], y: e[1] } ));
-    let allLabels = quarterlyDataClassB.concat(quarterlyDataClassA).concat(quarterlyDataClassC);
+    let quarterlyDataClassI = Object.entries(dataClassI).map((e) => ( { x: e[0], y: e[1] } ));
+    let allLabels = quarterlyDataClassB.concat(quarterlyDataClassA).concat(quarterlyDataClassC).concat(quarterlyDataClassI);
     for(let i=0; i<allLabels.length; i++){
         allLabels[i] = allLabels[i].x
     }
@@ -99,6 +107,10 @@ const BarChartVio = ({data}) => {
             return {x: `${strings[0]} ${strings[2]}`, y: e.y}
         })
         quarterlyDataClassC = quarterlyDataClassC.map(e => {
+            let strings = e.x.split(' ')
+            return {x: `${strings[0]} ${strings[2]}`, y: e.y}
+        })
+        quarterlyDataClassI = quarterlyDataClassI.map(e => {
             let strings = e.x.split(' ')
             return {x: `${strings[0]} ${strings[2]}`, y: e.y}
         })
@@ -129,6 +141,7 @@ const BarChartVio = ({data}) => {
        quarterlyDataClassA = quarterlyDataClassA.filter(e => uniqueLabels.includes(e.x))
        quarterlyDataClassB = quarterlyDataClassB.filter(e => uniqueLabels.includes(e.x))
        quarterlyDataClassC = quarterlyDataClassC.filter(e => uniqueLabels.includes(e.x))
+       quarterlyDataClassI = quarterlyDataClassI.filter(e => uniqueLabels.includes(e.x))
    }
 
         return(
@@ -154,10 +167,10 @@ const BarChartVio = ({data}) => {
                             label: 'Class A',
                             data: quarterlyDataClassA,
                             backgroundColor: [
-                                'rgba(224, 193, 57, 0.2)',
+                                'rgba(83, 148, 252, 0.2)',
                             ],
                             borderColor: [
-                                'rgba(184, 143, 27, 0.5)',
+                                'rgba(23, 26, 156, 0.5)',
                             ],
                             stack: 1,
                             borderWidth: 2
@@ -166,10 +179,10 @@ const BarChartVio = ({data}) => {
                             label: 'Class B',
                             data: quarterlyDataClassB,
                             backgroundColor: [
-                                'rgba(217, 119, 66, 0.3)',
+                                'rgba(26, 30, 214, 0.2)',
                             ],
                             borderColor: [
-                                'rgba(170, 95, 55, 0.5)',
+                                'rgba(23, 26, 156, 0.5)',
                             ],
                             stack: 1,
                             borderWidth: 2
@@ -178,10 +191,22 @@ const BarChartVio = ({data}) => {
                             label: 'Class C',
                             data: quarterlyDataClassC,
                             backgroundColor: [
-                                'rgba(191, 71, 97, 0.3)',
+                                'rgba(80, 9, 156, 0.4)',
                             ],
                             borderColor: [
-                                'rgba(140, 28, 51, 0.5)',
+                                'rgba(23, 26, 156, 0.5)',
+                            ],
+                            stack: 1,
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Class I',
+                            data: quarterlyDataClassI,
+                            backgroundColor: [
+                                'rgba(0, 0, 0, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(23, 26, 156, 0.5)',
                             ],
                             stack: 1,
                             borderWidth: 2
@@ -207,7 +232,7 @@ const BarChartVio = ({data}) => {
                 />
 
                     {iterations > 1 && <Flex w='100%' justifyContent='center' alignItems='center' cursor='pointer'>
-                        {pages.map((page, index) => <Box onClick={() => clickHandler(index)} fontSize='lg' margin={4} fontWeight='bold' key={page} height='20px' width='20px'  backgroundColor={index == currentPage ? 'blue.500' : 'blue.100'} textAlign='center' borderRadius='50%'>{}</Box>)}
+                        {pages.map((page, index) => <Box onClick={() => clickHandler(index)} fontSize='lg' margin={4} fontWeight='bold' key={page} height='20px' width='20px'  backgroundColor={index == currentPage ? 'purple.500' : 'purple.100'} textAlign='center' borderRadius='50%'>{}</Box>)}
                     </Flex>}
                 </>
         )
