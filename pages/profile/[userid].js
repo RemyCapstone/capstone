@@ -151,10 +151,9 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
                     ?
                     (properties.filter(property => property.isRental).map((property) => (
                       // User has saved properties, display them.
-                      <GridItem>
+                      <GridItem key={property.zpid}>
                         <Property
                           property={property}
-                          key={property.zpid}
                           isRental={property.isRental}
                         />
                       </GridItem>
