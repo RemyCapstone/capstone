@@ -215,7 +215,7 @@ const Violations = ({data, registered}) => {
                 </Box>
             </Flex>
 
-            <Flex justifyContent='right' alignItems='right'>
+            <Box w='50%'>
                 {pestTag.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
                     <TagLeftIcon boxSize='12px' as={MdReportProblem} />
                     <TagLabel>There is a pest issue</TagLabel>
@@ -230,9 +230,9 @@ const Violations = ({data, registered}) => {
                 </Tag>}
                 {roach.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
                     <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>This unit has a cockroach infestation.</TagLabel>
+                    <TagLabel>This unit has roaches</TagLabel>
                 </Tag>}
-            </Flex>
+            </Box>
 
             {/* Violations table  */}
             <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={2}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
