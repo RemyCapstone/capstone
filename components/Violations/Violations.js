@@ -1,4 +1,5 @@
-import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip, Tag} from '@chakra-ui/react';
+import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip} from '@chakra-ui/react';
+import { MdReportProblem } from 'react-icons/md';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { BsFilter } from 'react-icons/bs';
@@ -14,6 +15,7 @@ import ViolationsTotal from './ViolationsTotal';
 import Charts from './Charts/Charts';
 import BarChartVio from './Charts/BarChartVio';
 import HPDExplaination from './Charts/HPDExplainations';
+import { Tag, TagLabel, TagLeftIcon, TagRightIcon, TagCloseButton,} from '@chakra-ui/react'
 
 const Violations = ({data, registered}) => {
     const [violationsData, setViolationsData] = useState([]);
@@ -114,7 +116,13 @@ const Violations = ({data, registered}) => {
             complaint.majorcategory.includes(filterComplaint) || complaint.minorcategory.includes(filterComplaint) || complaint.code.includes(filterComplaint)
         )
     }
+    let pestTag = complaintsDescriptions.filter(complaint => complaint.minorcategory.toUpperCase().includes("PESTS"))
+    let bedBugs = complaintsDescriptions.filter(complaint => complaint.code.toUpperCase().includes("BUG"))
+    let mice = complaintsDescriptions.filter(complaint => complaint.code.toUpperCase().includes("MICE") || complaint.code.toUpperCase().includes("MOUSE") || complaint.code.toUpperCase().includes("RAT"))
+    let roach = complaintsDescriptions.filter(complaint => complaint.code.toUpperCase().includes("ROACH"))
+    //console.log("Pests", bedBugs)
 
+    
     let complaintCategories = hashMapBuilder(complaintsDescriptions, 'majorcategory');
     let sortableCategories = [];
     for (var complaint in complaintCategories) {
@@ -123,9 +131,9 @@ const Violations = ({data, registered}) => {
     sortableCategories.sort(function(a, b) {
         return b[1] - a[1];
     });
-    //if(sortableCategories.length > 5){
-       // sortableCategories = sortableCategories.slice(0, 5) // only get the first few
-    //}
+    if(sortableCategories.length > 5){
+        sortableCategories = sortableCategories.slice(0, 5) // only get the first few
+    }
     //console.log(sortableCategories)   //comment this out
 
     
@@ -146,7 +154,6 @@ const Violations = ({data, registered}) => {
 
     return(
         <Box overflowY="auto" borderBottom='1px' borderColor='gray.300'>
-
             {/*.............. HPD Violations Data ..............*/}
             <Flex>
                 <Text fontWeight='bold' fontSize='xl'>HPD Violations Data</Text>
@@ -207,8 +214,28 @@ const Violations = ({data, registered}) => {
                     </Flex>
                 </Box>
             </Flex>
+
+            <Flex justifyContent='right' alignItems='right'>
+                {pestTag.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
+                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                    <TagLabel>There is a pest issue</TagLabel>
+                </Tag>}
+                {bedBugs.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
+                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                    <TagLabel>This unit has bed bugs</TagLabel>
+                </Tag>}
+                {mice.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
+                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                    <TagLabel>This unit has mice</TagLabel>
+                </Tag>}
+                {roach.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
+                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                    <TagLabel>This unit has a cockroach infestation.</TagLabel>
+                </Tag>}
+            </Flex>
+
             {/* Violations table  */}
-            <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={5}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
+            <Flex onClick={() => setViewViolations(!viewViolations)} marginTop={2}  cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
                 <Text>View All Violations</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
@@ -260,7 +287,8 @@ const Violations = ({data, registered}) => {
             <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
                 <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='80px' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
                 <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated. ${emergencyComplaints.length} of these complaints are emergencies.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
-                <MiniTable title='Most Common Categories' color='green' content={sortableCategories.map(e => `${e[0]} (${e[1]}), `)} height='80px' tooltip='Complaints categorized into their most common types (heating, plumbing, sanitary conditions, etc.)'/>
+                <MiniTable title='Most Common Categories' color='green' content={sortableCategories.map(e => `${e[0]} (${e[1]}), `)} 
+                height='80px' tooltip='Complaints categorized into their most common types (heating, plumbing, sanitary conditions, etc.)'/>
             </Flex>
             {/* Complaints table */}
             <Flex onClick={() => setViewComplaints(!viewComplaints)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
