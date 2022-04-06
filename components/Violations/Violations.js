@@ -215,22 +215,18 @@ const Violations = ({data, registered}) => {
                 </Box>
             </Flex>
 
-            <Box w='50%'>
-                {pestTag.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
-                    <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>There is a pest issue</TagLabel>
-                </Tag>}
+            <Box w='40%'>
                 {bedBugs.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
                     <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>This unit has bed bugs</TagLabel>
+                    <TagLabel>BEDBUGS</TagLabel>
                 </Tag>}
                 {mice.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
                     <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>This unit has mice</TagLabel>
+                    <TagLabel>MICE</TagLabel>
                 </Tag>}
                 {roach.length > 0 && <Tag marginTop={5} marginRight={5} size={'lg'} variant='subtle' colorScheme='red'>
                     <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                    <TagLabel>This unit has roaches</TagLabel>
+                    <TagLabel>ROACHES</TagLabel>
                 </Tag>}
             </Box>
 
