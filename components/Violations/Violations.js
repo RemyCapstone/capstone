@@ -171,33 +171,6 @@ const Violations = ({data, registered}) => {
                         {/*Passing over violationsData into ViolationsTotal component*/}
                         <ViolationsTotal data={violationsData}></ViolationsTotal>
                     </Flex>  
-                    <Flex>
-                        {pestTag.length > 0 && <Box marginTop='5' w='full' backgroundColor={'#63140b'} color={'#f2d6d3'} border='1px' borderColor={'black'} borderRadius='lg'>
-                            <Box p='3.5'>
-                                <Flex w='100%'>
-                                    <Box w='17%'>
-                                        <AiFillBug size={45}/>
-                                    </Box>
-                                    <Text fontSize={'2xl'} paddingTop='2px' fontWeight='bold'>{`This unit contains pests!`}</Text>
-                                </Flex>
-                                
-                                <Center>
-                                    {bedBugs.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
-                                        <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                                        <TagLabel>BEDBUGS</TagLabel>
-                                    </Tag></Flex>}
-                                    {mice.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
-                                        <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                                        <TagLabel>MICE</TagLabel>
-                                    </Tag></Flex>}
-                                    {roach.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
-                                        <TagLeftIcon boxSize='12px' as={MdReportProblem} />
-                                        <TagLabel>ROACHES</TagLabel>
-                                    </Tag></Flex>}
-                                </Center>
-                            </Box>
-                        </Box>}
-                    </Flex> 
                 </Box>
                 <Spacer />
                 <Box w='50%'>
@@ -294,6 +267,31 @@ const Violations = ({data, registered}) => {
             <Flex>
                 <Text fontWeight='bold' fontSize='xl'>311 Complaints</Text>
             </Flex>
+            {pestTag.length > 0 && <Box marginTop='5' w='40%' backgroundColor={'#63140b'} color={'#f2d6d3'} border='1px' borderColor={'black'} borderRadius='lg'>
+                <Box p='3.5'>
+                    <Flex w='100%'>
+                        <Box w='17%'>
+                            <AiFillBug size={45}/>
+                        </Box>
+                        <Text fontSize={'2xl'} paddingTop='2px' fontWeight='bold'>{`This unit contains pests!`}</Text>
+                    </Flex>
+                    
+                    <Center>
+                        {bedBugs.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
+                            <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                            <TagLabel>BEDBUGS</TagLabel>
+                        </Tag></Flex>}
+                        {mice.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
+                            <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                            <TagLabel>MICE</TagLabel>
+                        </Tag></Flex>}
+                        {roach.length > 0 && <Flex><Tag size={'lg'} marginTop={3} marginRight={3} variant='subtle' colorScheme='red' border='1px'>
+                            <TagLeftIcon boxSize='12px' as={MdReportProblem} />
+                            <TagLabel>ROACHES</TagLabel>
+                        </Tag></Flex>}
+                    </Center>
+                </Box>
+            </Box>}
             <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
                 <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='80px' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
                 <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated. ${emergencyComplaints.length} of these complaints are emergencies.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
