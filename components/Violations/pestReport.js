@@ -7,6 +7,23 @@ import { Tag, TagLabel, TagLeftIcon, TagRightIcon, TagCloseButton,} from '@chakr
 
 const Pests = ({pestTag, bedBugs, mice, roach}) => {
     
+    if(pestTag.length === 0){
+        return(
+            <>
+            <Box marginTop='5' w='40%' backgroundColor={'#defff7'} color={'#2cc7a1'} border='1px' borderColor={'#2cc7a1'} borderRadius='lg'>
+                    <Box p='3.5'>
+                        <Flex w='100%'>
+                            <Box w='17%'>
+                                <AiFillBug size={45}/>
+                            </Box>
+                            <Text fontSize={'2xl'} paddingTop='2px' fontWeight='bold'>{`No pest sightings found!`}</Text>
+                        </Flex>
+                    </Box>
+            </Box>
+        </>
+        )
+    }
+
     return(
         <>
             <Box marginTop='5' w='40%' backgroundColor={'#63140b'} color={'#f2d6d3'} border='1px' borderColor={'black'} borderRadius='lg'>
