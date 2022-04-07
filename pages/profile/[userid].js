@@ -57,6 +57,7 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
   return (
     <Grid
       h="89vh"
+      w="140vh"
       templateRows="repeat(15, 1fr)"
       templateColumns="repeat(7, 1fr)"
       gap={2}
