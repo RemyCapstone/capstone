@@ -4,7 +4,7 @@ import { GoQuestion } from 'react-icons/go';
 
 const MiniTable = ({title, color, content, height, tooltip}) => {
     return(
-        <Box w='33%'>
+        <Box w='50%'>
                 <Table variant='striped' colorScheme={color} size="lg">
                         <Thead position="sticky" top={0} bgColor="white">
                             <Tr>

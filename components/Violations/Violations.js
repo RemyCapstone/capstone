@@ -13,6 +13,7 @@ import { hashMapBuilder } from '../../utils/hashMapBuilder';
 import ViolationsOpen from './ViolationsOpen';
 import ViolationsTotal from './ViolationsTotal';
 import Pests from './pestReport';
+import ComplaintsTotal from './ComplaintsTotal';
 import Charts from './Charts/Charts';
 import BarChartVio from './Charts/BarChartVio';
 import HPDExplaination from './Charts/HPDExplainations';
@@ -266,15 +267,13 @@ const Violations = ({data, registered}) => {
             <Flex>
                 <Text fontWeight='bold' fontSize='xl'>311 Complaints</Text>
             </Flex>
-            <Pests pestTag={pestTag} bedBugs={bedBugs} mice={mice} roach={roach}></Pests>
-            <Flex borderBottom='1px' borderColor='gray.300' paddingBottom={5}>
-                <MiniTable title='Total 311 Complaints' color='yellow' content={`${complaintsData.length} total 311 complaints in this building`} height='80px' tooltip='This includes the history of every 311 complaint submitted for this building, both closed and open.'/>
-                <MiniTable title='Open Investigations' color='pink' content={`${investigatedComplaints.length} out of ${complaintsData.length} complaints have been investigated. ${emergencyComplaints.length} of these complaints are emergencies.`} height='80px' tooltip='Open investigations are the 311 calls that have yet to be investigated.'/>
-                <MiniTable title='Most Common Categories' color='green' content={sortableCategories.map(e => `${e[0]} (${e[1]}), `)} 
-                height='80px' tooltip='Complaints categorized into their most common types (heating, plumbing, sanitary conditions, etc.)'/>
+            <Flex>
+                <Pests pestTag={pestTag} bedBugs={bedBugs} mice={mice} roach={roach}></Pests>
+                <Center/>
+                <ComplaintsTotal complaintsData={complaintsData} emergencyComplaints={emergencyComplaints}></ComplaintsTotal>
             </Flex>
             {/* Complaints table */}
-            <Flex onClick={() => setViewComplaints(!viewComplaints)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center'>
+            <Flex onClick={() => setViewComplaints(!viewComplaints)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center' marginTop='10'>
                 <Text>View All Complaints</Text>
                 <Icon paddingLeft='2' w='7' as={BsFilter} />
             </Flex>
