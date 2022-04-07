@@ -19,6 +19,7 @@ import { registeredOptions, fetchOpenApi } from "../../utils/hpdViolations";
 import Violations from '../../components/Violations/Violations';
 import { getSession } from 'next-auth/react';
 import Reviews from '../../components/Reviews/Reviews';
+import ReportForm from '../../components/ReportForm';
 
 import { server } from '../../config/index'; // dyanmic absolute routes
 
@@ -372,19 +373,18 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
           {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 
         <br/>
-
-          {/* if the listing has images, we can generate an image scroller*/}
           <Box w='full' p='5'>
             <br />
-
             <div ref={reviewRef}>
               <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} propertyReviews={sortedPropertyReviews} > </Reviews>
             </div>
-
           </Box>
 
-          </Box>
         </Box>
+        <Box>
+          <ReportForm/>
+        </Box>
+      </Box>
     )
 }
 
