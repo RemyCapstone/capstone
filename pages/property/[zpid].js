@@ -106,7 +106,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const [isSaved, setIsSaved] = useState(savedStatus);
     // console.log('reviews for this property:', propertyReviews)
     const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : undefined;
-    // console.log('This user\'s review:',userReview) 
+    // console.log('This user\'s review:',userReview)
     /*
       Sort all reviews based on timestamp.
       If in the unlikely event someone makes a review at the exact same time, we sort by their first name. If they ALSO have the same first name, it's doomed.
@@ -199,7 +199,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
       // Save a "snapshot" of the property due to API throttling.
       const propertyToSave = {
         zpid: propertyDetails.zpid,
-        address: `${brokerageName}, ${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
+        address: `${brokerageName ? brokerageName : ''}, ${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
         imgSrc: propertyDetails.imgSrc,
         price: propertyDetails.price,
         bedrooms: propertyDetails.bedrooms,
