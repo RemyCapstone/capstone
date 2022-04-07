@@ -7,6 +7,13 @@ ChartJS.register(ArcElement, Tooltip, Legend, LinearScale, CategoryScale, BarEle
 
 
 const BarChartVio = ({data}) => {
+    if(data.length === 0){
+        return (
+            <Text fontWeight={'medium'}>There is no history of violations for this building.</Text>
+        )
+    }
+
+
     const [currentPage, setCurrentPage] = useState(0);
     const [interval, setInterval] = useState('Monthly');
     
