@@ -337,17 +337,14 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                   {/* Placeholder to move the report button */}
                 </Box>
                 <Spacer/>
-                { session &&
                   <Box alignItems='right'>
                     {/* User can report a violation outside of HPD/311 directly to us mods */}
                     <ReportForm
                       zpid={zpid}
                       address={address}
                       purpose={propertyDetails.homeStatus === "FOR_RENT" ? "Rental" : "Home"}
-                      userEmail={session.user.email}
                     />
                   </Box>
-                }
               </Flex>
             </Box>
           </Flex>

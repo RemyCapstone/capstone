@@ -21,7 +21,7 @@ import { MdReportProblem } from 'react-icons/md';
 import { useState } from 'react';
 
 
-const ReportForm = ({zpid, address, purpose, userEmail}) => {
+const ReportForm = ({zpid, address, purpose }) => {
     // Hooks go here
     // --- Interactive hooks
     const toast = useToast();
@@ -182,7 +182,6 @@ const ReportForm = ({zpid, address, purpose, userEmail}) => {
                 zpid: zpid,
                 address: formAddress(address),
                 purpose: purpose,
-                userEmail: userEmail,
                 dateReported: new Date().toString(),
                 // Form data
                 problem: problem,

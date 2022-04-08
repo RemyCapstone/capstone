@@ -1,6 +1,6 @@
 const reportViolationHandler = async (req, res) => {
     const {
-        zpid, address, purpose, userEmail, dateReported,
+        zpid, address, purpose, dateReported,
         problem, problemDetail, locationDetail,
         additionalDetails,
         tenantFirstName, tenantLastName, tenantEmail,
@@ -30,7 +30,6 @@ const reportViolationHandler = async (req, res) => {
             <p><b>Zillow ID:</b> ${zpid}</p>
             <p><b>Address of Listing in Question:</b> ${address}</p>
             <p><b>Type of Listing:</b> ${purpose}</p>
-            <p><b>Reported by User:</b> ${userEmail}</p>
             <p><b>Reported At:</b> ${dateReported}</p>
             <br/>
             <h2>Report Details</h2>
