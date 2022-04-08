@@ -30,6 +30,10 @@ const ReportForm = ({zpid, address, purpose, userEmail}) => {
     // --- Hooks to grab data from form
     const [problem, setProblem] = useState("");
     const handleSetProblem = (e) => setProblem(e.target.value);
+    const resetModal = () => {
+        setProblem("");
+        onClose();
+    }
 
     // const [problemDetail, setProblemDetail] = useState("");
     // const handleSetProblemDetail = (e) => setProblemDetail(e.target.value);
@@ -235,7 +239,7 @@ const ReportForm = ({zpid, address, purpose, userEmail}) => {
             >
                 Report a violation
             </Button>
-            <Modal isOpen={isOpen} onClose={onClose} size='xl' scrollBehavior='inside'>
+            <Modal isOpen={isOpen} onClose={resetModal} size='xl' scrollBehavior='inside'>
                 <ModalOverlay />
                 <ModalContent>
                 <ModalHeader>Report a Violation</ModalHeader>
