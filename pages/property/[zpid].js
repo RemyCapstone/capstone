@@ -2,7 +2,7 @@ import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Button, ButtonGroup, Stack, HStack, VStack, Divider, Center, useToast, Link } from '@chakra-ui/react'
 import { FaStar, FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { MdFavoriteBorder, MdStarRate, MdLaunch, MdReportProblem, MdFavorite } from 'react-icons/md';
+import { MdFavoriteBorder, MdStarRate, MdLaunch, MdFavorite } from 'react-icons/md';
 import millify from 'millify';
 import { useRouter } from 'next/router';
 
@@ -337,12 +337,17 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                   {/* Placeholder to move the report button */}
                 </Box>
                 <Spacer/>
-                <Box alignItems='right'>
-                  {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='16px' float='right' marginTop={10}>
-                    Report a violation
-                  </Button>
-                </Box>
+                { session &&
+                  <Box alignItems='right'>
+                    {/* User can report a violation outside of HPD/311 directly to us mods */}
+                    <ReportForm
+                      zpid={zpid}
+                      address={address}
+                      purpose={propertyDetails.homeStatus === "FOR_RENT" ? "Rental" : "Home"}
+                      userEmail={session.user.email}
+                    />
+                  </Box>
+                }
               </Flex>
             </Box>
           </Flex>
@@ -379,10 +384,6 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
               <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} propertyReviews={sortedPropertyReviews} > </Reviews>
             </div>
           </Box>
-
-        </Box>
-        <Box>
-          <ReportForm/>
         </Box>
       </Box>
     )
