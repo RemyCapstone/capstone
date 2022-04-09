@@ -54,6 +54,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   let recommended = recoproperties;
 
   console.log("user reviews:", reviews)
+  console.log("user saved props:", savedProps)
 
   //filter out properties we already saved
   for(let i=0; i<properties.length; i++){
@@ -257,17 +258,22 @@ export async function getServerSideProps({ params: { userid }, req }) {
   let reviews = [];
   if (session) {
     const res = await fetchUserSavedPropertiesHandler(session.user);
-    let savedProps = null;
+    console.log('res', res)
+    // Saves
     if (res) {
       const data = await res.json();
       savedProps = await data.savedProperties;
     }
 
+    console.log('savedProps', savedProps)
+
+    // Recommendations
     if(savedProps && savedProps.length > 0){
       const options = recommendPropSearch(savedProps);
       fetchedProperties = await fetchZillowApi(options)
     }
 
+    // Reviews
     reviews = await fetchUserReviewsHandler(session.user.email);
   }
 
