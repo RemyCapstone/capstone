@@ -20,6 +20,7 @@ const ComplaintsTotal = ({complaintsData, emergencyComplaints}) => {
                     <Center>
                         <Box>
                             <Text fontSize={'xl'} fontWeight='bold'>{`There are no 311 complaints in this building.`}</Text>
+                            <Text fontSize={'sm'} paddingTop='2px' fontWeight='semibold' as='i'>{`Emergencies are any complaints that may make a unit uninhabitable.`}</Text>
                         </Box>
                     </Center> 
                 </Flex>
@@ -40,6 +41,7 @@ const ComplaintsTotal = ({complaintsData, emergencyComplaints}) => {
                         <Box>
                             <Text>{`${complaintsData.length} total 311 complaints in this building.`}</Text>
                             <Text fontSize={'xl'} paddingTop='2px' fontWeight='bold'>{`${emergencyComplaints.length} of these are emergencies.`}</Text>
+                            <Text fontSize={'sm'} paddingTop='2px' fontWeight='semibold' as='i'>{`Emergencies are any complaints that may make a unit uninhabitable.`}</Text>
                         </Box>
                     </Center>
                 </Flex>
