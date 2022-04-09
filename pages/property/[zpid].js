@@ -2,7 +2,7 @@ import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Button, ButtonGroup, Stack, HStack, VStack, Divider, Center, useToast, Link } from '@chakra-ui/react'
 import { FaStar, FaBed, FaBath } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { MdFavoriteBorder, MdStarRate, MdLaunch, MdReportProblem, MdFavorite } from 'react-icons/md';
+import { MdFavoriteBorder, MdStarRate, MdLaunch, MdFavorite } from 'react-icons/md';
 import millify from 'millify';
 import { useRouter } from 'next/router';
 
@@ -19,6 +19,7 @@ import { registeredOptions, fetchOpenApi } from "../../utils/hpdViolations";
 import Violations from '../../components/Violations/Violations';
 import { getSession } from 'next-auth/react';
 import Reviews from '../../components/Reviews/Reviews';
+import ReportForm from '../../components/ReportForm';
 
 import { server } from '../../config/index'; // dyanmic absolute routes
 
@@ -104,7 +105,14 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const router = useRouter();
     const [isVerified, setVerified] = useState([]);
     const [isSaved, setIsSaved] = useState(savedStatus);
-    // console.log('reviews for this property:', propertyReviews)
+    console.log('reviews for this property:', propertyReviews)
+
+    let total = 0
+    for(let i = 0; i < propertyReviews.length; i++) {
+      total += propertyReviews[i].stars
+    }
+    const rating = total / propertyReviews.length
+
     const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : undefined;
     // console.log('This user\'s review:',userReview)
     /*
@@ -206,6 +214,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         bathrooms: propertyDetails.bathrooms,
         livingArea: propertyDetails.livingArea,
         isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
+        rating: rating,
       };
       const res = await saveHandler(propertyToSave, user);
       // React to result of the save
@@ -250,12 +259,12 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                     <Text fontWeight='bold' fontSize='2xl'>${price.toLocaleString("en-US")}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
                   </Box>
                   {/* Dummy rating here */}
-                  <Box w='30%' textAlign='right'>
+                  <Box w='40%' textAlign='right'>
                     <Flex>
                       <Center>
                         <FaStar size={20} color='#FFC107'/>
-                        <Text fontSize='xl' paddingLeft='5px' >4.5</Text>
-                        <Text fontSize='xl' color='gray.400'>(20)</Text>
+                        <Text fontSize='xl' paddingLeft='5px' >{rating ? rating.toFixed(1) : ''}&nbsp;  </Text>
+                        <Text fontSize='xl' color='gray.400'>{`(${propertyReviews && propertyReviews.length} ratings)`}</Text>
                       </Center>
                     </Flex>
                   </Box>
@@ -336,12 +345,14 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                   {/* Placeholder to move the report button */}
                 </Box>
                 <Spacer/>
-                <Box alignItems='right'>
-                  {/* User can report a violation outside of HPD/311, currently does nothing*/}
-                  <Button leftIcon={<MdReportProblem/>} color='gray.400' variant='link'  fontSize='16px' float='right' marginTop={10}>
-                    Report a violation
-                  </Button>
-                </Box>
+                  <Box alignItems='right'>
+                    {/* User can report a violation outside of HPD/311 directly to us mods */}
+                    <ReportForm
+                      zpid={zpid}
+                      address={address}
+                      purpose={propertyDetails.homeStatus === "FOR_RENT" ? "Rental" : "Home"}
+                    />
+                  </Box>
               </Flex>
             </Box>
           </Flex>
@@ -372,19 +383,14 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
           {isVerified.length > 0 ? <Violations data={{buildingid: isVerified[0].buildingid, boro: isVerified[0].boroid, block: isVerified[0].block, lot: isVerified[0].lot}} registered='true' /> : <Violations></Violations>}
 
         <br/>
-
-          {/* if the listing has images, we can generate an image scroller*/}
           <Box w='full' p='5'>
             <br />
-
             <div ref={reviewRef}>
               <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} propertyReviews={sortedPropertyReviews} > </Reviews>
             </div>
-
-          </Box>
-
           </Box>
         </Box>
+      </Box>
     )
 }
 

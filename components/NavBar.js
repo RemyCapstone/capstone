@@ -39,7 +39,7 @@ const NavBar = () =>{
     // User session
     const { data : session} = useSession();
     // console.log("This is my session from Navbar:", session);
-
+    // console.log('This is location from Navbar: ', window.location.href)
     return (
       <Flex p="2" borderBottom="1px" borderColor="gray.100" align="center">
         {isDesktopWidth ? (
@@ -104,7 +104,7 @@ const NavBar = () =>{
                           <MenuItem icon={<FcManager />}>Profile</MenuItem>
                         </Link>
                         <MenuDivider />
-                        <MenuItem onClick={() => signOut({callbackUrl: '/'})} icon={<FcExport />}>
+                        <MenuItem onClick={() => signOut({callbackUrl: `${window.location.href}`})} icon={<FcExport />}>
                           Sign Out
                         </MenuItem>
                       </MenuList>
@@ -118,7 +118,7 @@ const NavBar = () =>{
                 <Button leftIcon={<FcManager />} variant="outline">
                   Login
                 </Button>
-              </Link>
+              </Link> 
             )}
           </>
         ) : (
@@ -185,7 +185,7 @@ const NavBar = () =>{
                       <Link href={`/profile/${session.user._id}`} passHref>
                         <MenuItem icon={<FcManager />}>Profile</MenuItem>
                       </Link>
-                      <MenuItem onClick={() => signOut({callbackUrl: '/'})} icon={<FcManager />}>
+                      <MenuItem onClick={() => signOut({callbackUrl: `${window.location.href}`})} icon={<FcManager />}>
                         Sign Out
                       </MenuItem>
                       </>

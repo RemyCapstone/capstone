@@ -10,7 +10,8 @@ import {
     Grid,GridItem,
     Button,
     Heading,
-    Checkbox, useToast
+    Checkbox, useToast,
+    Tooltip
 } from '@chakra-ui/react'
 
 import InputField from './InputField';
@@ -54,7 +55,10 @@ const SignupForm = (props) => {
           email: Yup.string()
             .email("Invalid email address")
             .required("Required*"),
-          password: Yup.string().required("Required*"),
+          password: Yup.string()
+            .required("Required*")
+            .min(6, "Too short!")
+            .max(50, "Too long!"),
           confirmPassword: Yup.string()
             .oneOf([Yup.ref("password"), null], "Passwords must match*")
             .required("Required*"),
@@ -74,14 +78,13 @@ const SignupForm = (props) => {
             });
           } else {
             // Else, account creation was a success. Redirect to login and initiate next-auth signin. Use Chakra UI toast to show success message.
-            router.push('/login')
+            router.replace("/login");
             toast({
               title: "Account Creation Success",
               description: "Please login using your new credentials.",
               status: "success",
               isClosable: true,
             });
-
           }
           setBtnLoading(false);
         }}
@@ -129,6 +132,7 @@ const SignupForm = (props) => {
               value={formik.values.password}
             />
 
+
             <Checkbox
               size="md"
               padding={1}
@@ -170,7 +174,7 @@ const SignupForm = (props) => {
               <GridItem>
                 <Button
                   variant="ghost"
-                  onClick={() => router.push("/login")}
+                  onClick={() => router.replace("/login")}
                   className={styles.otherpage}
                 >
                   Already have an account? Sign In

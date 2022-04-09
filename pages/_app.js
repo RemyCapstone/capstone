@@ -30,7 +30,7 @@ const theme = extendTheme({
               {
                 ...activeLabelStyles,
               },
-            
+
             label: {
               top: 0,
               left: 0,
@@ -67,7 +67,6 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-
       </Head>
       <SessionProvider session={pageProps.session}>
         <ChakraProvider theme={theme}>
