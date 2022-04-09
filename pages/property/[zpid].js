@@ -107,7 +107,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     console.log('reviews for this property:', propertyReviews)
 
     let total = 0
-    for(let i = 0; i <propertyReviews.length; i++) {
+    for(let i = 0; i < propertyReviews.length; i++) {
       total += propertyReviews[i].stars
     }
     const rating = total / propertyReviews.length
@@ -213,6 +213,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         bathrooms: propertyDetails.bathrooms,
         livingArea: propertyDetails.livingArea,
         isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
+        rating: rating,
       };
       const res = await saveHandler(propertyToSave, user);
       // React to result of the save

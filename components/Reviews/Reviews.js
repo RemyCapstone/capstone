@@ -31,7 +31,7 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
     // console.log('review:', userReview)
     // console.log('these property reviews:', propertyReviews)
     const toast = useToast();
-    const router = useRouter();
+    // const router = useRouter();
     let handleInputChange = (e) => {
         let inputValue = e.target.value
         setTextValue(inputValue)
