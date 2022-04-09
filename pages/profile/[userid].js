@@ -154,7 +154,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
               <ListItem>
                 <ListIcon as={RiStarLine} h={5} w={5} />
                 <p><b>
-                    {session.user.reviews ? session.user.reviews.length : 0}
+                    {reviews ? reviews.length : 0}
                 </b> Reviews</p>
               </ListItem>
             </List>
