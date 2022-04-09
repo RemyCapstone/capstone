@@ -105,7 +105,14 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const router = useRouter();
     const [isVerified, setVerified] = useState([]);
     const [isSaved, setIsSaved] = useState(savedStatus);
-    // console.log('reviews for this property:', propertyReviews)
+    console.log('reviews for this property:', propertyReviews)
+
+    let total = 0
+    for(let i = 0; i < propertyReviews.length; i++) {
+      total += propertyReviews[i].stars
+    }
+    const rating = total / propertyReviews.length
+
     const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : undefined;
     // console.log('This user\'s review:',userReview)
     /*
@@ -207,6 +214,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         bathrooms: propertyDetails.bathrooms,
         livingArea: propertyDetails.livingArea,
         isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
+        rating: rating,
       };
       const res = await saveHandler(propertyToSave, user);
       // React to result of the save
@@ -251,12 +259,12 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                     <Text fontWeight='bold' fontSize='2xl'>${price.toLocaleString("en-US")}{homeStatus === "FOR_RENT" ? '/mo' : ''}</Text>
                   </Box>
                   {/* Dummy rating here */}
-                  <Box w='30%' textAlign='right'>
+                  <Box w='40%' textAlign='right'>
                     <Flex>
                       <Center>
                         <FaStar size={20} color='#FFC107'/>
-                        <Text fontSize='xl' paddingLeft='5px' >4.5</Text>
-                        <Text fontSize='xl' color='gray.400'>(20)</Text>
+                        <Text fontSize='xl' paddingLeft='5px' >{rating ? rating.toFixed(1) : ''}&nbsp;  </Text>
+                        <Text fontSize='xl' color='gray.400'>{`(${propertyReviews && propertyReviews.length} ratings)`}</Text>
                       </Center>
                     </Flex>
                   </Box>

@@ -33,15 +33,28 @@ const fetchUserSavedPropertiesHandler = async (id) => {
   return response;
 }
 
+// fetch reviews that this user has made
+const fetchUserReviewsHandler = async(id) => {
+  const response = await fetch(`${server}/api/fetchUserReviews`, {
+    method: "POST",
+    body: JSON.stringify(id),
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+  const data =  await response.json();
+  return data.reviews || null;
+};
+
 // Functional component
-const ProfileDetailsPage = ({ session, savedProps, recoproperties }) => {
+const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) => {
   const name = session.user.firstName + " " + session.user.lastName;
   const joined = session.user.joined ? new Date(session.user.joined) : null;
   const properties = savedProps;
   let recommended = recoproperties;
 
+  console.log("user reviews:", reviews)
   
-
   //filter out properties we already saved
   for(let i=0; i<properties.length; i++){
     recommended = recommended.filter(e => e['zpid'] != properties[i]['zpid'])
@@ -141,7 +154,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties }) => {
               <ListItem>
                 <ListIcon as={RiStarLine} h={5} w={5} />
                 <p><b>
-                    {session.user.reviews ? session.user.reviews.length : 0}
+                    {reviews ? reviews.length : 0}
                 </b> Reviews</p>
               </ListItem>
             </List>
@@ -236,20 +249,23 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties }) => {
 }
 
 export async function getServerSideProps({ params: { userid }, req }) {
-  console.log(userid)
+  // console.log(userid)
   const session = await getSession({ req });
 
   let savedProps = [];
   let fetchedProperties = [];
+  let reviews = [];
   if (session) {
     const res = await fetchUserSavedPropertiesHandler(session.user);
-    console.log('res userid', res)
+    // console.log('res userid', res)
     const data = await res.json();
     savedProps = await data.savedProperties;
     if(savedProps.length > 0){
       const options = recommendPropSearch(savedProps);
       fetchedProperties = await fetchZillowApi(options)
     }
+    
+    reviews = await fetchUserReviewsHandler(session.user.email);
   }
 
   return {
@@ -257,6 +273,7 @@ export async function getServerSideProps({ params: { userid }, req }) {
       session: session,
       savedProps: savedProps,
       recoproperties: fetchedProperties?.props || [],
+      reviews : reviews
     },
   };
 }
