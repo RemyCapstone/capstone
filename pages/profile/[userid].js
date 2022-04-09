@@ -55,8 +55,9 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
   </p>
 
   return (
+    <>
     <Grid
-      h="89vh"
+      h="86vh"
       w="1300px"
       templateRows="repeat(15, 1fr)"
       templateColumns="repeat(7, 1fr)"
@@ -124,7 +125,7 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
       </GridItem>
       {/* RIGHT COLUMN */}
       <GridItem rowSpan={1} colSpan={5}>
-        <Heading size="xl" padding={4}>
+        <Heading size="xl" padding={4} paddingTop={0}>
           Saved Properties
         </Heading>
       </GridItem>
@@ -133,6 +134,7 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
         rowSpan={14}
         colSpan={5}
         padding={4}
+        paddingTop={0}
         bg="white"
         overflowY="auto"
       >
@@ -195,6 +197,18 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
       {/* TO-DO: USER'S REVIEWS */}
       {/* TO-DO: USER'S REPORTS */}
     </Grid>
+
+
+    {/* recommended props */}
+    {properties && properties.length > 0 &&
+      <Box w='100%' padding={5}>
+        <Text fontWeight={'bold'} fontSize='2xl'>Recommended Properties For You</Text>
+        <Box w='100%' h={'400px'} border='2px' borderColor='gray.300' borderRadius={5} >
+
+        </Box>
+      </Box>
+    }
+    </>
   );
 }
 
