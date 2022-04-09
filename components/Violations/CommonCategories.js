@@ -17,7 +17,7 @@ const CommonCategories = ({sortableCategories, total}) => {
 
     return(
         <>
-            <Box marginTop='5' w='full' backgroundColor={'rgb(255,165,0)'} color={'rgb(255, 245, 230)'} border='1px' borderColor={'black'} borderRadius='lg'>
+            <Box marginTop='5' w='full' backgroundColor={'rgb(255,185,0)'} color={'rgb(255, 245, 230)'} border='1px' borderColor={'black'} borderRadius='lg'>
                     <Box p='3.5'>
                         <Flex w='100%'>
                             <Box w='17%'>
