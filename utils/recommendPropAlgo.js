@@ -6,6 +6,7 @@ export const recommendPropSearch = (savedProps) =>
     //console.log(chosenProp);
     const chosenPropLocationArray = chosenProp['address'].split(',');
     const chosenLocation = `${chosenPropLocationArray[chosenPropLocationArray.length-2].trim()}, ${chosenPropLocationArray[chosenPropLocationArray.length-1].trim()}`
+    const isRental = chosenProp['isRental']
     //const chosenPrice = Integer.(chosenProp['price']) + 200;
     //console.log(chosenLocation)
 
@@ -13,11 +14,19 @@ export const recommendPropSearch = (savedProps) =>
     let minBathRoom = 9999;
     let minBedRoom = 9999; 
     let maxPrice = 0;
+    let maxSalePrice = 0;
     let minSqrFoot = 9999;
 
     for(let i=0; i<savedProps.length; i++){
-        if((savedProps[i]['price']) > maxPrice){
-            maxPrice = (savedProps[i]['price'])
+        if(isRental){
+            if((savedProps[i]['price']) > maxPrice){
+                maxPrice = (savedProps[i]['price'])
+            }
+        }
+        else{
+            if((savedProps[i]['price']) > maxSalePrice){
+                maxSalePrice = (savedProps[i]['price'])
+            }
         }
         if((savedProps[i]['bathrooms'] < minBathRoom)){
             minBathRoom = (savedProps[i]['bathrooms']);
@@ -44,10 +53,12 @@ export const recommendPropSearch = (savedProps) =>
         url: 'https://zillow-com1.p.rapidapi.com/propertyExtendedSearch',
         params: {
             location: chosenLocation,
-            status_type: 'ForRent',
+            status_type: isRental ? 'ForRent' : 'ForSale',
             home_type: 'Apartments',
             rentMinPrice: '100',
             rentMaxPrice: maxPrice,
+            minPrice: '100',
+            maxPrice: maxSalePrice,
             bathsMin: minBathRoom,
             bathsMax: '10',
             bedsMin: minBedRoom,
