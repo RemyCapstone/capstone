@@ -13,9 +13,12 @@ import { RiBuilding4Line, RiHomeHeartLine, RiStarLine } from "react-icons/ri";
 
 import { getSession } from 'next-auth/react';
 import Link from 'next/link';
+import { fetchZillowApi } from "../../utils/fetchZillowApi";
+import { recommendPropSearch } from "../../utils/recommendPropAlgo";
 
 import Property from '../../components/Property';
 import { server } from '../../config/index'; // dyanmic absolute routes
+import { useState } from "react";
 
 // Fetch data
 const fetchUserSavedPropertiesHandler = async (id) => {
@@ -31,10 +34,30 @@ const fetchUserSavedPropertiesHandler = async (id) => {
 }
 
 // Functional component
-const ProfileDetailsPage = ({ session, savedProps }) => {
+const ProfileDetailsPage = ({ session, savedProps, recoproperties }) => {
   const name = session.user.firstName + " " + session.user.lastName;
   const joined = session.user.joined ? new Date(session.user.joined) : null;
   const properties = savedProps;
+  let recommended = recoproperties;
+
+  
+
+  //filter out properties we already saved
+  for(let i=0; i<properties.length; i++){
+    recommended = recommended.filter(e => e['zpid'] != properties[i]['zpid'])
+  }
+
+  let usableProperties = recommended.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
+  //console.log(usableProperties);
+  const iterations = Math.ceil(usableProperties.length / 3);
+  const currentPage = Math.floor(Math.random() * iterations);
+  let limit = usableProperties.length <= 3*(currentPage+1) ? usableProperties.length : 3*(currentPage+1);
+  
+  const pages = []
+
+  for(let i=1; i<=iterations; i++){
+      pages.push(i)
+  }
 
   const noRentalProperties = <p>
     You have no saved rental properties. Search for your next happy place
@@ -203,9 +226,9 @@ const ProfileDetailsPage = ({ session, savedProps }) => {
     {properties && properties.length > 0 &&
       <Box w='100%' padding={5}>
         <Text fontWeight={'bold'} fontSize='2xl'>Recommended Properties For You</Text>
-        <Box w='100%' h={'400px'} border='2px' borderColor='gray.300' borderRadius={5} >
-
-        </Box>
+        <Flex w='1280px' h={'400px'} border='2px' borderColor='gray.300' borderRadius={5} p={3}>
+          {usableProperties.slice(3*currentPage, limit).map((property) => <Property property={property} key={property.zpid} isRental={true}/>)}
+        </Flex>
       </Box>
     }
     </>
@@ -217,17 +240,23 @@ export async function getServerSideProps({ params: { userid }, req }) {
   const session = await getSession({ req });
 
   let savedProps = [];
+  let fetchedProperties = [];
   if (session) {
     const res = await fetchUserSavedPropertiesHandler(session.user);
     console.log('res userid', res)
     const data = await res.json();
     savedProps = await data.savedProperties;
+    if(savedProps.length > 0){
+      const options = recommendPropSearch(savedProps);
+      fetchedProperties = await fetchZillowApi(options)
+    }
   }
 
   return {
     props: {
       session: session,
-      savedProps: savedProps
+      savedProps: savedProps,
+      recoproperties: fetchedProperties?.props || [],
     },
   };
 }

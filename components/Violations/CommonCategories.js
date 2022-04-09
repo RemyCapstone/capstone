@@ -7,7 +7,7 @@ import { Tag, TagLabel, TagLeftIcon, TagRightIcon, TagCloseButton,} from '@chakr
 
 const CommonCategories = ({sortableCategories, total}) => {
     
-    console.log(sortableCategories)
+    //console.log(sortableCategories)
 
     if(sortableCategories.length === 0){
         return(
