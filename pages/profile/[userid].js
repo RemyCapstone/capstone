@@ -54,7 +54,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   let recommended = recoproperties;
 
   console.log("user reviews:", reviews)
-  
+
   //filter out properties we already saved
   for(let i=0; i<properties.length; i++){
     recommended = recommended.filter(e => e['zpid'] != properties[i]['zpid'])
@@ -65,7 +65,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   const iterations = Math.ceil(usableProperties.length / 3);
   const currentPage = Math.floor(Math.random() * iterations);
   let limit = usableProperties.length <= 3*(currentPage+1) ? usableProperties.length : 3*(currentPage+1);
-  
+
   const pages = []
 
   for(let i=1; i<=iterations; i++){
@@ -257,14 +257,17 @@ export async function getServerSideProps({ params: { userid }, req }) {
   let reviews = [];
   if (session) {
     const res = await fetchUserSavedPropertiesHandler(session.user);
-    // console.log('res userid', res)
-    const data = await res.json();
-    savedProps = await data.savedProperties;
-    if(savedProps.length > 0){
+    let savedProps = null;
+    if (res) {
+      const data = await res.json();
+      savedProps = await data.savedProperties;
+    }
+
+    if(savedProps && savedProps.length > 0){
       const options = recommendPropSearch(savedProps);
       fetchedProperties = await fetchZillowApi(options)
     }
-    
+
     reviews = await fetchUserReviewsHandler(session.user.email);
   }
 
