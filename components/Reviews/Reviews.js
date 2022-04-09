@@ -100,15 +100,16 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
       <>
         {!newReviewer && (userReview || newReview) ? (
           <Box marginBottom={5}>
-            <Text fontWeight="bold" fontSize="xl" textAlign="center"> Your Review </Text>
+            <Text fontWeight="bold" fontSize="xl" textAlign="center"> Your Review: </Text>
             <SingleReview data={userReview ? userReview : newReview} />
           </Box>
         ) : null}
         <Box overflowY="auto" maxHeight="650px">
-          <Text fontWeight="bold" fontSize="xl" textAlign="center"> Property Reviews </Text>
+          <Text fontWeight="bold" fontSize="xl" textAlign="center"> Property Reviews: </Text>
           {(propertyReviews.length > 0 )
             ? propertyReviews.map((e) => <SingleReview key={e._id} data={e} />)
-            : DUMMY_DATA.map((e) => <SingleReview key={e.id} data={e} />)}
+            : <Text marginTop={5} fontWeight="bold" fontSize="5xl" textAlign="center" color='gray.700'> {newReviewer ? 'Be the first to review this property!' : ''} </Text>
+          }
         </Box>
         {newReviewer && !userReview && (
           <Flex>
