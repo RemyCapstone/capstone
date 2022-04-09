@@ -267,7 +267,7 @@ const Violations = ({data, registered}) => {
             <Flex>
                 <Text fontWeight='bold' fontSize='xl'>311 Complaints</Text>
             </Flex>
-            <Flex>
+            <Flex justifyContent={'center'}>
                 <Pests pestTag={pestTag} bedBugs={bedBugs} mice={mice} roach={roach}></Pests>
                 <Center/>
                 <ComplaintsTotal complaintsData={complaintsData} emergencyComplaints={emergencyComplaints}></ComplaintsTotal>
