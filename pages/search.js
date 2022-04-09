@@ -83,6 +83,8 @@ export async function getServerSideProps({ query }) {
       home_type: 'Apartments',
       rentMinPrice: query.minPrice || '100',
       rentMaxPrice: query.maxPrice || '10000',
+      minPrice: query.minPriceSale || '100',
+      maxPrice: query.maxPriceSale || '99999999',
       bathsMin: query.bathsMin || '1',
       bathsMax: '10',
       bedsMin: query.roomsMin || '1',

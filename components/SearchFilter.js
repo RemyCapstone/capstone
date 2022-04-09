@@ -64,6 +64,7 @@ const SearchFilters = () => {
             {filters?.map((filter) => {
                 //console.log(filter)
                 if(filter.queryName !== 'location'){
+                    if((query.purpose == 'for-rent' && (filter.queryName !== 'minPriceSale' && filter.queryName !== 'maxPriceSale'))|| (query.purpose == 'for-sale' && (filter.queryName !== 'minPrice' && filter.queryName !== 'maxPrice'))){
                 return (<Box key={filter.queryName}>
                     <Select onChange={(e) => searchProperties({ [filter.queryName]: e.target.value })} placeholder={filter.placeholder} w='fit-content' p='2'>
                         {filter?.items?.map((item) => (
@@ -73,6 +74,7 @@ const SearchFilters = () => {
                         ))}
                     </Select>
                 </Box>)
+                            }
                 }
             })}
             <Flex paddingRight={5}>

@@ -25,6 +25,25 @@ export const filterData = [
   },
   {
     items: [
+      { name: '200,000', value: '200000' },
+      { name: '300,000', value: '300000' },
+      { name: '400,000', value: '400000' },
+      { name: '500,000', value: '500000' },
+      { name: '600,000', value: '600000' },
+      { name: '700,000', value: '700000' },
+      { name: '800,000', value: '800000' },
+      { name: '800,000', value: '900000' },
+      { name: '1,000,000', value: '1000000' },
+      { name: '1,500,000', value: '1500000' },
+      { name: '2,000,000', value: '2000000' },
+      { name: '2,500,000', value: '2500000' },
+      { name: '3,000,000', value: '3000000' },
+    ],
+    placeholder: 'Min Sale Price(USD)',
+    queryName: 'minPriceSale',
+  },
+  {
+    items: [
       { name: '1,000', value: '1000' },
       { name: '1,500', value: '1500' },
       { name: '2,000', value: '2000' },
@@ -42,6 +61,27 @@ export const filterData = [
     ],
     placeholder: 'Max Price(USD)',
     queryName: 'maxPrice',
+  },
+  {
+    items: [
+      { name: '500,000', value: '500000' },
+      { name: '600,000', value: '600000' },
+      { name: '700,000', value: '700000' },
+      { name: '800,000', value: '800000' },
+      { name: '800,000', value: '900000' },
+      { name: '1,000,000', value: '1000000' },
+      { name: '1,500,000', value: '1500000' },
+      { name: '2,000,000', value: '2000000' },
+      { name: '2,500,000', value: '2500000' },
+      { name: '3,000,000', value: '3000000' },
+      { name: '4,000,000', value: '4000000' },
+      { name: '5,000,000', value: '5000000' },
+      { name: '6,000,000', value: '6000000' },
+      { name: '7,000,000', value: '7000000' },
+      { name: '8,000,000', value: '8000000' },
+    ],
+    placeholder: 'Max Sale Price(USD)',
+    queryName: 'maxPriceSale',
   },
   {
     items: [
@@ -130,6 +170,8 @@ export const getFilterValues = (filterValues) => {
     purpose,
     minPrice,
     maxPrice,
+    minPriceSale,
+    maxPriceSale,
     areaMax,
     areaMin,
     roomsMin,
@@ -154,6 +196,14 @@ export const getFilterValues = (filterValues) => {
     {
       name: 'maxPrice',
       value: maxPrice,
+    },
+    {
+      name: 'minPriceSale',
+      value: minPriceSale,
+    },
+    {
+      name: 'maxPriceSale',
+      value: maxPriceSale,
     },
     {
       name: 'areaMin',
