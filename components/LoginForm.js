@@ -18,7 +18,6 @@ import InputField from './InputField';
 import AuthError from './AuthError';
 
 const LoginForm = ({previousPage}) => {
-
   /* HOOKS */
   const [show, setShow] = useState(false); // hook for show password state
   const toast = useToast();                // Chakra UI toast
@@ -32,7 +31,9 @@ const LoginForm = ({previousPage}) => {
 
   // Check if a user is already logged in and they did not just logged in. If so, display error.
   // Does not redirect them because they should not have access to page unless they manually navigate to /login
-  if (session && !newAuth) return <AuthError title="Already Logged In!" desc="You cannot access this page because you are already logged in." />;
+  if (session && !newAuth) {
+    return <AuthError title="Already Logged In!" desc="You cannot access this page because you are already logged in." />
+  };
 
   return (
     <Fragment>
@@ -133,7 +134,7 @@ const LoginForm = ({previousPage}) => {
                 <Button
                   variant="ghost"
                   className={styles.otherpage}
-                  onClick={() => router.push("/signup")}
+                  onClick={() => router.replace("/signup")}
                 >
                   Don't have an account? Sign Up
                 </Button>
