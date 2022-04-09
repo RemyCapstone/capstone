@@ -1,11 +1,9 @@
 import {Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, Icon, Checkbox, Select, Center, Tooltip} from '@chakra-ui/react';
-import { MdReportProblem } from 'react-icons/md';
 import { Box, Flex, Spacer, Text } from '@chakra-ui/layout';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 import { BsFilter } from 'react-icons/bs';
 import {useState, useEffect} from 'react';
 import { violationOptions, plutoOptions, complaint311Options, fetchOpenApi, processComplaints } from "../../utils/hpdViolations";
-import MiniTable from './MiniTable';
 import ViolationsTable from './ViolationsTable';
 import ComplaintsTable from './CompaintsTable';
 import { hashMapBuilder } from '../../utils/hashMapBuilder';
@@ -14,6 +12,7 @@ import ViolationsOpen from './ViolationsOpen';
 import ViolationsTotal from './ViolationsTotal';
 import Pests from './pestReport';
 import ComplaintsTotal from './ComplaintsTotal';
+import CommonCategories from './CommonCategories';
 import Charts from './Charts/Charts';
 import BarChartVio from './Charts/BarChartVio';
 import HPDExplaination from './Charts/HPDExplainations';
@@ -132,8 +131,8 @@ const Violations = ({data, registered}) => {
     sortableCategories.sort(function(a, b) {
         return b[1] - a[1];
     });
-    if(sortableCategories.length > 5){
-        sortableCategories = sortableCategories.slice(0, 5) // only get the first few
+    if(sortableCategories.length > 3){
+        sortableCategories = sortableCategories.slice(0, 3) // only get the first few
     }
     //console.log(sortableCategories)   //comment this out
 
@@ -271,6 +270,11 @@ const Violations = ({data, registered}) => {
                 <Pests pestTag={pestTag} bedBugs={bedBugs} mice={mice} roach={roach}></Pests>
                 <Center/>
                 <ComplaintsTotal complaintsData={complaintsData} emergencyComplaints={emergencyComplaints}></ComplaintsTotal>
+            </Flex>
+            <Flex justifyContent={'center'}>
+                <Box w='85%'>
+                    <CommonCategories sortableCategories={sortableCategories} total={complaintsData.length}/>
+                </Box>
             </Flex>
             {/* Complaints table */}
             <Flex onClick={() => setViewComplaints(!viewComplaints)} cursor='pointer' bg='gray.50' borderBottom='1px' borderColor='gray.200' p='2' fontWeight='medium' fontSize='lg' justifyContent='center' alignItems='center' marginTop='10'>
