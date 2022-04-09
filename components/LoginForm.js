@@ -70,7 +70,7 @@ const LoginForm = ({previousPage}) => {
             setBtnLoading(false);
           } else {
             setNewAuth(true);
-            router.push("/");
+            router.back();
           }
         }}
       >
