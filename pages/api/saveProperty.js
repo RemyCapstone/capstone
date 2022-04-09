@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 
 // var ObjectId = require("mongodb").ObjectId;
 
@@ -14,7 +14,6 @@ const handler = async (req, res) => {
     const usersCollection = db.collection("users");
 
     const userResult = await usersCollection.findOne({
-      // _id: ObjectId(user._id),
       email: user.email
     });
     console.log('User',user);
