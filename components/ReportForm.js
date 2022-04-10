@@ -261,12 +261,12 @@ const ReportForm = ({zpid, address, purpose }) => {
                     childLive: Yup.string().required('Required'),
                     childVisit: Yup.string().required('Required')
                 })}
-                onSubmit={values => {
+                onSubmit={(e, {resetForm, initialValues}) => {
+                    resetForm(initialValues);
                     sendEmail();
-                    handleReset();
                 }}
             >
-            {({errors, touched, handleSubmit, handleChange, handleBlur, handleReset, setFieldValue}) => (<div>
+            {({errors, touched, handleSubmit, handleChange, handleBlur, resetForm, setFieldValue}) => (<div>
                 {/* Button to open modal */}
                 <Button
                     leftIcon={<MdReportProblem/>}
@@ -276,11 +276,11 @@ const ReportForm = ({zpid, address, purpose }) => {
                     float='right'
                     marginTop={10}
                     padding='5px'
-                    onClick={onOpen}
+                    onClick={ () => {onOpen(); resetForm();}}
                 >
                     Report a violation
                 </Button>
-                <Modal isOpen={isOpen} onClose={e => {handleReset(); resetModal();}} size='xl' scrollBehavior='inside'>
+                <Modal isOpen={isOpen} onClose={e => {resetForm(); resetModal();}} size='xl' scrollBehavior='inside'>
                     <ModalOverlay />
                     <ModalContent>
                     <ModalHeader>Report a Violation</ModalHeader>
@@ -517,7 +517,7 @@ const ReportForm = ({zpid, address, purpose }) => {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button variant='ghost' mr={3} onClick={e => {handleReset(); resetModal();}}>
+                        <Button variant='ghost' mr={3} onClick={e => {resetForm(); resetModal();}}>
                             Close
                         </Button>
                         <Button colorScheme='blue' onClick={e => {handleSubmit(e);}}type='submit'>Submit Report</Button>
