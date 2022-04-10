@@ -105,14 +105,17 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const router = useRouter();
     const [isVerified, setVerified] = useState([]);
     const [isSaved, setIsSaved] = useState(savedStatus);
+    
+    
     console.log('reviews for this property:', propertyReviews)
 
+    const [displayTotal, setDisplayTotal] = useState(propertyReviews.length);
     let total = 0
     for(let i = 0; i < propertyReviews.length; i++) {
       total += propertyReviews[i].stars
     }
     const rating = total / propertyReviews.length
-
+    const [displayRating, setDisplayRating] = useState(rating || 0);
     const userReview = session ? propertyReviews.find( (review) => review.userid === session.user._id ) : undefined;
     // console.log('This user\'s review:',userReview)
     /*
@@ -263,8 +266,8 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                     <Flex>
                       <Center>
                         <FaStar size={20} color='#FFC107'/>
-                        <Text fontSize='xl' paddingLeft='5px' >{rating ? rating.toFixed(1) : ''}&nbsp;  </Text>
-                        <Text fontSize='xl' color='gray.400'>{`(${propertyReviews && propertyReviews.length} ratings)`}</Text>
+                        <Text fontSize='xl' paddingLeft='5px' >{displayRating ? displayRating.toFixed(1) : ''}&nbsp;  </Text>
+                        <Text fontSize='xl' color='gray.400'>{`(${displayTotal} ratings)`}</Text>
                       </Center>
                     </Flex>
                   </Box>
@@ -386,7 +389,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
           <Box w='full' p='5'>
             <br />
             <div ref={reviewRef}>
-              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} propertyReviews={sortedPropertyReviews} > </Reviews>
+              <Reviews zpid={zpid} postReviewHandler={postReviewHandler} userReview={userReview} propertyReviews={sortedPropertyReviews} setDisplayRating={setDisplayRating} rating={rating} setDisplayTotal={setDisplayTotal} total={propertyReviews.length}> </Reviews>
             </div>
           </Box>
         </Box>

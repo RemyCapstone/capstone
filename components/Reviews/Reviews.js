@@ -17,7 +17,8 @@ const Star = ({value, starFilled, handleHoverStar, handleClickStar}) => {
 }
 
 
-const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
+const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews, setDisplayRating, rating, setDisplayTotal, total}) => {
+    console.log(rating);
   // console.log('reviews: ', propertyReviews)
     const { data : session} = useSession();
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -90,6 +91,9 @@ const Reviews = ({zpid, postReviewHandler, userReview, propertyReviews}) => {
           },
         ],
       });
+      const newAvg = !rating ? starFilled : ((rating*total) + starFilled) / (total + 1)
+      setDisplayRating(newAvg)
+      setDisplayTotal(total+1);
       setIsSubmitting(false);
     }
 
