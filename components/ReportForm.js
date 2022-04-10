@@ -42,10 +42,11 @@ const ReportForm = ({zpid, address, purpose }) => {
     const handleSetProblem = (e) => setProblem(e.target.value);
 
     const [problemDetail, setProblemDetail] = useState("");
-    const handleSetProblemDetail = (e) => setProblemDetail(e.target.value);
+    const handleSetProblemDetail = (newValue) => setProblemDetail(newValue);
 
     const resetModal = () => {
         setProblem("");
+        setProblemDetail("");
         onClose();
     }
 
@@ -164,6 +165,7 @@ const ReportForm = ({zpid, address, purpose }) => {
         onClose();
 
         // Grab user's entered data
+        console.log('problemDetail', problemDetail)
         const locationDetail = document.getElementById('problemLocation').value;
         const additionalDetails = document.getElementById('additionalDetailsText').value;
 
@@ -259,7 +261,10 @@ const ReportForm = ({zpid, address, purpose }) => {
                     childLive: Yup.string().required('Required'),
                     childVisit: Yup.string().required('Required')
                 })}
-                onSubmit={values=>{sendEmail()}}
+                onSubmit={values => {
+                    sendEmail();
+                    handleReset();
+                }}
             >
             {({errors, touched, handleSubmit, handleChange, handleBlur, handleReset, setFieldValue}) => (<div>
                 {/* Button to open modal */}
@@ -302,10 +307,14 @@ const ReportForm = ({zpid, address, purpose }) => {
                                 onChange={e => {
                                     handleChange(e); // formik built-in handler
                                     handleSetProblem(e); // my handler
-                                    if(e.target.value)
+                                    if(e.target.value) {
                                         setFieldValue('problemDetail', problemDetailDropdownOptionsMap[e.target.value][0]);
-                                    else
+                                        handleSetProblemDetail(problemDetailDropdownOptionsMap[e.target.value][0]);
+                                    }
+                                    else {
                                         setFieldValue('problemDetail', '');
+                                        handleSetProblemDetail('');
+                                    }
                                 }}
                                 onBlur={handleBlur}
                             >
@@ -327,10 +336,7 @@ const ReportForm = ({zpid, address, purpose }) => {
                                         name='problemDetail'
                                         mb='8px'
                                         isRequired
-                                        onChange={e => {
-                                            handleChange(e); // formik built-in handler
-                                            handleSetProblemDetail(e); // my handler
-                                        }}
+                                        onChange={e => {handleChange(e); handleSetProblemDetail(e.target.value);}}
                                         onBlur={handleBlur}
                                     >
                                         {
@@ -343,7 +349,7 @@ const ReportForm = ({zpid, address, purpose }) => {
                                 </Fragment>
                                 :
                                 <Fragment>
-                                    <Select id='problemDetail' mb='8px' disabled>
+                                    <Select id='problemDetailUnselected' mb='8px' disabled>
                                         <option>Select a problem first</option>
                                     </Select>
                                     <FormErrorMessage touched={touched.problemDetail} errors={errors.problemDetail} />
@@ -514,7 +520,7 @@ const ReportForm = ({zpid, address, purpose }) => {
                         <Button variant='ghost' mr={3} onClick={e => {handleReset(); resetModal();}}>
                             Close
                         </Button>
-                        <Button colorScheme='blue' onClick={handleSubmit} type='submit'>Submit Report</Button>
+                        <Button colorScheme='blue' onClick={e => {handleSubmit(e);}}type='submit'>Submit Report</Button>
                     </ModalFooter>
                     </ModalContent>
                 </Modal>
