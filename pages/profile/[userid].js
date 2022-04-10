@@ -61,16 +61,11 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   }
 
   let usableProperties = recommended.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
-  //console.log(usableProperties);
+  console.log(usableProperties);
   const iterations = Math.ceil(usableProperties.length / 3);
   const currentPage = Math.floor(Math.random() * iterations);
   let limit = usableProperties.length <= 3*(currentPage+1) ? usableProperties.length : 3*(currentPage+1);
   
-  const pages = []
-
-  for(let i=1; i<=iterations; i++){
-      pages.push(i)
-  }
 
   const noRentalProperties = <p>
     You have no saved rental properties. Search for your next happy place
@@ -236,7 +231,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
 
 
     {/* recommended props */}
-    {properties && properties.length > 0 &&
+    {properties && usableProperties.length > 0 &&
       <Box w='100%' padding={5}>
         <Text fontWeight={'bold'} fontSize='2xl'>Recommended Properties For You</Text>
         <Flex w='1280px' h={'400px'} border='2px' borderColor='gray.300' borderRadius={5} p={3}>
