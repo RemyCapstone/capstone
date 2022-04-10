@@ -102,7 +102,8 @@ const Property = ({ property, isRental }) => {
     return (
       //after clicking on a property we route to the specific property page
       //for new tab <a target="_blank" rel="noreferrer"></a>
-      <Link href={`/property/${zpid}/`} passHref>
+      <>
+      
         {/* NOTE: Brute forced the styling for the card margins to give spacing between each property, will probably need to adjust this in index.js and search.js */}
         <Flex
           flexWrap="wrap"
@@ -115,6 +116,7 @@ const Property = ({ property, isRental }) => {
           marginRight="26px"
           marginBottom="25px"
         >
+        <Link href={`/property/${zpid}/`} passHref>
           <Box
             backgroundImage={imgSrc ? imgSrc : DefaultImage}
             backgroundPosition="center"
@@ -151,6 +153,7 @@ const Property = ({ property, isRental }) => {
                         */}
             </Flex>
           </Box>
+          </Link>
           <Box w="full" paddingLeft="5" paddingRight="5" paddingBottom="5">
             <Flex
               paddingTop="2"
@@ -190,14 +193,15 @@ const Property = ({ property, isRental }) => {
                     <Text></Text>
                   ) : (
                     <Text marginLeft="2">
-                      <Link href="/notregistered" passHref>
+                      <a target="_blank" href="notregistered" rel="noopener noreferrer">
                         <MdInfoOutline />
-                      </Link>
+                      </a>
                     </Text>
                   )}
                 </Box>
               </Flex>
             </Flex>
+            <Link href={`/property/${zpid}/`} passHref>
             <Flex
               alignItems="center"
               p="1"
@@ -234,14 +238,17 @@ const Property = ({ property, isRental }) => {
                 </Flex>
               </Box>
             </Flex>
-            <Text fontSize="md" color="gray.700">
-              {residentalName} {streetName}
-              <br />
-              {city}, {stateAndZip}
-            </Text>
+            </Link>
+            <Link href={`/property/${zpid}/`} passHref>
+              <Text fontSize="md" color="gray.700">
+                {residentalName} {streetName}
+                <br />
+                {city}, {stateAndZip}
+              </Text>
+            </Link>
           </Box>
         </Flex>
-      </Link>
+      </>
     );
 };
 
