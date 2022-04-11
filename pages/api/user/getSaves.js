@@ -18,10 +18,13 @@ const getSavesHandler = async (req, res) => {
     // if user doesnt exist, close the db connection and return status of 404
     if (!userResult) {
       client.close();
-      return res.status(404).json({ message:  "User not found."} );
+      return res.status(404).json({ 
+        message:  "User not found.",
+        savedProperties: [],
+      } );
     }
 
-    if (userResult.savedProps !== undefined) {
+    if (userResult.savedProps) {
       // Return data
       console.log("User has saved props: ", userResult.savedProps);
 
@@ -35,7 +38,7 @@ const getSavesHandler = async (req, res) => {
       client.close();
       return res.status(200).json({
         message: "Property saved!",
-        savedProperties: null
+        savedProperties: []
       });
     }
   } catch (error) {
