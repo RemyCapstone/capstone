@@ -21,3 +21,8 @@
 .input:not([name="password"], [name="confirmPassword"], [name="userPassword"]){
     margin-bottom: 1rem;
 }
+
+.validation-error--text {
+    color: red;
+    font-style: italic;
+}

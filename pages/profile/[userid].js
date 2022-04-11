@@ -29,8 +29,8 @@ const fetchUserSavedPropertiesHandler = async (id) => {
       "Content-Type": "application/json",
     },
   });
-
-  return response;
+  const data = await response.json();
+  return data.savedProperties || null;
 }
 
 // fetch reviews that this user has made
@@ -256,12 +256,7 @@ export async function getServerSideProps({ params: { userid }, req }) {
   let fetchedProperties = [];
   let reviews = [];
   if (session) {
-    const res = await fetchUserSavedPropertiesHandler(session.user);
-
-    if (res) {
-      const data = await res.json();
-      savedProps = await data.savedProperties;
-    }
+    savedProps = await fetchUserSavedPropertiesHandler(session.user);
 
     if(savedProps && savedProps.length > 0){
       const options = recommendPropSearch(savedProps);
