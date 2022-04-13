@@ -217,7 +217,6 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         bathrooms: propertyDetails.bathrooms,
         livingArea: propertyDetails.livingArea,
         isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
-        rating: rating,
       };
       const res = await saveHandler(propertyToSave, user);
       // React to result of the save

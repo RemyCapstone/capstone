@@ -39,9 +39,7 @@ const handler = async (req, res) => {
       })
     }
 
-    if (userResult.savedProps !== undefined && userResult.savedProps.find( (e) => e.zpid === property.zpid )) {
-      // Handle unsave
-      console.log("Found one.")
+    if (userResult.savedProps && userResult.savedProps.find( (e) => e.zpid === property.zpid )) {
       await usersCollection.updateOne(
         { email: user.email },
         {
@@ -51,10 +49,7 @@ const handler = async (req, res) => {
         }
       );
       client.close();
-      return res.status(200).json({
-        message: "Property unsaved!",
-        type: "success"
-      });
+      return res.status(200).json({ message: "Property unsaved!", type: "success" });
     }
     else {
       await usersCollection.updateOne(
@@ -69,11 +64,9 @@ const handler = async (req, res) => {
         }
       );
       client.close();
-      return res.status(200).json({
-        message: "Property saved!",
-        type: "success"
-      });
+      return res.status(200).json({ message: "Property saved!", type: "success" });
     }
+    
     // console.log(result ? result : null)
 
   } catch (error) {
