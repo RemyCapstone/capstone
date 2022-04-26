@@ -192,7 +192,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
         overflowY="auto"
       >
         {/* 1 - TABS: SAVED PROPERTIES */}
-        <Tabs>
+        <Tabs variant='line' colorScheme='blue' marginTop='1'>
           <TabList>
             <Tab>Rental</Tab>
             <Tab>Home</Tab>
@@ -251,7 +251,15 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
                   reviews
                   ?
                   reviews.map((review) => (
-                    <SingleReview data={review}/>
+                    <Link href={`/property/${review.zpid}/`} passHref>
+                      <Box
+                        p='2'
+                        _hover={{ bg: "gray.100", cursor: "pointer" }}
+                        borderRadius='20'
+                      >
+                        <SingleReview data={review}/>
+                      </Box>
+                    </Link>
                   ))
                   :
                   noReviews
