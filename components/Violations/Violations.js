@@ -131,6 +131,7 @@ const Violations = ({data, registered}) => {
     sortableCategories.sort(function(a, b) {
         return b[1] - a[1];
     });
+    const allCategories = sortableCategories;
     if(sortableCategories.length > 3){
         sortableCategories = sortableCategories.slice(0, 3) // only get the first few
     }
@@ -329,7 +330,7 @@ const Violations = ({data, registered}) => {
                         <ComplaintsTable data={filteredComplaints} />
                     </TabPanel>
                     <TabPanel>
-                        <Charts data={sortableCategories} complaints={complaintsDescriptions} />
+                        <Charts data={allCategories} complaints={complaintsDescriptions} />
                     </TabPanel>
                 </TabPanels>
                 </Tabs>
