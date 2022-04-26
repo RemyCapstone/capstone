@@ -17,6 +17,8 @@ import { fetchZillowApi } from "../../utils/fetchZillowApi";
 import { recommendPropSearch } from "../../utils/recommendPropAlgo";
 
 import Property from '../../components/Property';
+import SingleReview from "../../components/Reviews/SingleReview";
+
 import { server } from '../../config/index'; // dyanmic absolute routes
 import { useState } from "react";
 
@@ -43,6 +45,7 @@ const fetchUserReviewsHandler = async(id) => {
     }
   });
   const data =  await response.json();
+
   return data.reviews || null;
 };
 
@@ -58,8 +61,6 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   const properties = savedProps;
   let recommended = recoproperties;
 
-  console.log("user reviews:", reviews)
-
   //filter out properties we already saved
   for(let i=0; i<properties.length; i++){
     recommended = recommended.filter(e => e['zpid'] != properties[i]['zpid'])
@@ -71,6 +72,16 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   const currentPage = Math.floor(Math.random() * iterations);
   let limit = usableProperties.length <= 3*(currentPage+1) ? usableProperties.length : 3*(currentPage+1);
 
+  const formattedReviews = reviews;
+  for (let i = 0; i < reviews.length; i++)
+  {
+    let formattedReview = reviews[i];
+    formattedReview["user"] = [{
+      firstName: session.user.firstName,
+      lastName: session.user.lastName,
+      profileImage: session.user.profileImage
+    }]
+  }
 
   const noRentalProperties = <p>
     You have no saved rental properties. Search for your next happy place
@@ -89,6 +100,12 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
       </Button>
     </Link>
   </p>
+
+  const noReviews = <p>
+    You have no reviews. Leave a review on a property to see them here.
+  </p>
+
+  console.log(reviews);
 
   return (
     <>
@@ -162,7 +179,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
       {/* RIGHT COLUMN */}
       <GridItem rowSpan={1} colSpan={5}>
         <Heading size="xl" padding={4} paddingTop={0}>
-          Saved Properties
+          Your Details
         </Heading>
       </GridItem>
       {/* RIGHT COLUMN - USER'S DATABASE STUFF */}
@@ -179,11 +196,13 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
           <TabList>
             <Tab>Rental</Tab>
             <Tab>Home</Tab>
+            <Tab>Reviews</Tab>
           </TabList>
 
           <TabPanels>
             <TabPanel>
-              <Flex flexWrap="wrap">
+              {/* Rentals */}
+              <Flex flexWrap="wrap" key="rentals">
                 {(properties && properties.length > 0)
                   ?
                   (properties.filter(property => property.isRental).length > 0)
@@ -205,7 +224,8 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
               </Flex>
             </TabPanel>
             <TabPanel>
-            <Flex flexWrap="wrap">
+            {/* Properties */}
+            <Flex flexWrap="wrap" key="properties">
                 {(properties && properties.length > 0)
                   ?
                   (properties.filter(property => !property.isRental).length > 0)
@@ -225,12 +245,22 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
                 }
               </Flex>
             </TabPanel>
+            <TabPanel key="reviews">
+                {/* Reviews */}
+                {
+                  reviews
+                  ?
+                  reviews.map((review) => (
+                    <SingleReview data={review}/>
+                  ))
+                  :
+                  noReviews
+                }
+            </TabPanel>
           </TabPanels>
         </Tabs>
-
       </GridItem>
 
-      {/* TO-DO: USER'S REVIEWS */}
       {/* TO-DO: USER'S REPORTS */}
     </Grid>
 
