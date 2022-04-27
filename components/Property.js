@@ -22,7 +22,7 @@ const Property = ({ property, isRental }) => {
   // console.log("PROPERTY DETAILS:\n", property)
   const { zpid, address, imgSrc, price, bedrooms, bathrooms, livingArea } =
     property;
-  //console.log(zpid, address, imgSrc)
+  // console.log(zpid, address, imgSrc)
 
   const [isVerified, setVerified] = useState([]);
 
@@ -45,7 +45,7 @@ const Property = ({ property, isRental }) => {
     bathWord = "Bath";
   }
 
-  //console.log(addressSplit)
+  console.log('ADDRESS SPLIT', addressSplit)
 
   let [residentalName, streetName, city, stateAndZip] = addressSplit;
   streetName = streetName.toUpperCase();
@@ -55,7 +55,7 @@ const Property = ({ property, isRental }) => {
       streetName = streetName.substring(0, streetName.indexOf(term) - 1);
     }
   }
-  //console.log('STREET NAME:', streetName)
+  console.log('STREET NAME:', streetName)
 
   const fullLoc = `${streetName} ${stateAndZip.trim().substring(3)}`;
 
@@ -103,7 +103,7 @@ const Property = ({ property, isRental }) => {
       //after clicking on a property we route to the specific property page
       //for new tab <a target="_blank" rel="noreferrer"></a>
       <>
-      
+
         {/* NOTE: Brute forced the styling for the card margins to give spacing between each property, will probably need to adjust this in index.js and search.js */}
         <Flex
           flexWrap="wrap"
@@ -127,7 +127,7 @@ const Property = ({ property, isRental }) => {
           >
             <Flex>
               {/* TO-DO: Display ratings on property cards if available */}
-              {/* 
+              {/*
                         <Box backgroundColor='white' borderRadius='2xl' width={70} p='2' marginLeft='3' marginTop='3'>
                             <Flex>
                                 <FaStar size={20} color='#FFC107'/>
@@ -139,7 +139,7 @@ const Property = ({ property, isRental }) => {
               {/* TO-DO: Add Save functionality to pages with multiple property cards */}
               {/* Save button on top right of property card */}
               {/*
-                        <Box marginLeft='255' marginTop='3'> 
+                        <Box marginLeft='255' marginTop='3'>
                             <IconButton
                                 variant='outline'
                                 backgroundColor='white'
@@ -147,8 +147,8 @@ const Property = ({ property, isRental }) => {
                                 color='#B0B0B0'
                                 aria-label='Save property'
                                 borderRadius='50%'
-                                icon={<MdFavoriteBorder size={25}/>}  
-                            />    
+                                icon={<MdFavoriteBorder size={25}/>}
+                            />
                         </Box>
                         */}
             </Flex>
@@ -234,7 +234,7 @@ const Property = ({ property, isRental }) => {
               <Box>
                 <Flex>
                   <BsGridFill size={20} />
-                  <Text marginLeft="10px">{millify(livingArea)} sqft</Text>
+                  <Text marginLeft="10px">{livingArea ? millify(livingArea) : 'N/A'} sqft</Text>
                 </Flex>
               </Box>
             </Flex>

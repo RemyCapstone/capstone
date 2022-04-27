@@ -19,10 +19,10 @@ import {
   FcAbout,
   FcManager,
   FcMoneyTransfer,
-  FcKey,
   FcExport,
 } from "react-icons/fc";
 import { BsSearch } from 'react-icons/bs';
+import { SiZillow } from 'react-icons/si';
 
 import { useMediaQuery } from '@chakra-ui/react'
 
@@ -41,11 +41,10 @@ const NavBar = () =>{
     const { data : session} = useSession();
     // console.log("This is my session from Navbar:", session);
     // console.log('This is location from Navbar: ', window.location.href)
-    
+
     let prevPage = '/'
     if (typeof window !== "undefined")
       prevPage = window.location.href.includes('profile') ? '/' : window.location.href;
-    console.log('prev:', prevPage)
     return (
       <Flex p="2" borderBottom="1px" borderColor="gray.100" align="center">
         {isDesktopWidth ? (
@@ -67,6 +66,11 @@ const NavBar = () =>{
             <Link href="/about" passHref>
               <Button variant="ghost" leftIcon={<FcAbout />}>
                 About
+              </Button>
+            </Link>
+            <Link href="/searchByZillow" passHref>
+              <Button variant="ghost" leftIcon={<SiZillow />}>
+                Zillow Search
               </Button>
             </Link>
             <Link href="/search?purpose=for-rent" passHref>
@@ -124,7 +128,7 @@ const NavBar = () =>{
                 <Button leftIcon={<FcManager />} variant="outline">
                   Login
                 </Button>
-              </Link> 
+              </Link>
             )}
           </>
         ) : (
@@ -173,6 +177,9 @@ const NavBar = () =>{
                     </Link>
                     <Link href="/about" passHref>
                       <MenuItem icon={<FcAbout />}>About</MenuItem>
+                    </Link>
+                    <Link href="/searchByZillow" passHref>
+                      <MenuItem icon={<SiZillow />}>Zillow Search</MenuItem>
                     </Link>
                   </MenuGroup>
                   <MenuGroup title="Property Options">
