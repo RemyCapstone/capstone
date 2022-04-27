@@ -19,10 +19,10 @@ import {
   FcAbout,
   FcManager,
   FcMoneyTransfer,
-  FcKey,
   FcExport,
 } from "react-icons/fc";
 import { BsSearch } from 'react-icons/bs';
+import { SiZillow } from 'react-icons/si';
 
 import { useMediaQuery } from '@chakra-ui/react'
 
@@ -35,17 +35,16 @@ const NavBar = () =>{
     * Less than 1020px: treat as mobile
     * Greater than 1020px: expand navbar and treat as desktop
     */
-    const [isDesktopWidth] = useMediaQuery('(min-width: 1020px)');
+    const [isDesktopWidth] = useMediaQuery('(min-width: 1150px)');
 
     // User session
     const { data : session} = useSession();
     // console.log("This is my session from Navbar:", session);
     // console.log('This is location from Navbar: ', window.location.href)
-    
+
     let prevPage = '/'
     if (typeof window !== "undefined")
       prevPage = window.location.href.includes('profile') ? '/' : window.location.href;
-    console.log('prev:', prevPage)
     return (
       <Flex p="2" borderBottom="1px" borderColor="gray.100" align="center">
         {isDesktopWidth ? (
@@ -60,63 +59,67 @@ const NavBar = () =>{
             {/* If there is a session, display the user's name on the top right. */}
             {/* TODO: needs help styling :D */}
             <Link href="/" passHref>
-              <Button variant="ghost" leftIcon={<FcHome />}>
+              <Button variant="ghost" leftIcon={<FcHome />} marginRight='1'>
                 Home
               </Button>
             </Link>
             <Link href="/about" passHref>
-              <Button variant="ghost" leftIcon={<FcAbout />}>
+              <Button variant="ghost" leftIcon={<FcAbout />} marginRight='1'>
                 About
               </Button>
             </Link>
+            <Link href="/searchByZillow" passHref>
+              <Button variant="ghost" leftIcon={<SiZillow />} marginRight='1'>
+                Zillow Search
+              </Button>
+            </Link>
             <Link href="/search?purpose=for-rent" passHref>
-              <Button variant="ghost" leftIcon={<BsSearch />}>
+              <Button variant="ghost" leftIcon={<BsSearch />} marginRight='1'>
                 Search Rentals
               </Button>
             </Link>
             <Link href="/search?purpose=for-sale" passHref>
-              <Button variant="ghost" leftIcon={<FcMoneyTransfer />}>
+              <Button variant="ghost" leftIcon={<FcMoneyTransfer />} marginRight='1'>
                 Buy Property
               </Button>
             </Link>
             {/* Show User info if logged in, nothing if not. */}
             {session ? (
-              <Flex align="center">
-                <Box fontSize="xl">
-                  <Avatar
-                    fontWeight="bold"
-                    alignSelf="end"
-                    size="sm"
-                    name={`${
-                      session.user.firstName + " " + session.user.lastName
-                    }`}
-                    src={session.user.imageUrl ? session.user.imageUrl : null}
-                />
-                </Box>
-                <Box>
-                  <Menu>
-                    <MenuButton
-                        as={Button}
-                        variant="ghost"
-                        rightIcon={<ChevronDownIcon />}
-                        _hover={{ bg: "white" }}
-                      >
-                        <Text fontSize="lg" as="b">
-                          {session.user.firstName}
-                        </Text>
-                    </MenuButton>
-                      <MenuList>
-                        <Link href={`/profile/${session.user._id}`} passHref>
-                          <MenuItem icon={<FcManager />}>Profile</MenuItem>
-                        </Link>
-                        <MenuDivider />
-                        <MenuItem onClick={() => signOut({callbackUrl: prevPage})} icon={<FcExport />}>
-                          Sign Out
-                        </MenuItem>
-                      </MenuList>
-                  </Menu>
-                </Box>
-              </Flex>
+              <Menu>
+                <MenuButton
+                    as={Button}
+                    variant="ghost"
+                    rightIcon={<ChevronDownIcon />}
+                    minWidth='100px'
+                  >
+                    <Flex alignItems='center'>
+                      <Box fontSize="xl">
+                        <Avatar
+                          fontWeight="bold"
+                          alignSelf="end"
+                          size="sm"
+                          name={`${
+                            session.user.firstName + " " + session.user.lastName
+                          }`}
+                          src={session.user.imageUrl ? session.user.imageUrl : null}
+                          marginRight='1'
+                        />
+                      </Box>
+                      <Text fontSize="lg" as="b">
+                        {session.user.firstName}
+                      </Text>
+                    </Flex>
+                </MenuButton>
+                <MenuList>
+                  <Link href={`/profile/${session.user._id}`} passHref>
+                    <MenuItem icon={<FcManager />}>Profile</MenuItem>
+                  </Link>
+                  <MenuDivider />
+                  <MenuItem onClick={() => signOut({callbackUrl: prevPage})} icon={<FcExport />}>
+                    Sign Out
+                  </MenuItem>
+                </MenuList>
+              </Menu>
             ) : null}
             {/* If there is a session, the sign out option should replace the login option. */}
             {session ? null : (
@@ -124,7 +127,7 @@ const NavBar = () =>{
                 <Button leftIcon={<FcManager />} variant="outline">
                   Login
                 </Button>
-              </Link> 
+              </Link>
             )}
           </>
         ) : (
@@ -173,6 +176,9 @@ const NavBar = () =>{
                     </Link>
                     <Link href="/about" passHref>
                       <MenuItem icon={<FcAbout />}>About</MenuItem>
+                    </Link>
+                    <Link href="/searchByZillow" passHref>
+                      <MenuItem icon={<SiZillow />}>Zillow Search</MenuItem>
                     </Link>
                   </MenuGroup>
                   <MenuGroup title="Property Options">

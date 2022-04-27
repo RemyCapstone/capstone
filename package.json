@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set NODE_ENV=dev&& next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -21,6 +21,9 @@
     "framer-motion": "^6.2.8",
     "google-map-react": "^2.1.10",
     "jsonwebtoken": "^8.5.1",
+    "leaflet": "^1.8.0",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
+    "leaflet-geosearch": "^3.6.0",
     "millify": "^4.0.0",
     "mongodb": "^4.4.1",
     "next": "12.1.0",
@@ -32,12 +35,15 @@
     "react-dom": "17.0.2",
     "react-horizontal-scrolling-menu": "^2.7.1",
     "react-icons": "^4.3.1",
+    "react-leaflet": "^4.0.0",
     "react-select-search": "^3.0.9",
     "v8": "^0.1.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "eslint": "8.10.0",
+    "@babel/core": "^7.17.9",
+    "@babel/eslint-parser": "^7.17.0",
+    "eslint": "^8.10.0",
     "eslint-config-next": "12.1.0"
   }
 }

@@ -1,6 +1,13 @@
 {
-  "extends": [
-    "next/babel",
-    "next/core-web-vitals"
-  ]
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-page-custom-font": "off",
+    "react/no-children-prop": "off",
+    "react-hooks/rules-of-hooks": "off",
+    "react/jsx-key": "off"
+  }
 }

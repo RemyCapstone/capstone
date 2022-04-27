@@ -8,12 +8,29 @@ const AboutPage = () => {
     return (
         <Box>
             <Flex justifyContent='center' alignItems='center' >
-                <Text fontSize='4xl' p='10' fontWeight='bold' color='gray.700'>
+                <Text fontSize='4xl' p='10' fontWeight='bold' color='gray.700'
+                    sx={{
+                        '@media only screen and (max-width: 1050px)': {
+                        padding: '4',
+                        textAlign: 'center'
+                        },
+                    }}
+                >
                     Battling New York's Housing Crisis
                 </Text>
             </Flex>
             <Flex justifyContent='center' alignItems='center'>
-                <Text fontSize='1xl' p='4' color='gray.600' textAlign='center'>
+                <Text
+                    fontSize='1xl'
+                    p='4'
+                    color='gray.600'
+                    textAlign='center'
+                    sx={{
+                        '@media only screen and (max-width: 1050px)': {
+                          textAlign: 'left',
+                        },
+                    }}
+                >
                     The market for apartment hunting sites currently does not provide an apartment
                     hunting solution that contains information pertaining to the building's current
                     conditions and how habitable it is now. There is also no way to get the experience
@@ -26,7 +43,15 @@ const AboutPage = () => {
                     How Remy Shines
                 </Text>
             </Flex>
-            <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+            <Grid
+                templateColumns='repeat(3, 1fr)'
+                gap={6}
+                sx={{
+                    '@media only screen and (max-width: 1050px)': {
+                      gridTemplateColumns: '1fr',
+                    },
+                }}
+            >
                 <GridItem w='100%' h='60' bg='gray.100' borderRadius='10'>
                     <Box p='3' paddingTop={5}>
                         <Flex justifyContent="center" alignItems="center">
@@ -61,36 +86,69 @@ const AboutPage = () => {
                     Our Impact
                 </Text>
             </Flex>
-            <Flex justifyContent='center' alignItems='center' >
             <Grid
-                h='450px'
+                minH='450px'
                 templateRows='repeat(3, 1fr)'
                 templateColumns='repeat(3, 1fr)'
                 gap={4}
+                sx={{
+                    '@media only screen and (max-width: 1050px)': {
+                      gridTemplateColumns: '1fr',
+                    },
+                }}
             >
 
-                <GridItem rowSpan={3} colSpan={1}>
-                    <Icon as={FcHome} w={250} h={400} />
+                <GridItem rowSpan={3} colSpan={1}
+                    sx={{
+                        '@media only screen and (max-width: 1050px)': {
+                          gridColumn: 'auto',
+                          gridRow: 'auto',
+                          display: 'none',
+                        },
+                    }}
+                >
+                    <Icon as={FcHome} w={250} h={400}
+                        sx={{
+                            '@media only screen and (max-width: 1050px)': {
+                              width: '50vw',
+                            },
+                        }}
+                    />
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={2}
+                sx={{
+                    '@media only screen and (max-width: 1050px)': {
+                      gridColumn: 'auto',
+                      padding: '4'
+                    },
+                }}>
                     <Text fontSize='4xl' fontWeight='bold' color='blue.500' p='3'>7,200 apartments</Text>
                     <Text fontSize='2xl' color='gray.600' p='3'>For New Yorkers to find</Text>
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={2}
+                    sx={{
+                        '@media only screen and (max-width: 1050px)': {
+                            gridColumn: 'auto',
+                            padding: '4'
+                        },
+                    }}
+                >
                     <Text fontSize='4xl' fontWeight='bold' color='red.500' p='3'>2.6 million complaints</Text>
                     <Text fontSize='2xl' color='gray.600' p='3'>Know what apartments to avoid</Text>
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={2}
+                    sx={{
+                        '@media only screen and (max-width: 1050px)': {
+                            gridColumn: 'auto',
+                            padding: '4'
+                        },
+                    }}
+                >
                     <Text fontSize='4xl' fontWeight='bold' color='green.400' p='3'>0 rats</Text>
                     <Text fontSize='2xl' color='gray.600' p='3'>In your new home (hopefully)</Text>
                 </GridItem>
-
             </Grid>
-            </Flex>
         </Box>
-
-
-
     );
 }
 
