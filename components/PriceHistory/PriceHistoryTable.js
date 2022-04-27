@@ -4,8 +4,8 @@ import millify from 'millify';
 
 
 const PriceHistoryTable = ({data}) => {
-    //console.log(data)
 
+    if(data.length > 0){
     return(
         <Box overflowY="auto" maxHeight="350px">
             <Table variant='simple' colorScheme='facebook'>
@@ -19,6 +19,7 @@ const PriceHistoryTable = ({data}) => {
                 </Thead>
                 <Tbody>
                     {
+                        
                         data.map(history => {
                             return (
                                 <Tr key={history.time}>
@@ -28,6 +29,25 @@ const PriceHistoryTable = ({data}) => {
                                 </Tr>
                             )
                         })
+                    }
+                </Tbody>
+            </Table>
+        </Box>
+    )
+    }
+    return (
+        <Box overflowY="auto" maxHeight="350px">
+            <Table variant='simple' colorScheme='facebook'>
+                <TableCaption position="sticky" bottom={0} bgColor="white">No Price History Available</TableCaption>
+                <Thead position="sticky" top={0} bgColor="white">
+                    <Tr>
+                        <Th>Date</Th>
+                        <Th>Event</Th>
+                        <Th>Price</Th>
+                    </Tr>
+                </Thead>
+                <Tbody>
+                    {
                     }
                 </Tbody>
             </Table>
