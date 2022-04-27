@@ -309,7 +309,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                   <Center><Text color='#C4C4C4'>•</Text></Center>
                 </Box>
                 <Box>
-                  <Flex><BsGridFill size={20}/><Text marginLeft='10px'>{livingArea ? millify(livingArea) : '?' } sqft</Text></Flex>
+                  <Flex><BsGridFill size={20}/><Text marginLeft='10px'>{livingArea ? millify(livingArea) : 'N/A' } sqft</Text></Flex>
                 </Box>
               </Flex>
               <Divider />
