@@ -90,7 +90,6 @@ const NavBar = () =>{
                     as={Button}
                     variant="ghost"
                     rightIcon={<ChevronDownIcon />}
-                    _hover={{ bg: "white" }}
                     minWidth='100px'
                   >
                     <Flex alignItems='center'>
