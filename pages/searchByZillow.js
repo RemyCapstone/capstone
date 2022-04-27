@@ -1,12 +1,13 @@
 import {
     Box,
     FormControl, FormLabel, Input, Button,
-    Flex, Text, Heading, Divider,
+    Flex, Text, Divider,
     useToast
 } from '@chakra-ui/react';
 
+import { InfoIcon } from '@chakra-ui/icons';
+
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 import { propertyDetailOptions, fetchZillowApi } from "../utils/fetchZillowApi";
 import Property from '../components/Property';
@@ -14,7 +15,6 @@ import Property from '../components/Property';
 const SearchByZillowPage = () => {
     // Hooks
     const toast = useToast();
-    const router = useRouter();
     const [resultPropertyData, setResultPropertyData] = useState();
 
     // Helper functions
@@ -32,7 +32,7 @@ const SearchByZillowPage = () => {
     // Return address usable by Property component
     // because Zillow API has inconsistent formatting
     const reconstructAddress = (property) => {
-        return property.address.streetAddress + ", " + property.address.city + ", " + property.address.state + property.address.zipcode;
+        return property.address.streetAddress + ", " + property.address.city + ", " + property.address.state + " " + property.address.zipcode;
     }
 
     const handleSubmit = async () => {
@@ -66,7 +66,7 @@ const SearchByZillowPage = () => {
         // Valid input
         const fetchedPropertyOptions = propertyDetailOptions(extractedZpid);
         const fetchedPropertyDetails = await fetchZillowApi(fetchedPropertyOptions);
-
+        console.log(fetchedPropertyDetails)
         // Invalid result
         if (fetchedPropertyDetails.address === null)
         {
@@ -89,10 +89,10 @@ const SearchByZillowPage = () => {
                 price: fetchedPropertyDetails.price,
                 bedrooms: fetchedPropertyDetails.bedrooms,
                 bathrooms: fetchedPropertyDetails.bathrooms,
-                livingArea: fetchedPropertyDetails.livingArea
+                livingArea: fetchedPropertyDetails.livingArea,
+                homeStatus: fetchedPropertyDetails.homeStatus
             };
             setResultPropertyData(formattedData);
-            console.log(fetchedPropertyDetails)
             toast({
                 title: "Success!",
                 status: "success",
@@ -109,12 +109,18 @@ const SearchByZillowPage = () => {
                     Enter a Zillow Listing URL to View its Remy Page
                 </Text>
             </Flex>
-            <Flex justifyContent='center' alignItems='center'>
-                <Text fontSize='1xl' color='gray.600' textAlign='center'>
+            <Flex margin='auto' maxW='600px' p='5'>
+                <Text fontSize='1xl' color='gray.600'>
                     If you already have an existing Zillow listing and want to reach
                     Remy's page for it, enter the URL here.
                 </Text>
             </Flex>
+            <Flex maxW='600px' margin='auto' p='5'>
+                <InfoIcon pr='1'  w={6} h={6} color='blue.500'/>
+                <Text color='gray.600'>Note: Ensure that you only enter <b>New York City</b> listings.
+                New Zillow listings may not work.</Text>
+            </Flex>
+
             <Flex justifyContent='center' alignItems='center' p='8' margin='auto'>
                 <Box borderRadius='md' w='700px'>
                 <FormControl>
@@ -131,15 +137,17 @@ const SearchByZillowPage = () => {
                 <Box>
                     <Divider></Divider>
                     <Flex justifyContent='center' alignItems='center' >
-                    <Text fontSize='4xl' p='10' fontWeight='bold' color='gray.700'>
-                        Result
-                    </Text>
-                </Flex>
-                    <Property
-                        property={resultPropertyData}
-                        key={resultPropertyData.zpid}
-                        isRental={router.query.purpose === 'for-rent'? true : false}
-                    />
+                        <Text fontSize='4xl' p='10' fontWeight='bold' color='gray.700'>
+                            Result
+                        </Text>
+                    </Flex>
+                    <Box width='100%' display='flex' justifyContent='center'>
+                        <Property
+                            property={resultPropertyData}
+                            key={resultPropertyData.zpid}
+                            isRental={resultPropertyData.homeStatus === 'FOR_RENT' ? true : false}
+                        />
+                    </Box>
                 </Box>
                 :
                 <></>
