@@ -309,7 +309,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                   <Center><Text color='#C4C4C4'>•</Text></Center>
                 </Box>
                 <Box>
-                  <Flex><BsGridFill size={20}/><Text marginLeft='10px'>{millify(livingArea)} sqft</Text></Flex>
+                  <Flex><BsGridFill size={20}/><Text marginLeft='10px'>{livingArea ? millify(livingArea) : '?' } sqft</Text></Flex>
                 </Box>
               </Flex>
               <Divider />
@@ -320,7 +320,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
                   <Text fontSize='lg'>{homeType}</Text>
                   </>}
 
-                  {listingProvider.agentName && <>
+                  {listingProvider?.agentName && <>
                       <Text fontSize='lg' textTransform='uppercase' fontWeight='semibold' marginTop='5%'>Listed by</Text>
                   <Text fontSize='lg'>{listingProvider.agentName}</Text>
                   </>}
