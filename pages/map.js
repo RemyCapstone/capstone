@@ -8,7 +8,7 @@ export default function Map() {
   });
 
   return (
-    <Box maxWidth='1300px' margin='auto' p='4'>
+    <Box minWidth='100%' margin='auto' p='4'>
       <div id="map">
         <MapWithNoSSR />
       </div>
