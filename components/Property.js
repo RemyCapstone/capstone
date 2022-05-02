@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Box, Button, IconButton, Flex, Spacer, Text, Tooltip, Center, useToast} from "@chakra-ui/react";
 import { FaBed, FaBath, FaStar } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
-import { MdFavoriteBorder, MdInfoOutline} from 'react-icons/md';
+import { MdFavoriteBorder, MdInfoOutline, MdFavorite} from 'react-icons/md';
 import millify from 'millify';
 import { GoVerified, GoQuestion } from 'react-icons/go';
 import {useState, useEffect} from 'react';
@@ -12,6 +12,7 @@ import DefaultImage from '../assets/images/home.png';
 import {geoOptions, fetchGeoSearch} from '../utils/geoSearch'
 import { registeredOptions, fetchOpenApi } from "../utils/hpdViolations";
 
+// Added for Save Button
 import { getSession } from 'next-auth/react';
 import { server } from '/config/index';
 
@@ -247,7 +248,7 @@ const Property = ({ property, isRental, savedStatus, session }) => {
                                 color='#B0B0B0'
                                 aria-label='Save property'
                                 borderRadius='50%'
-                                icon={<MdFavoriteBorder size={25}/>}
+                                icon={<MdFavorite size={25} color='red'/>}
                                 onClick={() => saveProperty()}
                             />
                             :
