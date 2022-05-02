@@ -12,10 +12,13 @@ import DefaultImage from '../assets/images/home.png';
 import {geoOptions, fetchGeoSearch} from '../utils/geoSearch'
 import { registeredOptions, fetchOpenApi } from "../utils/hpdViolations";
 
+import { getSession } from 'next-auth/react';
+import { server } from '/config/index';
+
 /**
  * @returns a reusable component that is used to display a specific property listing "card"
  */
-const Property = ({ property, isRental }) => {
+const Property = ({ property, isRental, savedStatus, session }) => {
   // console.log("FROM PROPERTY PAGE: ", property )
   //the specific zillow property gets passed in props so we destructure the individual listing
   //this contains things such as the image, price, id of the apartment (known as zpid or zillow property id)
@@ -99,6 +102,100 @@ const Property = ({ property, isRental }) => {
     //console.log(isVerified)
 
 
+    /************ Save Functionality ************/
+
+    const toast = useToast();
+    const [isSaved, setIsSaved] = useState(savedStatus); // savedStatus is added in line 18
+
+    /* Handle saving/unsaving a property for a user */
+    const saveHandler = async(property, user) => {
+      const response = await fetch('pages/api/saveProperty', {
+        method: 'POST',
+        body: JSON.stringify([property, user]),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const res = await response;
+      const data = await res.json();
+      return [data.message, data.type, res.status];
+    }
+
+    /* Handle getting a single user's data */
+    const fetchUserHandler = async (id) => {
+      const response = await fetch(`${server}/api/user`, {
+        method: "POST",
+        body: JSON.stringify(id),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      // console.log("FETCHUSERHANDLER", data);
+      return data.user;
+    };
+
+    /* Handle getting the status of a single property for a user */
+    const fetchPropertyStatusHandler = async (zpid, userid) => {
+      const response = await fetch(`${server}/api/user/getPropertyStatus`, {
+        method: 'POST',
+        body: JSON.stringify([zpid, userid]),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const res = await response;
+      const data = await res.json();
+      return data.savedStatus;
+    }
+
+    // Call API to add this property to the current user's list of saved properties.
+    const saveProperty = async () => {
+      if (!session) { //if there's no session, toast a message alerting them of this.
+        return toast({
+          title: "Not logged in",
+          description:
+            "You can't save a property because you're not logged in.",
+          status: "error",
+          isClosable: true,
+          position: "top",
+          duration: 2000,
+        });
+      }
+      const user = session.user;
+      // Save a "snapshot" of the property due to API throttling.
+      const propertyToSave = {
+        zpid: propertyDetails.zpid,
+        address: `${brokerageName ? brokerageName : ''}, ${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
+        imgSrc: propertyDetails.imgSrc,
+        price: propertyDetails.price,
+        bedrooms: propertyDetails.bedrooms,
+        bathrooms: propertyDetails.bathrooms,
+        livingArea: propertyDetails.livingArea,
+        isRental: (propertyDetails.homeStatus === "FOR_RENT") ? true : false,
+      };
+      const res = await saveHandler(propertyToSave, user);
+      // React to result of the save
+        toast({
+          title: res[0],
+          status: res[1],
+          isClosable: true,
+          position: "top",
+          duration: 2000,
+        });
+
+        if (res[2] == 200) {
+          setIsSaved(!isSaved);
+        }
+      }
+
+    /************ Save Functionality End - look at getServerSideProps at bottom ************/
+
+
+
     return (
       //after clicking on a property we route to the specific property page
       //for new tab <a target="_blank" rel="noreferrer"></a>
@@ -140,6 +237,9 @@ const Property = ({ property, isRental }) => {
               {/* Save button on top right of property card */}
               
                         <Box marginLeft='338' marginTop='3'>
+                          {
+                            isSaved ? 
+                            // If property is already saved, unsave
                             <IconButton
                                 variant='outline'
                                 backgroundColor='white'
@@ -148,7 +248,21 @@ const Property = ({ property, isRental }) => {
                                 aria-label='Save property'
                                 borderRadius='50%'
                                 icon={<MdFavoriteBorder size={25}/>}
+                                onClick={() => saveProperty()}
                             />
+                            :
+                            // If property is unsaved, save
+                            <IconButton
+                                variant='outline'
+                                backgroundColor='white'
+                                borderColor='white'
+                                color='#B0B0B0'
+                                aria-label='Save property'
+                                borderRadius='50%'
+                                icon={<MdFavoriteBorder size={25}/>}
+                                onClick={() => saveProperty()}
+                            />
+                          }
                         </Box>
                         
             </Flex>
@@ -251,5 +365,43 @@ const Property = ({ property, isRental }) => {
       </>
     );
 };
+
+
+/********* */
+export async function getServerSideProps({ params: { zpid }, req }) {
+  // Generate the fetch object for the property details and images
+  const myProperty = propertyDetailOptions(zpid);
+  const myImages = propertyImageOptions(zpid);
+
+  // Make calls
+  const data = await fetchZillowApi(myProperty)
+  // Prevent throttling errors
+  await new Promise(resolve => setTimeout(resolve, 500));
+  const images = await fetchZillowApi(myImages);
+
+  // Get session user info
+  const session = await getSession({ req });
+
+  let propertySavedStatus = false;
+  // let userReview = {};
+  const propertyReviews = await fetchReviewsHandler(zpid);
+  // let user = {};
+  if (session) {
+    propertySavedStatus = await fetchPropertyStatusHandler(zpid, session.user.email);
+    // user = await fetchUserHandler(session.user._id);
+  }
+
+  return {
+    props: {
+      propertyDetails: data,
+      propertyImages: images,
+      session: session,
+      zpid: zpid,
+      savedStatus: propertySavedStatus,
+      // user: user,
+      propertyReviews: propertyReviews,
+    },
+  };
+}
 
 export default Property;
