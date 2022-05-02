@@ -36,7 +36,10 @@
     "react-horizontal-scrolling-menu": "^2.7.1",
     "react-icons": "^4.3.1",
     "react-leaflet": "^4.0.0",
+    "react-query": "^3.38.0",
     "react-select-search": "^3.0.9",
+    "supercluster": "^7.1.5",
+    "use-supercluster": "^0.4.0",
     "v8": "^0.1.0",
     "yup": "^0.32.11"
   },

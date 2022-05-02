@@ -23,6 +23,7 @@ import {
 } from "react-icons/fc";
 import { BsSearch } from 'react-icons/bs';
 import { SiZillow } from 'react-icons/si';
+import {FaMapMarkedAlt} from 'react-icons/fa'
 
 import { useMediaQuery } from '@chakra-ui/react'
 
@@ -68,9 +69,9 @@ const NavBar = () =>{
                 About
               </Button>
             </Link>
-            <Link href="/searchByZillow" passHref>
-              <Button variant="ghost" leftIcon={<SiZillow />} marginRight='1'>
-                Zillow Search
+            <Link href="/hotzonemap" passHref>
+              <Button variant="ghost" leftIcon={<FaMapMarkedAlt />} marginRight='1'>
+                Violations Map
               </Button>
             </Link>
             <Link href="/search?purpose=for-rent" passHref>
@@ -81,6 +82,11 @@ const NavBar = () =>{
             <Link href="/search?purpose=for-sale" passHref>
               <Button variant="ghost" leftIcon={<FcMoneyTransfer />} marginRight='1'>
                 Buy Property
+              </Button>
+            </Link>
+            <Link href="/searchByZillow" passHref>
+              <Button variant="ghost" leftIcon={<SiZillow />} marginRight='1'>
+                Zillow Search
               </Button>
             </Link>
             {/* Show User info if logged in, nothing if not. */}
