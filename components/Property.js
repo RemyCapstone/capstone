@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Box, Button, IconButton, Flex, Spacer, Text, Tooltip, Center } from "@chakra-ui/react";
+import { Box, Button, IconButton, Flex, Spacer, Text, Tooltip, Center, useToast} from "@chakra-ui/react";
 import { FaBed, FaBath, FaStar } from 'react-icons/fa';
 import { BsGridFill } from 'react-icons/bs';
 import { MdFavoriteBorder, MdInfoOutline} from 'react-icons/md';
@@ -138,8 +138,8 @@ const Property = ({ property, isRental }) => {
 
               {/* TO-DO: Add Save functionality to pages with multiple property cards */}
               {/* Save button on top right of property card */}
-              {/*
-                        <Box marginLeft='255' marginTop='3'>
+              
+                        <Box marginLeft='338' marginTop='3'>
                             <IconButton
                                 variant='outline'
                                 backgroundColor='white'
@@ -150,7 +150,7 @@ const Property = ({ property, isRental }) => {
                                 icon={<MdFavoriteBorder size={25}/>}
                             />
                         </Box>
-                        */}
+                        
             </Flex>
           </Box>
           </Link>
