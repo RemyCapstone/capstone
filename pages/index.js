@@ -2,8 +2,9 @@ import Banner from "../components/Banner";
 import { Flex, Box, Text, Button, Heading } from "@chakra-ui/react";
 import { baseListingURL, baseOptions, defaultSearch, fetchZillowApi } from "../utils/fetchZillowApi";
 import Property from "../components/Property";
+import { getSession, useSession } from "next-auth/react"
 
-const HomePage = ({propertiesForRent, propertiesForSale}) => {
+const HomePage = ({ propertiesForRent, propertiesForSale }) => {
   //console.log(propertiesForRent, propertiesForSale);
   //propertiesForRent.forEach(e => console.log(e.zpid, typeof propertiesForRent[0].zpid))
   let usablePropertiesForRent = propertiesForRent.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))

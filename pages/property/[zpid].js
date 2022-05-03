@@ -25,7 +25,7 @@ import { server } from '../../config/index'; // dyanmic absolute routes
 
 /* Handle saving/unsaving a property for a user */
 const saveHandler = async(property, user) => {
-  const response = await fetch('/api/saveProperty', {
+  const response = await fetch(`${server}/api/saveProperty`, {
     method: 'POST',
     body: JSON.stringify([property, user]),
     headers: {
@@ -107,7 +107,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
     const [isSaved, setIsSaved] = useState(savedStatus);
     
     
-    console.log('reviews for this property:', propertyReviews)
+    // console.log('reviews for this property:', propertyReviews)
 
     const [displayTotal, setDisplayTotal] = useState(propertyReviews.length);
     let total = 0
@@ -133,7 +133,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
         // Scroll to review element
         scrollToRef(reviewRef);
     }
-
+    console.log("property: ", propertyDetails)
     // Break down property details fetched data into these parts
     const {address, bathrooms, bedrooms, brokerageName, description, homeStatus, latitude, longitude,
         livingArea, listingProvider, livingAreaUnits, livingAreaValue, price, priceHistory, schools,
@@ -210,7 +210,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
       // Save a "snapshot" of the property due to API throttling.
       const propertyToSave = {
         zpid: propertyDetails.zpid,
-        address: `${brokerageName ? brokerageName : ''}, ${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
+        address: `${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
         imgSrc: propertyDetails.imgSrc,
         price: propertyDetails.price,
         bedrooms: propertyDetails.bedrooms,
