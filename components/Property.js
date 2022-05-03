@@ -177,6 +177,7 @@ const Property = ({ property, isRental }) => {
         <Flex
           flexWrap="wrap"
           w="400px"
+          minHeight={375} //added to fix uneven card heights
           paddingTop="0px"
           justifyContent="flex-start"
           // cursor="pointer"

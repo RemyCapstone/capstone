@@ -51,6 +51,7 @@ const fetchUserReviewsHandler = async(id) => {
 
 // Functional component
 const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) => {
+
   if(!session) {
     return <div>Not logged in.</div>
     // return
