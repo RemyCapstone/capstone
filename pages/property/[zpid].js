@@ -209,7 +209,7 @@ const PropertyDetailsPage = ({propertyDetails, propertyImages, session, zpid, sa
       const user = session.user;
       // Save a "snapshot" of the property due to API throttling.
       const propertyToSave = {
-        zpid: propertyDetails.zpid,
+        zpid: `${propertyDetails.zpid}`,
         address: `${streetAddress}, ${address.city}, ${address.state} ${zipcode}`,
         imgSrc: propertyDetails.imgSrc,
         price: propertyDetails.price,
