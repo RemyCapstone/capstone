@@ -118,7 +118,8 @@ const SearchByZillowPage = () => {
             <Flex maxW='600px' margin='auto' p='5'>
                 <InfoIcon pr='1'  w={6} h={6} color='blue.500'/>
                 <Text color='gray.600'>Note: Ensure that you only enter <b>New York City</b> listings.
-                New Zillow listings may not work.</Text>
+                Ensure you are on a single Zillow listing with an address. This does not work for group
+                or template listings for "types" of apartments.</Text>
             </Flex>
 
             <Flex justifyContent='center' alignItems='center' p='8' margin='auto'>

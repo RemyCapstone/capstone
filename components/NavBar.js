@@ -69,6 +69,11 @@ const NavBar = () =>{
                 About
               </Button>
             </Link>
+            <Link href="/searchByZillow" passHref>
+              <Button variant="ghost" leftIcon={<SiZillow />} marginRight='1'>
+                Zillow Search
+              </Button>
+            </Link>
             <Link href="/hotzonemap" passHref>
               <Button variant="ghost" leftIcon={<FaMapMarkedAlt />} marginRight='1'>
                 Violations Map
@@ -82,11 +87,6 @@ const NavBar = () =>{
             <Link href="/search?purpose=for-sale" passHref>
               <Button variant="ghost" leftIcon={<FcMoneyTransfer />} marginRight='1'>
                 Buy Property
-              </Button>
-            </Link>
-            <Link href="/searchByZillow" passHref>
-              <Button variant="ghost" leftIcon={<SiZillow />} marginRight='1'>
-                Zillow Search
               </Button>
             </Link>
             {/* Show User info if logged in, nothing if not. */}
@@ -185,6 +185,9 @@ const NavBar = () =>{
                     </Link>
                     <Link href="/searchByZillow" passHref>
                       <MenuItem icon={<SiZillow />}>Zillow Search</MenuItem>
+                    </Link>
+                    <Link href="/hotzonemap" passHref>
+                      <MenuItem icon={<FaMapMarkedAlt />}>Violations Map</MenuItem>
                     </Link>
                   </MenuGroup>
                   <MenuGroup title="Property Options">
