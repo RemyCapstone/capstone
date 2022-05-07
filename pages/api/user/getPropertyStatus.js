@@ -39,7 +39,7 @@ const getPropertyStatusHandler = async (req, res) => {
       }
 
       for (let i = 0; i < user.savedProps.length; i++) {
-        console.log(user.savedProps[i].zpid);
+        // console.log(user.savedProps[i].zpid);
         if (user.savedProps[i].zpid == zpid) {
           client.close();
           return res.status(200).json ({

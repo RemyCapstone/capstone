@@ -7,7 +7,11 @@ import {
   List, ListIcon, ListItem,
   Text, Heading,
   Flex,
-  Tabs, TabList, TabPanels, Tab, TabPanel
+  Tabs, TabList, TabPanels, Tab, TabPanel, 
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  Spacer
 } from "@chakra-ui/react";
 import { RiBuilding4Line, RiHomeHeartLine, RiStarLine } from "react-icons/ri";
 
@@ -20,7 +24,13 @@ import Property from '../../components/Property';
 import SingleReview from "../../components/Reviews/SingleReview";
 
 import { server } from '../../config/index'; // dyanmic absolute routes
-import { useState } from "react";
+import { useRef, useState } from "react";
+import editProfile from "../../components/editProfile";
+
+import { Formik } from "formik";
+import * as Yup from "yup";
+import InputField from "../../components/InputField";
+import { Router } from "next/router";
 
 // Fetch data
 const fetchUserSavedPropertiesHandler = async (id) => {
@@ -49,6 +59,20 @@ const fetchUserReviewsHandler = async(id) => {
   return data.reviews || null;
 };
 
+const editUserReviewsHandler = async(email, editedProfile) => {
+  const res = await fetch(`${server}/api/user/editProfile`, {
+    method: "PUT",
+    body: JSON.stringify([email, editedProfile]),
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+
+  const { data } = await res.json();
+
+  return data;
+}
+
 // Functional component
 const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) => {
 
@@ -68,7 +92,7 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
   }
 
   let usableProperties = recommended.filter(property => !property.zpid.includes(".") && !property.address.includes('(undisclosed Address)'))
-  console.log(usableProperties);
+  // console.log(usableProperties);
   const iterations = Math.ceil(usableProperties.length / 3);
   const currentPage = Math.floor(Math.random() * iterations);
   let limit = usableProperties.length <= 3*(currentPage+1) ? usableProperties.length : 3*(currentPage+1);
@@ -106,183 +130,295 @@ const ProfileDetailsPage = ({ session, savedProps, recoproperties, reviews }) =>
     You have no reviews. Leave a review on a property to see them here.
   </p>
 
-  console.log(reviews);
+  // console.log(reviews);
+  const [editing, setEditing] = useState(false);
+
+  const [btnLoading, setBtnLoading] = useState(false);
 
   return (
     <>
-    <Grid
-      h="86vh"
-      w="1300px"
-      templateRows="repeat(15, 1fr)"
-      templateColumns="repeat(7, 1fr)"
-      gap={2}
-      margin={2}
-    >
-      {/* USER INFORMATION */}
-      <GridItem rowSpan={10} colSpan={2} padding={4}>
-        {/* LEFT COLUMN */}
-        <VStack
-          divider={<StackDivider borderColor="gray.200" />}
-          spacing={2}
-          align="stretch"
-        >
-          <Box paddingTop={2} paddingBottom={4}>
-            <Avatar
-              bg="teal.500"
-              fontWeight="bold"
-              size="lg"
-              name={name}
-              src={session.user.imageUrl ? session.user.imageUrl : null}
-            />
-            <Button float="right" size="sm">
-              Edit
-            </Button>
-            <Text fontSize="3xl" fontWeight="bold">
-              {name}
-            </Text>
-            <Text fontSize="xl"> {session.user.email} </Text>
-            {joined ?
-            <Text fontSize="md">
-              User since&nbsp;
-              {`${
-                joined.getMonth() + 1
-              }/${joined.getDate()}/${joined.getFullYear()}`}{" "}
-            </Text>
-            :
-            <></>
-            }
-          </Box>
-        </VStack>
-        <List>
-              <ListItem>
-                <ListIcon as={RiBuilding4Line} h={5} w={5} />
-                {properties ?
-                  <p><b>{properties.filter((p) => p.isRental).length}</b>
-                  &nbsp;rental properties saved</p>
-                    :
-                  <p><b>O</b> rental properties saved</p>}
-              </ListItem>
-              <ListItem>
-                <ListIcon as={RiHomeHeartLine} h={5} w={5} />
-                {properties ?
-                  <p><b>{properties.filter((p) => !p.isRental).length}</b>&nbsp;homes saved</p>
-                    :
-                  <p><b>0</b> homes saved</p>}
-              </ListItem>
-              <ListItem>
-                <ListIcon as={RiStarLine} h={5} w={5} />
-                <p><b>
-                    {reviews ? reviews.length : 0}
-                </b> Reviews</p>
-              </ListItem>
-            </List>
-      </GridItem>
-      {/* RIGHT COLUMN */}
-      <GridItem rowSpan={1} colSpan={5}>
-        <Heading size="xl" padding={4} paddingTop={0}>
-          Your Details
-        </Heading>
-      </GridItem>
-      {/* RIGHT COLUMN - USER'S DATABASE STUFF */}
-      <GridItem
-        rowSpan={14}
-        colSpan={5}
-        padding={4}
-        paddingTop={0}
-        bg="white"
-        overflowY="auto"
+      <Grid
+        h="86vh"
+        w="1300px"
+        templateRows="repeat(15, 1fr)"
+        templateColumns="repeat(7, 1fr)"
+        gap={2}
+        margin={2}
       >
-        {/* 1 - TABS: SAVED PROPERTIES */}
-        <Tabs variant='line' colorScheme='blue' marginTop='1'>
-          <TabList>
-            <Tab>Rental</Tab>
-            <Tab>Home</Tab>
-            <Tab>Reviews</Tab>
-          </TabList>
+        {/* USER INFORMATION */}
+        <GridItem rowSpan={10} colSpan={2} padding={4}>
+          {/* LEFT COLUMN */}
+          <VStack
+            divider={<StackDivider borderColor="gray.200" />}
+            spacing={2}
+            align="stretch"
+          >
+            {!editing ? (
+              <Box paddingTop={2} paddingBottom={4}>
+                <Avatar
+                  bg="teal.500"
+                  fontWeight="bold"
+                  size="lg"
+                  name={name}
+                  src={session.user.imageUrl ? session.user.imageUrl : null}
+                />
+                <Button
+                  float="right"
+                  size="sm"
+                  onClick={() => setEditing(true)}
+                >
+                  Edit
+                </Button>
+                <Text fontSize="3xl" fontWeight="bold">
+                  {name}
+                </Text>
+                <Text fontSize="xl"> {session.user.email} </Text>{" "}
+                {joined ? (
+                  <Text fontSize="md">
+                    User since&nbsp;
+                    {`${
+                      joined.getMonth() + 1
+                    }/${joined.getDate()}/${joined.getFullYear()}`}{" "}
+                  </Text>
+                ) : (
+                  <></>
+                )}
+              </Box>
+            ) : (
+              <>
+                <Formik
+                  initialValues={{
+                    firstName: session.user.firstName,
+                    lastName: session.user.lastName,
+                    email: session.user.email,
+                  }}
+                  validateOnChange={false}
+                  validationSchema={Yup.object({
+                    firstName: Yup.string(),
+                    lastName: Yup.string(),
+                    email: Yup.string().email("Invalid Email Address"),
+                  })}
+                  onSubmit={async (values) => {
+                    const res = await editUserReviewsHandler(session.user.email, values);
+                    console.log("Result of edit:", res);
+                    setEditing(false);
+                    Router.reload()
 
-          <TabPanels>
-            <TabPanel>
-              {/* Rentals */}
-              <Flex flexWrap="wrap" key="rentals">
-                {(properties && properties.length > 0)
-                  ?
-                  (properties.filter(property => property.isRental).length > 0)
-                    ?
-                    (properties.filter(property => property.isRental).map((property) => (
-                      // User has saved properties, display them.
-                      <GridItem key={property.zpid}>
-                        <Property
-                          property={property}
-                          isRental={property.isRental}
-                        />
-                      </GridItem>
-                      )))
-                    :
-                    noRentalProperties
-                :
-                noRentalProperties
-                }
-              </Flex>
-            </TabPanel>
-            <TabPanel>
-            {/* Properties */}
-            <Flex flexWrap="wrap" key="properties">
-                {(properties && properties.length > 0)
-                  ?
-                  (properties.filter(property => !property.isRental).length > 0)
-                    ?
-                    (properties.filter(property => !property.isRental).map((property) => (
-                      // User has saved properties, display them.
-                        <Property
-                          property={property}
-                          key={property.zpid}
-                          isRental={property.isRental}
-                        />
-                      )))
-                    :
-                    noHomes
-                :
-                noHomes
-                }
-              </Flex>
-            </TabPanel>
-            <TabPanel key="reviews">
-                {/* Reviews */}
-                {
-                  reviews
-                  ?
-                  reviews.map((review) => (
-                    <Link href={`/property/${review.zpid}/`} passHref>
-                      <Box
-                        p='2'
-                        _hover={{ bg: "gray.100", cursor: "pointer" }}
-                        borderRadius='20'
+                  }}
+                >
+                  {(formik) => (
+                    <form onSubmit={formik.handleSubmit}>
+                      <Heading mb={4}> Edit Profile </Heading>
+
+                      {/* <FormLabel htmlFor="imageUrl">
+                        {" "}
+                        Profile Picture{" "}
+                      </FormLabel> */}
+                      {/* <Input pt={1} name="imageUrl" type="file" mb={4} /> */}
+
+                      <InputField
+                        name="firstName"
+                        formik={formik}
+                        type="text"
+                        label="First Name"
+                        touched={formik.touched.firstName}
+                        errors={formik.errors.firstName}
+                        value={formik.values.firstName}
+                      />
+
+                      <InputField
+                        name="lastName"
+                        formik={formik}
+                        type="text"
+                        label="Last Name"
+                        touched={formik.touched.lastName}
+                        errors={formik.errors.lastName}
+                        value={formik.values.lastName}
+                      />
+
+                      <InputField
+                        name="email"
+                        formik={formik}
+                        type="email"
+                        label="Email"
+                        touched={formik.touched.email}
+                        errors={formik.errors.email}
+                        value={formik.values.email}
+                      />
+
+                      <Button
+                        isLoading={btnLoading}
+                        type="submit"
+                        colorScheme="blue"
+                        isFullWidth
                       >
-                        <SingleReview data={review}/>
-                      </Box>
-                    </Link>
-                  ))
-                  :
-                  noReviews
-                }
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
-      </GridItem>
+                        Submit
+                      </Button>
+                      <Button
+                        // isLoading={btnLoading}
+                        // type="submit"
+                        variant="outline"
+                        colorScheme="blue"
+                        mt={2}
+                        mb={4}
+                        isFullWidth
+                        onClick={() => setEditing(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </form>
+                  )}
+                </Formik>
+              </>
+            )}
+          </VStack>
+          <List>
+            <ListItem>
+              <ListIcon as={RiBuilding4Line} h={5} w={5} />
+              {properties ? (
+                <p>
+                  <b>{properties.filter((p) => p.isRental).length}</b>
+                  &nbsp;rental properties saved
+                </p>
+              ) : (
+                <p>
+                  <b>O</b> rental properties saved
+                </p>
+              )}
+            </ListItem>
+            <ListItem>
+              <ListIcon as={RiHomeHeartLine} h={5} w={5} />
+              {properties ? (
+                <p>
+                  <b>{properties.filter((p) => !p.isRental).length}</b>
+                  &nbsp;homes saved
+                </p>
+              ) : (
+                <p>
+                  <b>0</b> homes saved
+                </p>
+              )}
+            </ListItem>
+            <ListItem>
+              <ListIcon as={RiStarLine} h={5} w={5} />
+              <p>
+                <b>{reviews ? reviews.length : 0}</b> Reviews
+              </p>
+            </ListItem>
+          </List>
+        </GridItem>
+        {/* RIGHT COLUMN */}
+        <GridItem rowSpan={1} colSpan={5}>
+          <Heading size="xl" padding={4} paddingTop={0}>
+            Your Details
+          </Heading>
+        </GridItem>
+        {/* RIGHT COLUMN - USER'S DATABASE STUFF */}
+        <GridItem
+          rowSpan={14}
+          colSpan={5}
+          padding={4}
+          paddingTop={0}
+          bg="white"
+          overflowY="auto"
+        >
+          {/* 1 - TABS: SAVED PROPERTIES */}
+          <Tabs variant="line" colorScheme="blue" marginTop="1">
+            <TabList>
+              <Tab>Rental</Tab>
+              <Tab>Home</Tab>
+              <Tab>Reviews</Tab>
+            </TabList>
 
-      {/* TO-DO: USER'S REPORTS */}
-    </Grid>
+            <TabPanels>
+              <TabPanel>
+                {/* Rentals */}
+                <Flex flexWrap="wrap" key="rentals">
+                  {properties && properties.length > 0
+                    ? properties.filter((property) => property.isRental)
+                        .length > 0
+                      ? properties
+                          .filter((property) => property.isRental)
+                          .map((property) => (
+                            // User has saved properties, display them.
+                            <GridItem key={property.zpid}>
+                              <Property
+                                property={property}
+                                isRental={property.isRental}
+                              />
+                            </GridItem>
+                          ))
+                      : noRentalProperties
+                    : noRentalProperties}
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                {/* Properties */}
+                <Flex flexWrap="wrap" key="properties">
+                  {properties && properties.length > 0
+                    ? properties.filter((property) => !property.isRental)
+                        .length > 0
+                      ? properties
+                          .filter((property) => !property.isRental)
+                          .map((property) => (
+                            // User has saved properties, display them.
+                            <Property
+                              property={property}
+                              key={property.zpid}
+                              isRental={property.isRental}
+                            />
+                          ))
+                      : noHomes
+                    : noHomes}
+                </Flex>
+              </TabPanel>
+              <TabPanel key="reviews">
+                {/* Reviews */}
+                {reviews
+                  ? reviews.map((review) => (
+                      <Link href={`/property/${review.zpid}/`} passHref>
+                        <Box
+                          p="2"
+                          _hover={{ bg: "gray.100", cursor: "pointer" }}
+                          borderRadius="20"
+                        >
+                          <SingleReview data={review} />
+                        </Box>
+                      </Link>
+                    ))
+                  : noReviews}
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </GridItem>
 
+        {/* TO-DO: USER'S REPORTS */}
+      </Grid>
 
-    {/* recommended props */}
-    {properties && usableProperties.length > 0 &&
-      <Box w='100%' padding={5}>
-        <Text fontWeight={'bold'} fontSize='2xl'>Recommended Properties For You</Text>
-        <Flex w='1280px' h={'400px'} border='2px' borderColor='gray.300' borderRadius={5} p={3}>
-          {usableProperties.slice(3*currentPage, limit).map((property) => <Property property={property} key={property.zpid} isRental={true}/>)}
-        </Flex>
-      </Box>
-    }
+      {/* recommended props */}
+      {properties && usableProperties.length > 0 && (
+        <Box w="100%" padding={5}>
+          <Text fontWeight={"bold"} fontSize="2xl">
+            Recommended Properties For You
+          </Text>
+          <Flex
+            w="1280px"
+            h={"400px"}
+            border="2px"
+            borderColor="gray.300"
+            borderRadius={5}
+            p={3}
+          >
+            {usableProperties.slice(3 * currentPage, limit).map((property) => (
+              <Property
+                property={property}
+                key={property.zpid}
+                isRental={true}
+              />
+            ))}
+          </Flex>
+        </Box>
+      )}
     </>
   );
 }
