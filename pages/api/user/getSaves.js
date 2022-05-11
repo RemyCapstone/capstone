@@ -13,7 +13,7 @@ const getSavesHandler = async (req, res) => {
     const userResult = await usersCollection.findOne({
       email: user.email
     });
-    // console.log('userresult from get saves', userResult);
+    console.log('userresult from get saves', userResult);
 
     // if user doesnt exist, close the db connection and return status of 404
     if (!userResult) {
@@ -26,7 +26,7 @@ const getSavesHandler = async (req, res) => {
 
     if (userResult.savedProps) {
       // Return data
-      // console.log("User has saved props: ", userResult.savedProps);
+      console.log("User has saved props: ", userResult.savedProps);
 
       client.close();
       return res.status(200).json({

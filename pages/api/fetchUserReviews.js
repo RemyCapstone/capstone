@@ -12,7 +12,7 @@ const handler = async (req, res) => {
     const reviews = await reviewsCollection.find({
       email: user
     }).toArray();
-    // console.log("Found reviews for this user:", reviews);
+    console.log("Found reviews for this user:", reviews);
     client.close();
     return res.status(200).json({
       message: "Reviews found for this user.",
