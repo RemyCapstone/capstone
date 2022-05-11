@@ -31,6 +31,7 @@ const handler = async (req, res) => {
         email: user.email,
         savedProps: [property],
       };
+      
       await usersCollection.insertOne(submitUserData);
       client.close();
       console.log("saved")
@@ -44,8 +45,8 @@ const handler = async (req, res) => {
       await usersCollection.updateOne(
         { email: user.email },
         {
-          $pullAll: {
-            savedProps: [property]
+          $pull: {
+            savedProps: { zpid: property.zpid  }
           }
         }
       );

@@ -4,7 +4,7 @@ import { MongoClient, ObjectId } from "mongodb";
 const getPropertyStatusHandler = async (req, res) => {
   const zpid = req.body[0];
   const email = req.body[1];
-  console.log('in api', zpid, email)
+  // console.log('in api', zpid, email)
 
   try {
     const client = await MongoClient.connect(
@@ -17,7 +17,7 @@ const getPropertyStatusHandler = async (req, res) => {
     const user = await usersCollection.findOne({
       email: email
     });
-    console.log('User result from /api/user/getPropertyStatus.js: ', user);
+    // console.log('User result from /api/user/getPropertyStatus.js: ', user);
 
     // if user doesnt exist, close the db connection and return status of 404
     if (!user) {
@@ -56,7 +56,7 @@ const getPropertyStatusHandler = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(502).json({ message: "Could not connect to the database."})
+    return res.status(502).json({ message: "Could not connect to the database.", savedStatus: false})
   }
 }
 
