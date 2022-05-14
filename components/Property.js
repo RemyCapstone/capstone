@@ -16,7 +16,7 @@ import { server } from '../config/index'; // dyanmic absolute routes
 import { useSession } from "next-auth/react";
 
 const saveHandler = async(property, user)  => {
-  console.log("process.env.PLATFORM", process.env.PLATFORM, process.env.GMAIL_PASSWORD);
+  console.log("process.env.PLATFORM", process.env.PLATFORM, process.env.NEXT_PUBLIC_VERCEL_ENV, process.env.GMAIL_PASSWORD);
   const response = await fetch(`${server}/api/saveProperty`, {
     method: "POST",
     body: JSON.stringify([property, user]),
