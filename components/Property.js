@@ -16,6 +16,7 @@ import { server } from '../config/index'; // dyanmic absolute routes
 import { useSession } from "next-auth/react";
 
 const saveHandler = async(property, user)  => {
+  console.log("process.env.PLATFORM", process.env.PLATFORM, process.env.GMAIL_PASSWORD);
   const response = await fetch(`${server}/api/saveProperty`, {
     method: "POST",
     body: JSON.stringify([property, user]),
@@ -163,7 +164,7 @@ const Property = ({ property, isRental }) => {
       //   position: "top",
       //   duration: 2000,
       // });
-      
+
       if (res[2] == 200) {
         setSaved(!isSaved);
       }
