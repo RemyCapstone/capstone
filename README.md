@@ -1,5 +1,32 @@
 # Remy
+<img width="1109" alt="remy cover" src="https://github.com/RemyCapstone/capstone/assets/43856300/9a6d7051-27be-4d4d-ae67-5370b77479f6">
 
+---
+## About
+A web app that battles New York's housing crisis. 
+
+### Features
+- Login, Signup, Logout
+- Search for NYC rental info via interactable map
+- Search for NYC rental info via Zillow url
+- View NYC HPD Violations for a given listing
+- Save and unsave listings, and view saved listings
+- Write and read reviews on listings
+
+[Video Demo](https://www.youtube.com/watch?v=kgD-H-XxxW8)
+**Note:** This app was made collaboratively as a part of a CS capstone.
+
+## Built With
+- Next.js, React, Node.js, MongoDB
+- NYC Open Data for HPD Violations
+- NYC Geo Search
+- Zillow API
+
+### Deployment infra
+Formerly deployed with Vercel.
+Due to expiring API limits, it is recommended to view the video demo above for a demonstration of the features.
+
+---
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
